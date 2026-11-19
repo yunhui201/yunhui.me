@@ -8,7 +8,7 @@ import { build } from 'esbuild';
 import { parse } from 'smol-toml';
 
 const workspace = path.resolve(import.meta.dirname, '..');
-const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-client-model-context-')));
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-client-model-context-')));
 const previousHome = process.env.AURORA_CLIENT_HOME;
 const write = (file, value) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, value); };
 const read = file => fs.readFileSync(file, 'utf8');
@@ -64,7 +64,7 @@ try {
     const f = fixture('profile', text); connect(f); const next = parse(read(f.config));
     assert.equal(next.model_context_window, 64000); assert.equal(next.profiles['work.v2'].model, 'fixture-provider/selected-model');
     assert.equal(next.model_auto_compact_token_limit, 57600); assert.equal(next.profiles['work.v2'].model_auto_compact_token_limit, undefined);
-    assert.equal(next.profiles['work.v2'].model_provider, 'yunqiao'); assert.equal(next.profiles['work.v2'].model_reasoning_effort, 'high');
+    assert.equal(next.profiles['work.v2'].model_provider, 'yunhui'); assert.equal(next.profiles['work.v2'].model_reasoning_effort, 'high');
     assert.equal(next.profiles['work.v2'].model_context_window, undefined); assert.deepEqual(policy(next.profiles['work.v2']), policy({}));
     assert.deepEqual(policy(next), policy(parse(text)));
   });

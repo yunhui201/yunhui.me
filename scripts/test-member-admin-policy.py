@@ -97,7 +97,7 @@ def main():
         checks.append(label)
         print("PASS " + label)
 
-    with tempfile.TemporaryDirectory(prefix="yunqiao-admin-policy-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="yunhui-admin-policy-") as temporary:
         private = Path(temporary)
         os.chmod(private, 0o700)
         webroot, data, ledger = private / "web", private / "admin", private / "ledger"

@@ -23,7 +23,7 @@ try {
   });
   const legacyDir = path.join(scratch, 'legacy'); fs.mkdirSync(legacyDir);
   const token = 'fixture-existing-gateway-token', catalog = 'http://127.0.0.1:43001/test-catalog';
-  fs.writeFileSync(path.join(legacyDir, 'settings.json'), JSON.stringify({ gatewayToken: token, gatewayPort: 4401, theme: 'dark', updateUrl: 'https://ai.haowucm.cn/pub.php?action=update', autoSyncModels: false, catalogUrl: catalog }));
+  fs.writeFileSync(path.join(legacyDir, 'settings.json'), JSON.stringify({ gatewayToken: token, gatewayPort: 4401, theme: 'dark', updateUrl: 'https://yunhui.me/pub.php?action=update', autoSyncModels: false, catalogUrl: catalog }));
   const legacy = new AuroraStore(legacyDir); let writes = 0;
   const save = legacy.settings.write.bind(legacy.settings);
   legacy.settings.write = value => { writes++; save(value); };

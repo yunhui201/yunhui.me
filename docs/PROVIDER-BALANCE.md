@@ -6,7 +6,7 @@
 
 | 类型 | 查询接口 | 显示含义 |
 | --- | --- | --- |
-| 云桥 / Sub2API | `GET /v1/usage` | 根据响应区分账户钱包、API Key 总额度/周期额度、订阅每日/每周/每月额度 |
+| 云汇 / Sub2API | `GET /v1/usage` | 根据响应区分账户钱包、API Key 总额度/周期额度、订阅每日/每周/每月额度 |
 | DeepSeek | `GET /user/balance` | 每种币种的钱包余额，保留真实零余额和欠费 |
 | Moonshot / Kimi | `GET /v1/users/me/balance` | 中国站 CNY、国际站 USD 的可用余额 |
 | OpenRouter | `GET /api/v1/credits` | 总充值减总使用；密钥需具备此接口的查询权限 |
@@ -44,7 +44,7 @@ New API 必须从站点的公开元数据确认单位和换算参数；缺少信
 
 这些测试使用隔离目录和模拟余额服务，不读取或改写真实客户端配置，也不向生产账户发起计费请求。生产供应商的权限、站点定制和接口可用性仍以实际查询结果为准。
 
-本地 Windows 调试入口：`release/provider-balance-debug-0.6.0/win-unpacked/YunQiaoAI.exe`，构建标识 `20261115T060052Z-f8b6933d`。正式打包的 7 个应用文件与已验证构建逐字节一致，188 项随附运行资源均通过哈希检查，测试脚本没有进入客户端。详见 [本次验收记录](PROVIDER-BALANCE-VALIDATION.json)。使用时先从托盘退出旧版，再启动此调试版，避免两个网关争用同一端口。
+本地 Windows 调试入口：`release/provider-balance-debug-0.6.0/win-unpacked/YunHuiAI.exe`，构建标识 `20261115T060052Z-f8b6933d`。正式打包的 7 个应用文件与已验证构建逐字节一致，188 项随附运行资源均通过哈希检查，测试脚本没有进入客户端。详见 [本次验收记录](PROVIDER-BALANCE-VALIDATION.json)。使用时先从托盘退出旧版，再启动此调试版，避免两个网关争用同一端口。
 
 ```powershell
 node scripts/test-provider-balance.mjs

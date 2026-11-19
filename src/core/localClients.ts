@@ -150,7 +150,7 @@ function discover(ctx: Context): { candidates: Candidate[]; sources: LocalClient
     const baseUrl = endpoint(base, format);
     if (!baseUrl) return note(s, 'unsupported', '接口地址不明确、包含动态值或不受支持，需手动确认。');
     if (!validKey(key)) return note(s, 'missing-key', '没有明确可用的静态 API Key；OAuth、占位符和动态命令均不作为 API Key 导入。');
-    if (ownGateway(baseUrl, key, ctx)) return note(s, 'ignored', '这是云桥自己的网关配置，已跳过以避免循环调用。');
+    if (ownGateway(baseUrl, key, ctx)) return note(s, 'ignored', '这是云汇自己的网关配置，已跳过以避免循环调用。');
     const uniqueModels = [...new Set(models.filter(modelId))];
     candidates.push({ source: s, name, format, baseUrl, key, models: uniqueModels, ...(context && uniqueModels.includes(context.modelId) && isValidContextWindow(context.value) ? { context } : {}) });
   };
@@ -195,7 +195,7 @@ function discover(ctx: Context): { candidates: Candidate[]; sources: LocalClient
     for (const [id, p] of Object.entries(providers)) {
       if (!object(p)) continue;
       const s = source('codex-cli', `Codex / ChatGPT · ${textValue(p.name) || id}`, codexFile, id);
-      if (id === 'yunqiao' || id === 'aurora') { note(s, 'ignored', '云桥管理的 provider 不重复导入。'); continue; }
+      if (id === 'yunhui' || id === 'aurora') { note(s, 'ignored', '云汇管理的 provider 不重复导入。'); continue; }
       if (p.wire_api !== undefined && !['responses', 'chat'].includes(p.wire_api)) { note(s, 'unsupported', '此 provider 使用的接口协议暂不支持自动导入。'); continue; }
       if (p.api_key_helper || p.apiKeyHelper || !codexStaticHeadersSupported(p.http_headers)
         || (p.env_http_headers !== undefined && (!object(p.env_http_headers) || Object.keys(p.env_http_headers).length))) {
@@ -253,7 +253,7 @@ function discover(ctx: Context): { candidates: Candidate[]; sources: LocalClient
         const file = path.join(profileDir, entry), profile = json(file, 'Claude 桌面 profile');
         if (!profile) continue;
         const s = source('claude-desktop', `Claude 桌面 · ${textValue(profile.name) || entry.replace(/\.json$/, '')}`, file);
-        if (entry === `${CLAUDE_DESKTOP_PROFILE}.json`) { note(s, 'ignored', '云桥管理的桌面 profile 不重复导入。'); continue; }
+        if (entry === `${CLAUDE_DESKTOP_PROFILE}.json`) { note(s, 'ignored', '云汇管理的桌面 profile 不重复导入。'); continue; }
         if (profile.inferenceProvider !== 'gateway' || !['bearer', 'api-key', 'x-api-key'].includes(profile.inferenceGatewayAuthScheme)) {
           note(s, 'unsupported', '此 profile 的认证协议不明确，需手动配置。'); continue;
         }

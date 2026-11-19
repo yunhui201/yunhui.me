@@ -157,7 +157,7 @@ function makeAdapter(spec: AdapterSpec): AgentAdapter {
       } catch (error) { return { ok: false, message: String((error as Error).message) }; }
     },
     disconnect(backup) {
-      if (spec.support !== 'automatic') return { ok: false, message: '此客户端没有由云桥写入的配置' };
+      if (spec.support !== 'automatic') return { ok: false, message: '此客户端没有由云汇写入的配置' };
       try { restorePlan(this.id.startsWith('codex-') || this.id === 'chatgpt-desktop' ? 'codex-cli' : this.id, backup, this.restorePaths?.(backup) ?? this.configPaths()); detectReset(); return { ok: true, message: `已恢复首次接入前的 ${spec.name} 配置，请重新启动客户端。`, restartRequired: true }; }
       catch (error) { return { ok: false, message: String((error as Error).message) }; }
     },
@@ -213,8 +213,8 @@ export function codexPlan(ctx: ConnectContext): PlannedFile[] {
   const coexist = ctx.authMode === 'coexist';
   if (!coexist) {
     const profile = typeof current.profile === 'string' ? current.profiles?.[current.profile] : undefined;
-    if ([current.model_providers?.yunqiao, profile?.model_providers?.yunqiao].some(value => value && typeof value === 'object' && (Object.hasOwn(value, 'auth') || Object.hasOwn(value, 'aws')))) {
-      throw new Error('当前 yunqiao 供应商包含 auth 或 aws 认证设置，不能与 API Bearer 令牌同时使用。请先在原客户端移除这些认证设置或改名为独立供应商，再重新预览；原配置未修改。');
+    if ([current.model_providers?.yunhui, profile?.model_providers?.yunhui].some(value => value && typeof value === 'object' && (Object.hasOwn(value, 'auth') || Object.hasOwn(value, 'aws')))) {
+      throw new Error('当前 yunhui 供应商包含 auth 或 aws 认证设置，不能与 API Bearer 令牌同时使用。请先在原客户端移除这些认证设置或改名为独立供应商，再重新预览；原配置未修改。');
     }
   }
   if (coexist) {
@@ -222,9 +222,9 @@ export function codexPlan(ctx: ConnectContext): PlannedFile[] {
     if ([current.model_providers?.openai, profile?.model_providers?.openai].some(value => value && typeof value === 'object' && Object.keys(value).some(key => key !== 'name'))) {
       throw new Error('当前配置重定义了内置 openai 供应商。请先在原客户端移除该覆盖或改名为独立供应商，再开启官方账号共存；也可继续使用 API 模式。');
     }
-    if (!process.env.AURORA_CLIENT_HOME && process.env.OPENAI_BASE_URL) throw new Error('当前进程存在 OPENAI_BASE_URL 环境覆盖，请先清除该变量并重启云桥，再启用共存模式。');
+    if (!process.env.AURORA_CLIENT_HOME && process.env.OPENAI_BASE_URL) throw new Error('当前进程存在 OPENAI_BASE_URL 环境覆盖，请先清除该变量并重启云汇，再启用共存模式。');
   }
-  const selection = { model: ep.model, model_provider: coexist ? 'openai' : 'yunqiao' };
+  const selection = { model: ep.model, model_provider: coexist ? 'openai' : 'yunhui' };
   const endpoint = codexCoexistBaseUrl(Number(new URL(ctx.gatewayUrl).port) || 80);
   const ownEndpoint = (value: unknown) => { try { const url = new URL(String(value)); return ['127.0.0.1', 'localhost', '[::1]'].includes(url.hostname) && url.pathname.replace(/\/$/, '') === CODEX_COEXIST_BASE_PATH; } catch { return false; } };
   const routing: Record<string, string | number | null> = { ...selection };
@@ -267,13 +267,13 @@ export function codexPlan(ctx: ConnectContext): PlannedFile[] {
     text = patchToml(text, `profiles.${JSON.stringify(current.profile)}`, values);
   }
   if (!coexist) {
-    const transport = { name: '云桥 AI', base_url: ep.baseUrl, wire_api: 'responses', experimental_bearer_token: ep.apiKey, env_key: null, requires_openai_auth: false, stream_idle_timeout_ms: 300000 };
-    text = patchToml(text, 'model_providers.yunqiao', transport);
+    const transport = { name: '云汇 AI', base_url: ep.baseUrl, wire_api: 'responses', experimental_bearer_token: ep.apiKey, env_key: null, requires_openai_auth: false, stream_idle_timeout_ms: 300000 };
+    text = patchToml(text, 'model_providers.yunhui', transport);
     // An existing active-profile provider is merged over the root provider by
     // supporting clients. Keep its managed transport in sync so it cannot
     // silently restore an old endpoint, credential, or official-auth mode.
-    if (typeof current.profile === 'string' && current.profiles?.[current.profile]?.model_providers?.yunqiao !== undefined) {
-      text = patchToml(text, `profiles.${JSON.stringify(current.profile)}.model_providers.yunqiao`, transport);
+    if (typeof current.profile === 'string' && current.profiles?.[current.profile]?.model_providers?.yunhui !== undefined) {
+      text = patchToml(text, `profiles.${JSON.stringify(current.profile)}.model_providers.yunhui`, transport);
     }
   }
   // Reattach the original owned blocks before optional alias work so a failed
@@ -286,8 +286,8 @@ export function codexPlan(ctx: ConnectContext): PlannedFile[] {
     const aliasBaseUrl = ctx.mode === 'direct' ? ep.baseUrl : coexist
       ? new URL(endpoint).origin + codexHistoryBasePath(`${ctx.provider.id}/${ctx.model}`, 'coexist')
       : ctx.gatewayUrl.replace(/\/+$/, '') + codexHistoryBasePath(`${ctx.provider.id}/${ctx.model}`);
-    const aliasTransport: Record<string, string | number | boolean> = coexist ? { name: '云桥历史兼容', base_url: aliasBaseUrl, wire_api: 'responses', requires_openai_auth: true, stream_idle_timeout_ms: 300000 }
-      : { name: '云桥历史兼容', base_url: aliasBaseUrl, wire_api: 'responses', experimental_bearer_token: ep.apiKey, requires_openai_auth: false, stream_idle_timeout_ms: 300000 };
+    const aliasTransport: Record<string, string | number | boolean> = coexist ? { name: '云汇历史兼容', base_url: aliasBaseUrl, wire_api: 'responses', requires_openai_auth: true, stream_idle_timeout_ms: 300000 }
+      : { name: '云汇历史兼容', base_url: aliasBaseUrl, wire_api: 'responses', experimental_bearer_token: ep.apiKey, requires_openai_auth: false, stream_idle_timeout_ms: 300000 };
     text = withHistoryProviderAliases(text, [...detached.ids, ...ids], aliasTransport, true);
   } catch { text = clearManagedHistoryTarget(text); }
   return [{ ...planned(file, text), ...(ctx.permissionMode === 'full-access' ? { permissionScope: { kind: 'codex-execution-v1' as const, ...(typeof current.profile === 'string' ? { profile: current.profile } : {}) } } : {}) }];
@@ -299,8 +299,8 @@ function codexProviderWarnings(): string[] {
 }
 const codexCli = makeAdapter({
   id: 'codex-cli', name: 'Codex CLI', vendor: 'OpenAI', category: 'cli', support: 'automatic', protocol: 'openai-responses', description: 'OpenAI 终端编程助手，使用 Responses 协议。',
-  supportNote: '配置独立的 yunqiao provider，保留账号登录态和其他 TOML 配置。', docsUrl: 'https://developers.openai.com/codex/config-reference', command: 'codex', paths: () => [codexConfig()], hint: '完全退出后重新运行 codex', plan: codexPlan,
-  warnings: ['Codex CLI 与 Codex 桌面共享用户级配置；当前 profile 或项目配置可能覆盖此设置。', '部分新版 CLI 已停用 config.toml 内的旧 profile 表，改用 --profile 名称和独立配置文件；请先确认原配置可由当前 CLI 正常读取，云桥不会自动迁移这些文件。', CODEX_CONTEXT_WARNING], previewWarnings: codexProviderWarnings,
+  supportNote: '配置独立的 yunhui provider，保留账号登录态和其他 TOML 配置。', docsUrl: 'https://developers.openai.com/codex/config-reference', command: 'codex', paths: () => [codexConfig()], hint: '完全退出后重新运行 codex', plan: codexPlan,
+  warnings: ['Codex CLI 与 Codex 桌面共享用户级配置；当前 profile 或项目配置可能覆盖此设置。', '部分新版 CLI 已停用 config.toml 内的旧 profile 表，改用 --profile 名称和独立配置文件；请先确认原配置可由当前 CLI 正常读取，云汇不会自动迁移这些文件。', CODEX_CONTEXT_WARNING], previewWarnings: codexProviderWarnings,
 });
 const codexDesktop = makeAdapter({
   id: 'chatgpt-desktop', name: 'ChatGPT 桌面版', vendor: 'OpenAI', category: 'desktop', support: 'automatic', protocol: 'openai-responses', description: '配置与 Codex CLI 共享的编程模型，另行识别桌面程序以支持重启和增强。',
@@ -344,7 +344,7 @@ const claudeDesktop = makeAdapter({
   id: 'claude-desktop', name: 'Claude 桌面版', vendor: 'Anthropic', category: 'desktop', support: 'automatic', protocol: 'anthropic', description: '通过支持第三方配置的 Claude Desktop 版本接入模型网关。',
   supportNote: '使用 Claude Desktop 的 3P profile；Sonnet、Opus、Haiku 可映射为国内外模型。需要支持 Gateway 的新版客户端。',
   docsUrl: 'https://github.com/farion1231/cc-switch/blob/main/docs/user-manual/zh/2-providers/2.6-claude-desktop.md', desktop: 'Claude', paths: desktopConfigPaths,
-  warnings: ['仅适用于支持 3P / Gateway 的 Claude Desktop 版本；旧版不会读取此配置。', '模型映射模式使用期间需保持云桥网关运行。客户端功能也取决于上游模型能力。'],
+  warnings: ['仅适用于支持 3P / Gateway 的 Claude Desktop 版本；旧版不会读取此配置。', '模型映射模式使用期间需保持云汇网关运行。客户端功能也取决于上游模型能力。'],
   plan(ctx) {
     const selected = resolveClaudeDesktopConfig();
     if (!selected.root) throw new Error(selected.reason);
@@ -354,7 +354,7 @@ const claudeDesktop = makeAdapter({
     const third = jsonObject(thirdParty); third.deploymentMode = '3p';
     const meta = jsonObject(metaFile);
     if (meta.entries && !Array.isArray(meta.entries)) throw new Error('Claude Desktop profile 索引 entries 不是数组');
-    meta.entries = (meta.entries || []).filter((x: any) => x?.id !== DESKTOP_PROFILE); meta.entries.push({ id: DESKTOP_PROFILE, name: '云桥 AI' }); meta.appliedId = DESKTOP_PROFILE;
+    meta.entries = (meta.entries || []).filter((x: any) => x?.id !== DESKTOP_PROFILE); meta.entries.push({ id: DESKTOP_PROFILE, name: '云汇 AI' }); meta.appliedId = DESKTOP_PROFILE;
     const profile = jsonObject(profileFile);
     Object.assign(profile, { inferenceProvider: 'gateway', inferenceGatewayBaseUrl: ctx.mode === 'gateway' ? ep.baseUrl + '/claude-desktop' : ep.baseUrl, inferenceGatewayAuthScheme: 'bearer', inferenceGatewayApiKey: ep.apiKey,
       inferenceModels: ctx.mode === 'gateway' ? ['sonnet', 'opus', 'haiku'].map(role => ({ name: `claude-${role}-aurora`, labelOverride: `${ctx.provider.name} · ${ctx.modelMap?.[role] || ctx.model}` })) : [ctx.model] });
@@ -380,12 +380,12 @@ const geminiCli = makeAdapter({
   },
 });
 const manualSpecs: AdapterSpec[] = [
-  { id: 'workbuddy', name: 'WorkBuddy / CodeBuddy', vendor: '腾讯', category: 'desktop', protocol: 'openai-chat', support: 'manual', desktop: ['WorkBuddy', 'CodeBuddy'], description: '腾讯 AI 工作助手，提供适配供应商的连接参数。', supportNote: '不同版本的自定义模型入口和协议支持有差异。请在客户端支持的自定义模型页面填写参数，云桥不写入未经验证的配置字段。', docsUrl: 'https://www.codebuddy.ai/' },
+  { id: 'workbuddy', name: 'WorkBuddy / CodeBuddy', vendor: '腾讯', category: 'desktop', protocol: 'openai-chat', support: 'manual', desktop: ['WorkBuddy', 'CodeBuddy'], description: '腾讯 AI 工作助手，提供适配供应商的连接参数。', supportNote: '不同版本的自定义模型入口和协议支持有差异。请在客户端支持的自定义模型页面填写参数，云汇不写入未经验证的配置字段。', docsUrl: 'https://www.codebuddy.ai/' },
   { id: 'deepseek', name: 'DeepSeek API / 兼容客户端', vendor: '深度求索', category: 'service', protocol: 'openai-chat', support: 'manual', description: '为支持 OpenAI 兼容接口的客户端生成 DeepSeek 等模型的连接参数。', supportNote: 'DeepSeek 是模型服务。可把参数填入支持自定义接口的应用；不会替换 DeepSeek 官方网页或 App 的模型。', docsUrl: 'https://api-docs.deepseek.com/' },
   { id: 'qwen-code', name: 'Qwen Code', vendor: '阿里云', category: 'cli', protocol: 'openai-chat', support: 'manual', command: 'qwen', description: '通义千问终端编程助手，提供 OpenAI 兼容接入参数。', supportNote: '按下方指南合并 settings.json 中的模型、认证和令牌设置，重新启动后选择对应模型。', docsUrl: 'https://qwenlm.github.io/qwen-code-docs/' },
   { id: 'kimi-code', name: 'Kimi Code', vendor: '月之暗面', category: 'cli', protocol: 'openai-chat', support: 'manual', command: 'kimi', description: 'Kimi 编程助手，可按官方模型配置接入。', supportNote: '按下方指南生成独立 TOML 配置，填写实际上下文容量，并通过 --config-file 指定；原有官方登录配置保留。', docsUrl: 'https://moonshotai.github.io/kimi-cli/' },
   { id: 'opencode', name: 'OpenCode', vendor: 'OpenCode', category: 'cli', protocol: 'openai-chat', support: 'manual', command: 'opencode', description: '开放的编程助手，可使用自定义 OpenAI 兼容供应商。', supportNote: '先核对 OpenCode 版本，再在下方选择 V1 或 V2 配置格式；合并到原有 JSON/JSONC 文件并重启验证。', docsUrl: 'https://opencode.ai/docs/providers/' },
-  { id: 'zcode', name: 'ZCode', vendor: 'ZCode', category: 'cli', protocol: 'openai-chat', support: 'manual', command: 'zcode', description: '提供标准 API 连接参数，由客户端自定义模型入口接入。', supportNote: '该客户端版本和配置格式尚未验证，云桥只生成参数，不自动改写配置。', docsUrl: '' },
+  { id: 'zcode', name: 'ZCode', vendor: 'ZCode', category: 'cli', protocol: 'openai-chat', support: 'manual', command: 'zcode', description: '提供标准 API 连接参数，由客户端自定义模型入口接入。', supportNote: '该客户端版本和配置格式尚未验证，云汇只生成参数，不自动改写配置。', docsUrl: '' },
   { id: 'antigravity', name: 'Antigravity', vendor: 'Google', category: 'desktop', protocol: 'gemini', support: 'unsupported', desktop: 'Antigravity', description: 'Google 编程产品。', supportNote: '尚未验证其第三方网关配置机制，不能把 Gemini CLI 环境变量当作该产品支持的配置。', docsUrl: 'https://antigravity.google/' },
 ];
 export const AGENT_ADAPTERS: AgentAdapter[] = [claudeCode, claudeDesktop, codexCli, codexDesktop, geminiCli, ...manualSpecs.map(makeAdapter)];
@@ -407,5 +407,5 @@ export function exportEnvScript(ctx: ConnectContext, protocol: string, platform:
   const prefix = platform === 'win32' ? '$env:' : 'export ';
   const literal = platform === 'win32' ? (value: string) => `'${value.replace(/'/g, "''")}'` : quote;
   const values: Record<string, string> = protocol === 'anthropic' ? { ANTHROPIC_BASE_URL: ep.baseUrl, ANTHROPIC_AUTH_TOKEN: ep.apiKey, ANTHROPIC_MODEL: ep.model } : protocol === 'gemini' ? { GOOGLE_GEMINI_BASE_URL: ep.baseUrl, GOOGLE_GENAI_API_VERSION: ep.apiVersion!, GEMINI_API_KEY: ep.apiKey, GEMINI_MODEL: ep.model } : { OPENAI_BASE_URL: ep.baseUrl, OPENAI_API_KEY: ep.apiKey, OPENAI_MODEL: ep.model };
-  return [`# 云桥 AI · 当前终端环境变量 (${nowIso()})`, ...Object.entries(values).map(([key, value]) => `${prefix}${key}=${literal(value)}`)].join('\n');
+  return [`# 云汇 AI · 当前终端环境变量 (${nowIso()})`, ...Object.entries(values).map(([key, value]) => `${prefix}${key}=${literal(value)}`)].join('\n');
 }

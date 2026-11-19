@@ -24,7 +24,7 @@ const NAV: Array<{ group: string; items: Array<{ id: PageId; label: string; icon
     { id: 'agents', label: '客户端接入', icon: 'robot', hint: '选择客户端，连接你的 AI' },
     { id: 'overview', label: '运行概览', icon: 'chart', hint: '网关状态与最近请求' },
     { id: 'sessions', label: '历史会话', icon: 'chat', hint: '查找、阅读与恢复本地会话' },
-    { id: 'membership', label: '云桥会员', icon: 'user', hint: '绑定会员，领取新客平台额度' },
+    { id: 'membership', label: '云汇会员', icon: 'user', hint: '绑定会员，领取新客平台额度' },
   ] },
   { group: '模型与连接', items: [
     { id: 'providers', label: '我的供应商', icon: 'plug', hint: 'API 密钥、端点与连接测试' },
@@ -116,7 +116,7 @@ function Shell() {
 
   if (!state || err === 'AUTH_REQUIRED') return <div className="login-screen">
     <div className="welcome-logo"><Ico name="route" size={28} /></div>
-    <h1>云桥 AI <span className="muted">/ yunqiao.me</span></h1>
+    <h1>云汇 AI <span className="muted">/ yunhui.me</span></h1>
     {err === 'AUTH_REQUIRED' ? <form className="login-panel" onSubmit={e => { e.preventDefault(); sessionStorage.setItem('aurora.gatewayToken', token); reload(); }}>
       <h2>连接你的工作空间</h2><p>输入桌面端「系统设置 → 网关」中的访问令牌。</p>
       <input autoFocus aria-label="网关访问令牌" className="input" type="password" autoComplete="off" value={token} onChange={e => setToken(e.target.value)} placeholder="访问令牌" />
@@ -126,7 +126,7 @@ function Shell() {
   const active = ALL_NAV.find(i => i.id === page)!;
   return <div className="app" data-platform={window.aurora ? state.platform : 'web'}>
     <header className="titlebar">
-      <div className="brand"><span className="brand-symbol"><Ico name="route" size={18} /></span><span>云桥 AI</span><span className="brand-en">yunqiao.me</span></div>
+      <div className="brand"><span className="brand-symbol"><Ico name="route" size={18} /></span><span>云汇 AI</span><span className="brand-en">yunhui.me</span></div>
       <div className="titlebar-crumb">个人工作空间 <span>/</span> {active.label}</div>
       <div className="spacer" />
       <button className="quick-search" onClick={() => { setSearchOpen(true); setQuery(''); }}><Ico name="search" size={14} /><span>搜索功能</span><kbd>{(state.platform === 'darwin' || (!window.aurora && /Mac|iPhone|iPad/.test(navigator.platform))) ? '⌘ K' : 'Ctrl K'}</kbd></button>

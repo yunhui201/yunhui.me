@@ -1,7 +1,7 @@
 {
   "passed": true,
   "buildId": "20261115T060052Z-f8b6933d",
-  "executable": "release/provider-balance-debug-0.6.0/win-unpacked/YunQiaoAI.exe",
+  "executable": "release/provider-balance-debug-0.6.0/win-unpacked/YunHuiAI.exe",
   "exeSha256": "0c335946356922b79608f12333a7e07398357524c9ce71a13741bcc757fd1725",
   "asarSha256": "4ccb24d2182fdf424ac68bcd16c291f7285f630070664a0c7694402dc2d6e957",
   "packagedApplicationFilesMatchBuild": 7,

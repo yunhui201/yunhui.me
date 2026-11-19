@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 import { parse } from 'smol-toml';
 import { build } from 'esbuild';
 
-const workspace = path.resolve(import.meta.dirname, '..'), scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-history-alias-'))), previousHome = process.env.AURORA_CLIENT_HOME;
+const workspace = path.resolve(import.meta.dirname, '..'), scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-history-alias-'))), previousHome = process.env.AURORA_CLIENT_HOME;
 const write = (file, text) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, text); };
 const read = file => fs.readFileSync(file, 'utf8'), json = file => JSON.parse(read(file));
 let passed = 0;
@@ -31,7 +31,7 @@ try {
   function database(file, statements, providers = []) { fs.mkdirSync(path.dirname(file), { recursive: true }); const db = new DatabaseSync(file); try { db.exec(statements); for (const provider of providers) db.prepare('INSERT INTO threads(model_provider) VALUES(?)').run(provider); } finally { db.close(); } }
   await check('Exact case-sensitive IDs come from config active profiles all readable databases and BOM-prefixed first metadata lines', async () => {
     const f = fixture('evidence', 'model_provider="Root.Legacy"\nprofile="工作"\n[profiles."工作"]\nmodel_provider="Profile Legacy"\n');
-    database(path.join(f.home, 'state_5.sqlite'), 'CREATE TABLE threads(model_provider TEXT)', ['codex_plus_managed', 'CodexPlusPlus', 'OpenAI', 'azure', 'azure-openai', 'openai', 'ollama', 'lmstudio', 'amazon-bedrock', 'amazon-bedrock-runtime', 'gcp', 'ollama-chat', 'yunqiao', '', ' bad ', 'bad\nkey']);
+    database(path.join(f.home, 'state_5.sqlite'), 'CREATE TABLE threads(model_provider TEXT)', ['codex_plus_managed', 'CodexPlusPlus', 'OpenAI', 'azure', 'azure-openai', 'openai', 'ollama', 'lmstudio', 'amazon-bedrock', 'amazon-bedrock-runtime', 'gcp', 'ollama-chat', 'yunhui', '', ' bad ', 'bad\nkey']);
     write(path.join(f.home, 'state_9.sqlite'), 'corrupt private database');
     database(path.join(f.home, 'sqlite', 'catalog.db'), "CREATE TABLE local_thread_catalog(model_provider TEXT); INSERT INTO local_thread_catalog VALUES('只在索引'),('Name.With.Dot');");
     write(path.join(f.home, 'sessions', 'log.jsonl'), '\ufeff' + JSON.stringify({ type: 'session_meta', payload: { model_provider: '只在日志' } }) + '\r\nnot read');
@@ -71,29 +71,29 @@ try {
     const before = 'profile="work"\nmodel_provider="legacy"\n[model_providers.legacy]\nname="User owned"\nbase_url="https://old.invalid/v1"\n[profiles.work]\nmodel_provider="profile-only"\n[profiles.work.model_providers."profile-only"]\nname="Profile user provider"\nbase_url="https://profile.invalid/v1"\n';
     const f = fixture('user-tables', before), planned = api.codexPlan({ ...f.context, historyProviderIds: ['legacy', 'profile-only', 'openai', 'ollama', 'lmstudio', 'owned'] })[0].after, parsed = parse(planned), original = parse(before);
     assert.deepEqual(parsed.model_providers.legacy, original.model_providers.legacy); assert.deepEqual(parsed.profiles.work.model_providers, original.profiles.work.model_providers); assert.equal(parsed.model_providers['profile-only'], undefined);
-    const changed = planned.replaceAll('name = "云桥历史兼容"', 'name = "Customer edited alias"'); write(f.file, changed);
+    const changed = planned.replaceAll('name = "云汇历史兼容"', 'name = "Customer edited alias"'); write(f.file, changed);
     const later = parse(api.codexPlan({ ...f.context, model: 'another', historyProviderIds: ['owned'] })[0].after); assert.deepEqual(later.model_providers.owned, parse(changed).model_providers.owned);
   });
   await check('Automatic history targets avoid user table collisions and require intact purpose hash and active-profile identity', async () => {
     for (const profileOverride of [false, true]) {
-      const before = 'model_provider="legacy"\n' + (profileOverride ? 'profile="work"\n[profiles.work.model_providers.yunqiao-history]\n' : '[model_providers.yunqiao-history]\n') + 'name="User table"\nbase_url="https://customer.invalid/v1"\n';
+      const before = 'model_provider="legacy"\n' + (profileOverride ? 'profile="work"\n[profiles.work.model_providers.yunhui-history]\n' : '[model_providers.yunhui-history]\n') + 'name="User table"\nbase_url="https://customer.invalid/v1"\n';
       const f = fixture('collision-' + profileOverride, before), first = api.codexPlan({ ...f.context, historyProviderIds: [] })[0].after, target = api.getManagedHistoryTarget(first), config = parse(first);
-      assert.equal(target, 'yunqiao-history-2'); assert.equal(config.model_provider, 'yunqiao');
-      assert.deepEqual(profileOverride ? config.profiles.work.model_providers['yunqiao-history'] : config.model_providers['yunqiao-history'], profileOverride ? parse(before).profiles.work.model_providers['yunqiao-history'] : parse(before).model_providers['yunqiao-history']);
+      assert.equal(target, 'yunhui-history-2'); assert.equal(config.model_provider, 'yunhui');
+      assert.deepEqual(profileOverride ? config.profiles.work.model_providers['yunhui-history'] : config.model_providers['yunhui-history'], profileOverride ? parse(before).profiles.work.model_providers['yunhui-history'] : parse(before).model_providers['yunhui-history']);
       write(f.file, first); const switched = api.codexPlan({ ...f.context, authMode: 'coexist', historyProviderIds: [] })[0].after;
       assert.equal(api.getManagedHistoryTarget(switched), target); assert.equal(parse(switched).model_provider, 'openai');
-      assert.equal(api.getManagedHistoryTarget(switched.replace('# yunqiao-history-target:v1', '# customer edited target')), undefined);
+      assert.equal(api.getManagedHistoryTarget(switched.replace('# yunhui-history-target:v1', '# customer edited target')), undefined);
       const shadowed = switched + `\n[profiles.work.model_providers."${target}"]\nname="Customer override"\nbase_url="https://override.invalid/v1"\n`;
       const shadowedActive = profileOverride ? shadowed : 'profile="work"\n' + shadowed;
       assert.equal(api.getManagedHistoryTarget(shadowedActive), undefined);
       write(f.file, shadowedActive); const afterShadow = api.codexPlan({ ...f.context, historyProviderIds: [] })[0].after;
-      assert.equal(api.getManagedHistoryTarget(afterShadow), 'yunqiao-history-3'); assert.equal(parse(afterShadow).profiles.work.model_providers[target].name, 'Customer override');
+      assert.equal(api.getManagedHistoryTarget(afterShadow), 'yunhui-history-3'); assert.equal(parse(afterShadow).profiles.work.model_providers[target].name, 'Customer override');
     }
   });
   await check('Marker-looking text inside multiline notes cannot claim ownership of an independent provider', async () => {
     const f = fixture('marker-notes'), generated = api.codexPlan({ ...f.context, historyProviderIds: ['legacy'] })[0].after;
-    const block = generated.slice(generated.indexOf('# yunqiao-history-provider:v1:'));
-    write(f.file, `model_provider="yunqiao"\nnotes='''\n${block}'''\n[model_providers.legacy]\nname="Independent"\nbase_url="https://customer.invalid/v1"\n`);
+    const block = generated.slice(generated.indexOf('# yunhui-history-provider:v1:'));
+    write(f.file, `model_provider="yunhui"\nnotes='''\n${block}'''\n[model_providers.legacy]\nname="Independent"\nbase_url="https://customer.invalid/v1"\n`);
     const after = parse(api.codexPlan({ ...f.context, historyProviderIds: ['legacy'] })[0].after); assert.equal(after.model_providers.legacy.name, 'Independent'); assert.equal(after.notes, block);
   });
   await check('Optional aliases cannot block valid coexistence with inline providers and multiline quote endings keep owned aliases updatable', async () => {
@@ -128,10 +128,10 @@ try {
     database(path.join(f.home, 'state_8.sqlite'), 'CREATE TABLE threads(model_provider TEXT)', Array.from({ length: 200 }, (_, i) => 'legacy-' + i));
     const ids = api.discoverHistoryProviderIds(f.before, f.home); assert.equal(ids.length, 128);
     const lstat = fs.lstatSync; fs.lstatSync = function(file, ...args) { if (String(file).endsWith('.sqlite') || String(file).endsWith('sessions')) throw Object.assign(new Error('fixture unreadable evidence'), { code: 'EACCES' }); return lstat.call(this, file, ...args); };
-    try { const result = await api.runAction(f.deps, 'agent.connect', f.payload); assert(result.ok, result.message); assert.equal(parse(read(f.file)).model_provider, 'yunqiao'); } finally { fs.lstatSync = lstat; }
+    try { const result = await api.runAction(f.deps, 'agent.connect', f.payload); assert(result.ok, result.message); assert.equal(parse(read(f.file)).model_provider, 'yunhui'); } finally { fs.lstatSync = lstat; }
   });
   console.log(`History provider aliases: ${passed} isolated checks passed`);
 } finally {
   if (previousHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = previousHome;
-  assert.equal(path.dirname(scratch), fs.realpathSync(os.tmpdir())); assert(path.basename(scratch).startsWith('yunqiao-history-alias-')); fs.rmSync(scratch, { recursive: true, force: true });
+  assert.equal(path.dirname(scratch), fs.realpathSync(os.tmpdir())); assert(path.basename(scratch).startsWith('yunhui-history-alias-')); fs.rmSync(scratch, { recursive: true, force: true });
 }

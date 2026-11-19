@@ -12,7 +12,7 @@ import { build } from 'esbuild';
 // Force termination is exercised only against these private fixture applications.
 if (process.platform !== 'darwin') { console.log('SKIP native macOS lifecycle: macOS only'); process.exit(0); }
 const runFile = promisify(execFile);
-const temporary = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-macos-native-')));
+const temporary = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-macos-native-')));
 const priorHome = process.env.AURORA_CLIENT_HOME;
 process.env.AURORA_CLIENT_HOME = temporary;
 let checks = 0;
@@ -71,7 +71,7 @@ async function makeFixture(parent, bundleId) {
   const bundle = path.join(temporary, parent, 'Claude.app'), executable = path.join(bundle, 'Contents', 'MacOS', 'ClaudeLauncher');
   fs.mkdirSync(path.dirname(executable), { recursive: true });
   const source = path.join(temporary, 'Fixture.m'); fs.writeFileSync(source, fixtureSource);
-  fs.writeFileSync(path.join(bundle, 'Contents', 'Info.plist'), `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>CFBundleName</key><string>YunQiao Private Lifecycle Fixture</string><key>CFBundleExecutable</key><string>ClaudeLauncher</string><key>CFBundleIdentifier</key><string>${bundleId}</string><key>CFBundlePackageType</key><string>APPL</string><key>CFBundleVersion</key><string>1</string><key>LSUIElement</key><true/></dict></plist>`);
+  fs.writeFileSync(path.join(bundle, 'Contents', 'Info.plist'), `<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"><plist version="1.0"><dict><key>CFBundleName</key><string>YunHui Private Lifecycle Fixture</string><key>CFBundleExecutable</key><string>ClaudeLauncher</string><key>CFBundleIdentifier</key><string>${bundleId}</string><key>CFBundlePackageType</key><string>APPL</string><key>CFBundleVersion</key><string>1</string><key>LSUIElement</key><true/></dict></plist>`);
   await runFile('/usr/bin/xcrun', ['clang', '-fobjc-arc', '-Wno-incompatible-pointer-types', '-framework', 'Cocoa', source, '-o', executable], { timeout: 60000, maxBuffer: 1024 * 1024 });
   await runFile('/usr/bin/codesign', ['--force', '--sign', '-', bundle], { timeout: 30000, maxBuffer: 1024 * 1024 });
   const state = path.join(path.dirname(bundle), 'fixture-state'); fs.mkdirSync(state);
@@ -108,8 +108,8 @@ try {
   const output = path.join(temporary, 'lifecycle.cjs');
   await build({ entryPoints: ['src/main/clientLifecycle.ts'], outfile: output, bundle: true, platform: 'node', format: 'cjs', logLevel: 'silent' });
   const api = createRequire(import.meta.url)(output);
-  const target = await makeFixture('Applications', 'io.yunqiao.lifecycle.fixture.target');
-  const sentinel = await makeFixture("other path ' quoted", 'io.yunqiao.lifecycle.fixture.sentinel');
+  const target = await makeFixture('Applications', 'io.yunhui.lifecycle.fixture.target');
+  const sentinel = await makeFixture("other path ' quoted", 'io.yunhui.lifecycle.fixture.sentinel');
   const detected = { installed: true, configured: false, command: target.bundle };
   const runtime = { ...api.nativeClientLifecycleRuntime, detect: () => detected };
   const lifecycle = api.createClientLifecycle(runtime);
@@ -168,5 +168,5 @@ try {
   }
   await wait(300);
   if (priorHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = priorHome;
-  if (path.dirname(temporary) === fs.realpathSync(os.tmpdir()) && path.basename(temporary).startsWith('yunqiao-macos-native-')) fs.rmSync(temporary, { recursive: true, force: true });
+  if (path.dirname(temporary) === fs.realpathSync(os.tmpdir()) && path.basename(temporary).startsWith('yunhui-macos-native-')) fs.rmSync(temporary, { recursive: true, force: true });
 }

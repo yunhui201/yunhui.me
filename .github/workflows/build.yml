@@ -16,7 +16,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: yunqiao-build-${{ github.ref }}-${{ github.event_name }}-${{ inputs.target || 'desktop' }}
+  group: yunhui-build-${{ github.ref }}-${{ github.event_name }}-${{ inputs.target || 'desktop' }}
   cancel-in-progress: true
 
 jobs:
@@ -131,13 +131,13 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - run: node scripts/smoke.mjs
       - run: npx electron-builder --win --x64 --publish never
-      - run: python scripts/test-packaged.py --exe release/win-unpacked/YunQiaoAI.exe
-      - run: python scripts/test-coexist-ui.py --exe release/win-unpacked/YunQiaoAI.exe
+      - run: python scripts/test-packaged.py --exe release/win-unpacked/YunHuiAI.exe
+      - run: python scripts/test-coexist-ui.py --exe release/win-unpacked/YunHuiAI.exe
       - name: Verify portable startup, single instance and temporary cleanup
         shell: pwsh
         run: |
           $releaseVersion = (Get-Content -LiteralPath package.json -Raw | ConvertFrom-Json).version
-          python scripts/test-portable-startup.py --exe release/win-unpacked/YunQiaoAI.exe --launcher "release/YunQiaoAI-$releaseVersion-win-x64-portable.exe" --report-dir tmp/portable-startup-ci
+          python scripts/test-portable-startup.py --exe release/win-unpacked/YunHuiAI.exe --launcher "release/YunHuiAI-$releaseVersion-win-x64-portable.exe" --report-dir tmp/portable-startup-ci
       - name: Hash Windows installers and ZIP
         shell: pwsh
         run: |
@@ -147,7 +147,7 @@ jobs:
           $lines | Set-Content -LiteralPath release/SHA256SUMS-windows-x64.txt -Encoding ascii
       - uses: actions/upload-artifact@v4
         with:
-          name: yunqiao-windows
+          name: yunhui-windows
           path: |
             release/*.exe
             release/*.exe.blockmap
@@ -196,11 +196,11 @@ jobs:
             CODE_SIGNING_ALLOWED=NO build | tee build/xcodebuild.log
           ditto -c -k --sequesterRsrc --keepParent \
             build/Build/Products/Release-iphonesimulator/App.app \
-            build/YunQiaoAI-iOS-simulator.zip
+            build/YunHuiAI-iOS-simulator.zip
       - uses: actions/upload-artifact@v4
         with:
-          name: yunqiao-ios-simulator
-          path: mobile/build/YunQiaoAI-iOS-simulator.zip
+          name: yunhui-ios-simulator
+          path: mobile/build/YunHuiAI-iOS-simulator.zip
           if-no-files-found: error
       - name: 构建 iPhone App（未签名，不能直接安装）
         working-directory: mobile
@@ -217,16 +217,16 @@ jobs:
             'CODE_SIGN_IDENTITY=' build | tee build/xcodebuild-device.log
           ditto -c -k --sequesterRsrc --keepParent \
             build-device/Build/Products/Release-iphoneos/App.app \
-            build/YunQiaoAI-iOS-device-unsigned.zip
+            build/YunHuiAI-iOS-device-unsigned.zip
       - uses: actions/upload-artifact@v4
         with:
-          name: yunqiao-ios-device-unsigned
-          path: mobile/build/YunQiaoAI-iOS-device-unsigned.zip
+          name: yunhui-ios-device-unsigned
+          path: mobile/build/YunHuiAI-iOS-device-unsigned.zip
           if-no-files-found: error
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: yunqiao-ios-build-log
+          name: yunhui-ios-build-log
           path: mobile/build/xcodebuild*.log
           if-no-files-found: ignore
 

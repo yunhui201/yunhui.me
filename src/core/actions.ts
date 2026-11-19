@@ -612,7 +612,7 @@ export async function runAction(deps: ActionDeps, action: string, payload: any):
         if (plannedPaths.some(file => !allowedPaths.has(path.resolve(file)))) throw new Error('客户端预览包含未知配置位置');
         clientBefore = snapshotClientFiles(plannedPaths);
         catalogBefore = coexist ? snapshotClientFiles([catalogFile]) : [];
-      } catch { return { ok: false, message: '无法安全读取本次操作前的配置，未应用连接。请检查客户端配置与云桥数据目录权限。' }; }
+      } catch { return { ok: false, message: '无法安全读取本次操作前的配置，未应用连接。请检查客户端配置与云汇数据目录权限。' }; }
       const catalogExpected = coexist ? new Map([[catalogFile, { existed: true, hash: digest(JSON.stringify(coexist.nativeCatalog, null, 2)) }]]) : new Map<string, ClientFileExpected>();
       if (coexist) {
         try { store.writeExtra('codex-model-catalog.json', coexist.nativeCatalog); }

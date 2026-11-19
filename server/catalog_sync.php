@@ -54,12 +54,12 @@ final class CatalogSyncService
 
     private function get(string $path): array
     {
-        if (($this->config['origin'] ?? '') !== 'https://api.yunqiao.me' || strlen((string)($this->config['adminKey'] ?? '')) < 12) {
-            throw new MemberError('SYNC_NOT_CONFIGURED', '请先配置云桥服务端管理密钥', 503);
+        if (($this->config['origin'] ?? '') !== 'https://api.yunhui.me' || strlen((string)($this->config['adminKey'] ?? '')) < 12) {
+            throw new MemberError('SYNC_NOT_CONFIGURED', '请先配置云汇服务端管理密钥', 503);
         }
         if ($this->transport) $response = ($this->transport)($path);
         else {
-            $curl = curl_init('https://api.yunqiao.me/api/v1' . $path);
+            $curl = curl_init('https://api.yunhui.me/api/v1' . $path);
             $buffer = '';
             curl_setopt_array($curl, [CURLOPT_HTTPHEADER => ['Accept: application/json', 'x-api-key: ' . $this->config['adminKey']],
                 CURLOPT_CONNECTTIMEOUT => 5, CURLOPT_TIMEOUT => 12, CURLOPT_FOLLOWLOCATION => false,
@@ -182,9 +182,9 @@ final class CatalogSyncService
             $state = $bundle['status'] ?? [];
             $index = null;
             foreach (($catalog['providers'] ?? []) as $i => $provider) if (($provider['key'] ?? '') === $providerKey) $index = $i;
-            if ($index === null) throw new MemberError('PROVIDER_NOT_FOUND', '请先在供应商目录建立云桥供应商');
+            if ($index === null) throw new MemberError('PROVIDER_NOT_FOUND', '请先在供应商目录建立云汇供应商');
             $provider = $catalog['providers'][$index];
-            if (parse_url((string)($provider['baseUrl'] ?? ''), PHP_URL_HOST) !== 'api.yunqiao.me') throw new MemberError('WRONG_PROVIDER', '只能为云桥供应商添加候选模型');
+            if (parse_url((string)($provider['baseUrl'] ?? ''), PHP_URL_HOST) !== 'api.yunhui.me') throw new MemberError('WRONG_PROVIDER', '只能为云汇供应商添加候选模型');
             $platforms = ['openai-responses' => ['openai'], 'openai-chat' => ['openai', 'deepseek', 'grok'], 'anthropic' => ['anthropic'], 'gemini' => ['gemini']][$provider['format'] ?? ''] ?? [];
             $allowed = [];
             foreach (($discovery['models'] ?? []) as $model) if (in_array($model['platform'] ?? '', $platforms, true)) $allowed[$model['id']] = true;
@@ -207,7 +207,7 @@ final class CatalogSyncService
             catch (Throwable $error) {
                 // The public catalog is already committed (or the selected models already
                 // existed). Report that outcome accurately; a retry only repairs metadata.
-                error_log('yunqiao.me curated catalog committed; audit write failed: ' . get_class($error));
+                error_log('yunhui.me curated catalog committed; audit write failed: ' . get_class($error));
                 return ['ok' => true, 'added' => $added, 'version' => $catalog['version'] ?? 0, 'auditSaved' => false,
                     'warning' => '精选目录已生效，但同步审计未保存。请检查数据目录写入权限或磁盘空间，再选择相同模型重试补记；不会重复添加模型。'];
             }

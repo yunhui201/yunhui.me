@@ -8,7 +8,7 @@ import { promisify } from 'node:util';
 import { build } from 'esbuild';
 
 // All stores, desktop discovery and network responses are fixtures. No client is launched.
-const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-extension-cache-'));
+const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-extension-cache-'));
 const require = createRequire(import.meta.url), childProcess = require('node:child_process'), workerThreads = require('node:worker_threads');
 const original = { readFileSync: fs.readFileSync, execFile: childProcess.execFile, execFileSync: childProcess.execFileSync, Worker: workerThreads.Worker, fetch: globalThis.fetch };
 const environment = Object.fromEntries(['AURORA_CLIENT_HOME', 'AURORA_EXTENSION_ASSETS'].map(key => [key, process.env[key]]));
@@ -217,6 +217,6 @@ try {
   workerThreads.Worker = original.Worker; globalThis.fetch = original.fetch;
   for (const [key, value] of Object.entries(environment)) { if (value === undefined) delete process.env[key]; else process.env[key] = value; }
   const cleanup = path.resolve(scratch);
-  if (path.dirname(cleanup) !== path.resolve(os.tmpdir()) || !path.basename(cleanup).startsWith('yunqiao-extension-cache-')) throw new Error('Refusing cleanup outside the isolated test directory');
+  if (path.dirname(cleanup) !== path.resolve(os.tmpdir()) || !path.basename(cleanup).startsWith('yunhui-extension-cache-')) throw new Error('Refusing cleanup outside the isolated test directory');
   fs.rmSync(cleanup, { recursive: true, force: true });
 }

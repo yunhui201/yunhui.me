@@ -8,7 +8,7 @@ import vm from 'node:vm';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-market-sync-'));
+const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-market-sync-'));
 const previousHome = process.env.AURORA_CLIENT_HOME, originalFetch = globalThis.fetch;
 process.env.AURORA_CLIENT_HOME = path.join(scratch, 'client');
 globalThis.fetch = async () => { throw new Error('Unmocked external request rejected by market test'); };
@@ -263,5 +263,5 @@ try {
   for (const socket of sockets) socket.destroy();
   if (proxy) await new Promise(resolve => proxy.close(resolve));
   const resolved = path.resolve(scratch);
-  if (resolved.startsWith(path.resolve(os.tmpdir()) + path.sep) && path.basename(resolved).startsWith('yunqiao-market-sync-')) fs.rmSync(resolved, { recursive: true, force: true });
+  if (resolved.startsWith(path.resolve(os.tmpdir()) + path.sep) && path.basename(resolved).startsWith('yunhui-market-sync-')) fs.rmSync(resolved, { recursive: true, force: true });
 }

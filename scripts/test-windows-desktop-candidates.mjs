@@ -5,7 +5,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-win-candidates-')));
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-win-candidates-')));
 const write = file => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, 'private fixture'); };
 let checks = 0, sequence = 0;
 const check = (label, fn) => { fn(); checks++; console.log('PASS ' + label); };
@@ -72,5 +72,5 @@ try {
   });
   console.log(`Windows desktop candidate discovery: ${checks} checks passed (isolated metadata/filesystem fixtures; no client launched)`);
 } finally {
-  assert.equal(fs.realpathSync(path.dirname(scratch)), fs.realpathSync(os.tmpdir())); assert(path.basename(scratch).startsWith('yunqiao-win-candidates-')); fs.rmSync(scratch, { recursive: true, force: true });
+  assert.equal(fs.realpathSync(path.dirname(scratch)), fs.realpathSync(os.tmpdir())); assert(path.basename(scratch).startsWith('yunhui-win-candidates-')); fs.rmSync(scratch, { recursive: true, force: true });
 }

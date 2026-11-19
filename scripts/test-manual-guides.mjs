@@ -38,24 +38,24 @@ check('Kimi requires known context and uses current Chat provider type and expli
   }
   const g = make('kimi-code', { contextWindow: 128000 });
   const config = parse(g.document.content);
-  assert.equal(config.providers.yunqiao.type, 'openai_legacy');
-  assert.equal(config.providers.yunqiao.base_url, base.parameters.baseUrl);
-  assert.equal(config.models.yunqiao.max_context_size, 128000);
-  assert.equal(config.models.yunqiao.model, base.parameters.model);
-  assert.equal(config.providers.yunqiao.api_key, placeholder);
-  assert.equal(g.command.content, 'kimi --config-file "$env:USERPROFILE\\.kimi\\yunqiao.toml"');
-  assert.equal(make('kimi-code', { platform: 'darwin', contextWindow: 128000 }).command.content, 'kimi --config-file "$HOME/.kimi/yunqiao.toml"');
+  assert.equal(config.providers.yunhui.type, 'openai_legacy');
+  assert.equal(config.providers.yunhui.base_url, base.parameters.baseUrl);
+  assert.equal(config.models.yunhui.max_context_size, 128000);
+  assert.equal(config.models.yunhui.model, base.parameters.model);
+  assert.equal(config.providers.yunhui.api_key, placeholder);
+  assert.equal(g.command.content, 'kimi --config-file "$env:USERPROFILE\\.kimi\\yunhui.toml"');
+  assert.equal(make('kimi-code', { platform: 'darwin', contextWindow: 128000 }).command.content, 'kimi --config-file "$HOME/.kimi/yunhui.toml"');
   assert(make('kimi-code', { contextWindow: 32000 }).notices.some(note => note.includes('reserved_context_size')));
 });
 check('OpenCode V1 and V2 map a safe selector to the full upstream model ID', () => {
   const v1 = JSON.parse(make('opencode').document.content);
-  assert.equal(v1.model, 'yunqiao/current'); assert.equal(v1.provider.yunqiao.npm, '@ai-sdk/openai-compatible');
-  assert.equal(v1.provider.yunqiao.models.current.id, base.parameters.model);
-  assert.equal(v1.provider.yunqiao.options.apiKey, placeholder); assert.equal(v1.providers, undefined);
+  assert.equal(v1.model, 'yunhui/current'); assert.equal(v1.provider.yunhui.npm, '@ai-sdk/openai-compatible');
+  assert.equal(v1.provider.yunhui.models.current.id, base.parameters.model);
+  assert.equal(v1.provider.yunhui.options.apiKey, placeholder); assert.equal(v1.providers, undefined);
   const v2 = JSON.parse(make('opencode', { variant: 'opencode-v2' }).document.content);
-  assert.equal(v2.providers.yunqiao.package, '@opencode/ai/providers/openai-compatible');
-  assert.equal(v2.providers.yunqiao.models.current.modelID, base.parameters.model);
-  assert.equal(v2.providers.yunqiao.settings.baseURL, base.parameters.baseUrl); assert.equal(v2.provider, undefined);
+  assert.equal(v2.providers.yunhui.package, '@opencode/ai/providers/openai-compatible');
+  assert.equal(v2.providers.yunhui.models.current.modelID, base.parameters.model);
+  assert.equal(v2.providers.yunhui.settings.baseURL, base.parameters.baseUrl); assert.equal(v2.provider, undefined);
 });
 check('Qwen explicitly selects Chat Completions and its credential environment key', () => {
   const c = JSON.parse(make('qwen-code').document.content);
@@ -71,10 +71,10 @@ check('JSON and TOML values round-trip punctuation without executable shell inte
   for (const agentId of ['kimi-code', 'qwen-code', 'opencode']) {
     const g = make(agentId, extra, token);
     if (agentId === 'kimi-code') {
-      const c = parse(g.document.content); assert.equal(c.providers.yunqiao.api_key, token); assert.equal(c.models.yunqiao.model, model);
+      const c = parse(g.document.content); assert.equal(c.providers.yunhui.api_key, token); assert.equal(c.models.yunhui.model, model);
     } else {
       const c = JSON.parse(g.document.content);
-      assert.equal(agentId === 'qwen-code' ? c.env.YUNQIAO_API_KEY : c.provider.yunqiao.options.apiKey, token);
+      assert.equal(agentId === 'qwen-code' ? c.env.YUNHUI_API_KEY : c.provider.yunhui.options.apiKey, token);
     }
     assert(!g.command.content.includes(token)); assert(!g.command.content.includes(model));
     assert(!JSON.stringify(make(agentId, extra)).includes(token));

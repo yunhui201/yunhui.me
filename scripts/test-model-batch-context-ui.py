@@ -6,7 +6,7 @@ import tempfile
 from playwright.sync_api import sync_playwright, expect
 
 ROOT = Path(__file__).resolve().parents[1]
-with tempfile.TemporaryDirectory(prefix='yunqiao-model-context-batch-') as temporary:
+with tempfile.TemporaryDirectory(prefix='yunhui-model-context-batch-') as temporary:
     bundle = Path(temporary) / 'ui.js'
     source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import Models from './ui/src/pages/Models.tsx';import {ToastHost} from './ui/src/components/ui.tsx';

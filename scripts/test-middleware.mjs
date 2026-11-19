@@ -6,7 +6,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-middleware-')));
+const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-middleware-')));
 const workspace = path.resolve(import.meta.dirname, '..');
 let count = 0;
 const check = (name, fn) => { fn(); count++; console.log(`PASS ${name}`); };
@@ -150,7 +150,7 @@ try {
   });
   console.log(`\nMiddleware: ${count} checks passed.`);
 } finally {
-  assert(path.basename(root).startsWith('yunqiao-middleware-'));
+  assert(path.basename(root).startsWith('yunhui-middleware-'));
   assert.equal(fs.realpathSync(path.dirname(root)), fs.realpathSync(os.tmpdir()));
   fs.rmSync(root, { recursive: true, force: true });
 }

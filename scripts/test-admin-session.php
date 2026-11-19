@@ -26,7 +26,7 @@ if (($argv[1] ?? '') === '--session-worker') {
     exit;
 }
 
-$directory = sys_get_temp_dir() . '/yunqiao-admin-session-' . bin2hex(random_bytes(6));
+$directory = sys_get_temp_dir() . '/yunhui-admin-session-' . bin2hex(random_bytes(6));
 mkdir($directory . '/shared', 0700, true);
 $source = (string)file_get_contents(__DIR__ . '/../server/lib.php');
 $source = str_replace("const AURORA_DATA_DIR = '/www/aurora-data';", 'const AURORA_DATA_DIR = ' . var_export($directory, true) . ';', $source, $replaced);

@@ -10,7 +10,7 @@
 declare(strict_types=1);
 require __DIR__ . '/lib.php';
 set_exception_handler(function (Throwable $error): void {
-    error_log('yunqiao.me public service failure: ' . get_class($error));
+    error_log('yunhui.me public service failure: ' . get_class($error));
     header('Cache-Control: no-store');
     json_out(['error' => '服务暂不可用，请稍后重试'], 503);
 });

@@ -16,7 +16,7 @@ export default function DesktopSetupRecovery({ agent, detected, platform, busy, 
     <dl className="desktop-setup-facts">
       <dt>路径</dt><dd className="mono">{configPath}</dd>
     </dl>
-    <p className="desktop-setup-note">可预览、备份并写入这份配置，无需先定位客户端程序。直连时写入供应商 URL、Key 和模型 ID；网关模式写入本地入口，由云桥使用对应供应商的 URL 与 Key 转发请求。客户端加载配置后按所选方式发送请求。</p>
+    <p className="desktop-setup-note">可预览、备份并写入这份配置，无需先定位客户端程序。直连时写入供应商 URL、Key 和模型 ID；网关模式写入本地入口，由云汇使用对应供应商的 URL 与 Key 转发请求。客户端加载配置后按所选方式发送请求。</p>
     <details className="desktop-setup-program">
       <summary>程序识别（重启与桌面增强）</summary>
       <div className="desktop-setup-program-content">
@@ -34,7 +34,7 @@ export default function DesktopSetupRecovery({ agent, detected, platform, busy, 
           <Btn size="sm" disabled={busy || !native || !canPreview} onClick={onSelect}><Ico name="search" size={13} />{operation === 'select' ? '正在选择程序…' : '选择程序并预览'}</Btn>
           <ClientDiagnostics agent={agent} />
         </div>
-        {!native && <p className="desktop-setup-note">请在运行云桥的电脑桌面端选择程序路径。</p>}
+        {!native && <p className="desktop-setup-note">请在运行云汇的电脑桌面端选择程序路径。</p>}
       </div>
     </details>
   </section>;

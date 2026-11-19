@@ -1,7 +1,7 @@
 {
   "passed": true,
   "version": "0.6.0",
-  "executable": "release/plugin-sync-debug-0.6.0/win-unpacked/YunQiaoAI.exe",
+  "executable": "release/plugin-sync-debug-0.6.0/win-unpacked/YunHuiAI.exe",
   "exeSha256": "3403cf017be1ed9a589569b22ed2dd752606dcdc5ea605c7c9de74ff3c7605f5",
   "asarSha256": "913bc084efc3a617c04a6683d6c2cf88f4a9e220b7b34b94a96cae1b986c388e",
   "profile": "isolated temporary application, client and Chromium directories",

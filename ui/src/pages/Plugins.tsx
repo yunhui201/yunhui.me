@@ -62,7 +62,7 @@ function GatewayPlugins({ state, reload, go }: PageProps) {
 
   return <>
     <div className="page-head">
-      <div><div className="eyebrow">EXTENSIONS</div><h1>插件中心</h1><p>为经过云桥网关的请求添加能力，按需要开启。</p></div>
+      <div><div className="eyebrow">EXTENSIONS</div><h1>插件中心</h1><p>为经过云汇网关的请求添加能力，按需要开启。</p></div>
       <div className="actions">
         <Btn onClick={() => go('codex')}><Ico name="cube" size={14} /> MCP / Skills / 提示词</Btn>
         <Btn variant="primary" disabled={remote || !!busy} onClick={async () => {
@@ -73,7 +73,7 @@ function GatewayPlugins({ state, reload, go }: PageProps) {
         }}><Ico name="plus" size={14} /> 新建插件</Btn>
       </div>
     </div>
-    {remote && <div className="notice"><Ico name="shield" /><span>远程模式可查看插件状态。安装、启停与脚本编辑请在电脑上的云桥客户端完成。</span></div>}
+    {remote && <div className="notice"><Ico name="shield" /><span>远程模式可查看插件状态。安装、启停与脚本编辑请在电脑上的云汇客户端完成。</span></div>}
     <div className="notice"><Ico name="puzzle" /><span>这里管理网关中间件。客户端自己的 MCP、Skills 与全局提示词在「桌面工作台」中管理。</span></div>
     <div className="row" style={{ marginBottom: 18, gap: 12 }}>
       <div className="grow"><input className="input" style={{ maxWidth: 360 }} value={search} onChange={e => setSearch(e.target.value)} placeholder="搜索插件名称或功能" aria-label="搜索插件" /></div>
@@ -113,6 +113,6 @@ function GatewayPlugins({ state, reload, go }: PageProps) {
       <Field label="参数（JSON 对象）"><textarea className="textarea mono" aria-label="中间件参数" disabled={!!busy} style={{ minHeight: editing.builtin ? 210 : 100 }} value={optionsText} onChange={e => setOptionsText(e.target.value)} spellCheck={false} /></Field>
       {error && <div className="notice warning" role="alert">{error}</div>}
     </Modal>}
-    {deleting && <Modal title={`删除「${deleting.name}」？`} sub="该插件的代码与参数会从云桥移除，其他插件不受影响。" onClose={() => !busy && setDeleting(null)} foot={<><Btn disabled={!!busy} onClick={() => setDeleting(null)}>取消</Btn><Btn variant="danger" disabled={!!busy} onClick={async () => { if (await mutate('delete', 'plugin.delete', { id: deleting.id }, '插件已删除')) setDeleting(null); }}>删除插件</Btn></>}><p style={{ color: 'var(--muted)' }}>需要保留时，可以先停用或复制代码。</p>{error && <div className="notice warning" role="alert">{error}</div>}</Modal>}
+    {deleting && <Modal title={`删除「${deleting.name}」？`} sub="该插件的代码与参数会从云汇移除，其他插件不受影响。" onClose={() => !busy && setDeleting(null)} foot={<><Btn disabled={!!busy} onClick={() => setDeleting(null)}>取消</Btn><Btn variant="danger" disabled={!!busy} onClick={async () => { if (await mutate('delete', 'plugin.delete', { id: deleting.id }, '插件已删除')) setDeleting(null); }}>删除插件</Btn></>}><p style={{ color: 'var(--muted)' }}>需要保留时，可以先停用或复制代码。</p>{error && <div className="notice warning" role="alert">{error}</div>}</Modal>}
   </>;
 }

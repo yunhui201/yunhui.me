@@ -24,7 +24,7 @@ test('mobile RPC sends authentication only in the header and preserves the reque
 test('authentication, HTTP, malformed JSON and failed actions cannot appear successful', () => {
   assert.throws(() => decodeRpc(401, '<html>Unauthorized</html>'), /令牌/);
   assert.throws(() => decodeRpc(503, {}), /503/);
-  assert.throws(() => decodeRpc(200, '<html>not a gateway</html>'), /不是云桥/);
+  assert.throws(() => decodeRpc(200, '<html>not a gateway</html>'), /不是云汇/);
   assert.throws(() => decodeRpc(200, { error: '配置冲突' }), /配置冲突/);
   assert.throws(() => decodeRpc(200, { result: { ok: false, message: '文件变化' } }), /文件变化/);
   assert.throws(() => decodeRpc(200, { ok: true }), /缺少结果/);

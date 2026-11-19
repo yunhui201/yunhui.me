@@ -58,7 +58,7 @@ def main():
     if args.screenshots:
         args.screenshots.mkdir(parents=True, exist_ok=True)
     checks, errors, network = [], [], []
-    with tempfile.TemporaryDirectory(prefix='yunqiao-desktop-setup-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-desktop-setup-ui-') as temporary:
         bundle = Path(temporary) / 'ui.js'
         source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import Agents from './ui/src/pages/Agents.tsx';import {ToastHost} from './ui/src/components/ui.tsx';
@@ -138,7 +138,7 @@ window.renderAgents();"""
             expect(panel.get_by_text('尚未定位程序', exact=True)).not_to_be_visible()
             expect(panel.get_by_text('无需先定位客户端程序', exact=False)).to_be_visible()
             expect(panel.get_by_text('直连时写入供应商 URL、Key 和模型 ID', exact=False)).to_be_visible()
-            expect(panel.get_by_text('由云桥使用对应供应商的 URL 与 Key 转发请求', exact=False)).to_be_visible()
+            expect(panel.get_by_text('由云汇使用对应供应商的 URL 与 Key 转发请求', exact=False)).to_be_visible()
             expect(dialog.get_by_role('combobox', name='接入方式', exact=True)).to_have_value('gateway')
             dialog.get_by_role('button', name='预览配置 →', exact=True).click()
             expect(dialog.get_by_role('button', name='保存配置', exact=True)).to_be_visible()
@@ -154,7 +154,7 @@ window.renderAgents();"""
             expect(dialog.get_by_text('测试通过，供应商 API 可用', exact=False)).to_have_count(0)
             expect(dialog.get_by_text('客户端直接请求供应商', exact=True)).to_be_visible()
             expect(dialog.get_by_text('首个已启用的 Key', exact=False)).to_be_visible()
-            expect(dialog.get_by_text('配置加载后无需保持云桥运行', exact=False)).to_be_visible()
+            expect(dialog.get_by_text('配置加载后无需保持云汇运行', exact=False)).to_be_visible()
             dialog.get_by_role('button', name='预览配置 →', exact=True).click()
             expect(dialog.locator('.review-summary .chip')).to_have_text('直连供应商')
             direct_selection = last_payload('agent.preview')
@@ -248,7 +248,7 @@ window.renderAgents();"""
                 ("window.state.providers[0].format='openai-chat'", '供应商与客户端协议不同'),
                 ("window.state.providers[0].headers={'x-vendor-feature':'enabled'}", '此供应商有自定义请求头'),
                 ("window.state.providers[0].proxy='http://proxy.invalid:8080'", '此供应商使用独立代理'),
-                ("window.state.settings.proxy='http://proxy.invalid:8080'", '云桥已设置网络代理'),
+                ("window.state.settings.proxy='http://proxy.invalid:8080'", '云汇已设置网络代理'),
                 ("window.state.agentCatalog[0].support='manual'", '此客户端当前提供手动接入参数'),
                 ("Object.assign(window.state.agentCatalog[0],{id:'claude-code',name:'Claude Code',protocol:'anthropic',category:'cli'});Object.assign(window.state.providers[0],{format:'anthropic',baseUrl:'https://fixture.invalid/proxy/v2'})", '此 API 版本无法由 Claude 客户端直连配置'),
             ]:

@@ -24,7 +24,7 @@ test('desktop model catalogs recognize new and legacy managed providers and repo
   isolated.saveAgent({id:'chatgpt-desktop',connected:true,providerId:provider.id,model:'first-model',mode:'gateway',authMode:'api'});
   try{
     const fingerprints=[];
-    for(const managed of ['yunqiao','aurora']){
+    for(const managed of ['yunhui','aurora']){
       const root=`model_provider = "${managed}"\nmodel = "first-model"\n[model_providers.${managed}]\nbase_url = "http://127.0.0.1:3425/v1"\nrequires_openai_auth = false\n`;
       fs.writeFileSync(file,root);
       let catalog=m.desktopModelCatalog(isolated);
@@ -36,7 +36,7 @@ test('desktop model catalogs recognize new and legacy managed providers and repo
       fs.writeFileSync(file,selected);catalog=m.desktopModelCatalog(isolated);assert.equal(catalog.codex_model_provider,managed);assert.equal(catalog.default_model,'profile-model');assert.equal(fs.readFileSync(file,'utf8'),selected);
     }
     assert.notEqual(...fingerprints);
-    for(const unrelated of ['model_provider = "other"\n','profile = "missing"\nmodel_provider = "yunqiao"\n','model_provider = "yunqiao"\nsecret = "fixture-invalid-secret\n']){
+    for(const unrelated of ['model_provider = "other"\n','profile = "missing"\nmodel_provider = "yunhui"\n','model_provider = "yunhui"\nsecret = "fixture-invalid-secret\n']){
       fs.writeFileSync(file,unrelated);const catalog=m.desktopModelCatalog(isolated);assert.equal(catalog.status,'not_configured');assert(!JSON.stringify(catalog).includes('fixture-invalid-secret'));assert.equal(fs.readFileSync(file,'utf8'),unrelated);
     }
   }finally{if(before)fs.writeFileSync(file,before);else fs.unlinkSync(file);}
@@ -116,9 +116,9 @@ test('desktop extensions resolve inherited and quoted profile providers with saf
   const file=path.join(process.env.AURORA_CLIENT_HOME,'.codex','config.toml'),before=fs.readFileSync(file,'utf8');
   try{
     for(const config of [
-      'profile = "工作.默认"\nmodel_provider = "云桥.国内"\n[profiles."工作.默认"]\nmodel = "fixture"\n[model_providers."云桥.国内"]\nbase_url = "https://example.test/v1"\nrequires_openai_auth = false\n',
-      'profile = "工作.默认"\nmodel_provider = "openai"\n[profiles."工作.默认"]\nmodel_provider = "云桥.国内"\n[profiles."工作.默认".model_providers."云桥.国内"]\nbase_url = "https://example.test/v1"\nrequires_openai_auth = false\n',
-      'profile = "工作.默认"\nmodel_provider = "云桥.国内"\n[model_providers."云桥.国内"]\nbase_url = "https://example.test/v1"\nrequires_openai_auth = true\n[profiles."工作.默认"]\nmodel = "fixture"\n[profiles."工作.默认".model_providers."云桥.国内"]\nname = "国内供应商"\nrequires_openai_auth = false\n',
+      'profile = "工作.默认"\nmodel_provider = "云汇.国内"\n[profiles."工作.默认"]\nmodel = "fixture"\n[model_providers."云汇.国内"]\nbase_url = "https://example.test/v1"\nrequires_openai_auth = false\n',
+      'profile = "工作.默认"\nmodel_provider = "openai"\n[profiles."工作.默认"]\nmodel_provider = "云汇.国内"\n[profiles."工作.默认".model_providers."云汇.国内"]\nbase_url = "https://example.test/v1"\nrequires_openai_auth = false\n',
+      'profile = "工作.默认"\nmodel_provider = "云汇.国内"\n[model_providers."云汇.国内"]\nbase_url = "https://example.test/v1"\nrequires_openai_auth = true\n[profiles."工作.默认"]\nmodel = "fixture"\n[profiles."工作.默认".model_providers."云汇.国内"]\nname = "国内供应商"\nrequires_openai_auth = false\n',
     ]){
       fs.writeFileSync(file,config);const settings=m.backendSettings(store,m.loadState(store));assert.equal(settings.nativeFastLocalApiConfigured,true);assert.equal(settings.nativePredictionsLocalApiConfigured,true);m.setWorkViewDisabled(store,true);assert.ok(fs.readFileSync(file,'utf8').includes('STEPS_COMMANDS'));m.setWorkViewDisabled(store,false);assert.ok(!fs.readFileSync(file,'utf8').includes('STEPS_COMMANDS'));assert.ok(fs.readFileSync(file,'utf8').includes('[profiles."工作.默认"]'));
     }

@@ -40,7 +40,7 @@ final class MemberService
         };
         return [
             'enabled' => in_array($setting('AURORA_MEMBERS_ENABLED', 'enabled', false), [true, '1'], true),
-            'origin' => rtrim((string)$setting('AURORA_SUB2API_URL', 'origin', 'https://api.yunqiao.me'), '/'),
+            'origin' => rtrim((string)$setting('AURORA_SUB2API_URL', 'origin', 'https://api.yunhui.me'), '/'),
             'adminKey' => (string)$setting('AURORA_SUB2API_ADMIN_KEY', 'adminKey', ''),
             'secret' => (string)$setting('AURORA_MEMBER_SECRET', 'secret', ''),
             'dataDir' => (string)$setting('AURORA_MEMBER_DATA_DIR', 'dataDir', '/www/aurora-data/members'),
@@ -59,7 +59,7 @@ final class MemberService
         $policy = $this->configured() ? $this->adminGiftPolicy() : $this->defaultGiftPolicy();
         return ['ok' => true, 'enabled' => $this->configured(), 'giftEnabled' => $this->configured() && $policy['enabled'],
             'giftUsd' => $policy['amountUsd'], 'giftMessage' => $policy['message'], 'giftPolicyRevision' => $policy['revision'],
-            'currency' => 'USD', 'accountUrl' => $this->validOrigin() ? $this->config['origin'] : 'https://api.yunqiao.me',
+            'currency' => 'USD', 'accountUrl' => $this->validOrigin() ? $this->config['origin'] : 'https://api.yunhui.me',
             'campaign' => self::CAMPAIGN];
     }
 
@@ -816,22 +816,22 @@ final class MemberService
         if (!$selected) throw new MemberError('GROUP_REQUIRED', '请选择当前会员可使用的模型分组');
         if (!$selected['supported']) throw new MemberError('PLATFORM_UNSUPPORTED', '该分组协议暂未支持一键接入，请到平台网站查看配置说明');
         // A stable custom key also prevents duplication after the upstream idempotency TTL expires.
-        $key = 'sk-yunqiao-' . hash_hmac('sha256', 'client-key-v1:' . $session['user_id'] . ':' . $session['installation_hash'] . ':' . $groupId, $this->config['secret']);
+        $key = 'sk-yunhui-' . hash_hmac('sha256', 'client-key-v1:' . $session['user_id'] . ':' . $session['installation_hash'] . ':' . $groupId, $this->config['secret']);
         $headers = ['Authorization: Bearer ' . $accessToken];
-        $keys = $this->request('GET', '/keys?search=' . rawurlencode('yunqiao.me 客户端') . '&page_size=100', $headers);
+        $keys = $this->request('GET', '/keys?search=' . rawurlencode('yunhui.me 客户端') . '&page_size=100', $headers);
         if (!is_array($keys['items'] ?? null)) throw new MemberError('UPSTREAM_UNAVAILABLE', '无法核对客户端密钥', 503);
         $entry = null;
         foreach ($keys['items'] as $candidate) if (is_array($candidate) && ($candidate['key'] ?? '') === $key) { $entry = $candidate; break; }
         if (!$entry) {
             if (($keys['total'] ?? count($keys['items'])) > 100) throw new MemberError('KEY_REVIEW_REQUIRED', '客户端密钥过多，请到会员站点管理后重试', 409);
             $entry = $this->request('POST', '/keys', array_merge($headers, ['Idempotency-Key: YQ-CLIENT-' . hash('sha256', $key)]),
-                ['name' => 'yunqiao.me 客户端', 'group_id' => $groupId, 'custom_key' => $key]);
+                ['name' => 'yunhui.me 客户端', 'group_id' => $groupId, 'custom_key' => $key]);
         }
         if (($entry['key'] ?? '') !== $key || ($entry['user_id'] ?? null) !== $profile['id'] || ($entry['group_id'] ?? null) !== $groupId || ($entry['status'] ?? '') !== 'active') {
             throw new MemberError('KEY_REVIEW_REQUIRED', '客户端密钥状态不符，请到会员站点核对', 409);
         }
         $format = ['openai' => 'openai-responses', 'anthropic' => 'anthropic', 'gemini' => 'gemini', 'deepseek' => 'openai-chat', 'grok' => 'openai-chat'][$selected['platform']];
-        return ['ok' => true, 'apiKey' => $key, 'id' => $entry['id'], 'memberId' => $profile['id'], 'name' => '云桥会员', 'group' => $selected,
+        return ['ok' => true, 'apiKey' => $key, 'id' => $entry['id'], 'memberId' => $profile['id'], 'name' => '云汇会员', 'group' => $selected,
             'baseUrl' => $this->config['origin'] . ($format === 'gemini' ? '' : '/v1'), 'format' => $format];
     }
 

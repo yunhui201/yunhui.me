@@ -121,17 +121,17 @@ export const DEFAULT_SETTINGS = (): Settings => ({
   webdavPass: '',
   firstByteTimeoutMs: 120000,
   logRequests: true,
-  catalogUrl: 'https://ai.haowucm.cn/pub.php?action=catalog',
+  catalogUrl: 'https://yunhui.me/pub.php?action=catalog',
   updateUrl: GITHUB_RELEASE_API,
   autoCheckUpdate: true,
-  adminUrl: 'https://ai.haowucm.cn/',
+  adminUrl: 'https://yunhui.me/',
   autoSyncModels: true,
   connectionUpdatedAt: nowIso(),
   updatedAt: nowIso(),
 });
 
 export function defaultDataDir(): string {
-  const env = process.env.YUNQIAO_HOME || process.env.AURORA_HOME;
+  const env = process.env.YUNHUI_HOME || process.env.AURORA_HOME;
   if (env) return path.resolve(env);
   const home = os.homedir();
   const base =
@@ -141,7 +141,7 @@ export function defaultDataDir(): string {
         ? path.join(home, 'Library', 'Application Support')
         : process.env.XDG_CONFIG_HOME ?? path.join(home, '.config');
 
-  const current = path.join(base, process.platform === 'linux' ? 'yunqiao' : 'YunQiaoAI');
+  const current = path.join(base, process.platform === 'linux' ? 'yunhui' : 'YunHuiAI');
   const legacy = path.join(base, process.platform === 'linux' ? 'aurora' : 'Aurora');
 
   // 老版本（极光 Aurora）的数据目录平滑迁移，避免升级后"什么都没有了"
@@ -481,7 +481,7 @@ export class AuroraStore {
   }
 
   importAll(data: any): void {
-    if (!data || data.version !== 1 || !Array.isArray(data.providers) || !Array.isArray(data.groups) || !Array.isArray(data.plugins) || !data.settings || typeof data.settings !== 'object') throw new Error('这不是受支持的云桥配置备份');
+    if (!data || data.version !== 1 || !Array.isArray(data.providers) || !Array.isArray(data.groups) || !Array.isArray(data.plugins) || !data.settings || typeof data.settings !== 'object') throw new Error('这不是受支持的云汇配置备份');
     const providers = data.providers.map((p: Provider) => validateProvider(p));
     const validId = (id: unknown) => typeof id === 'string' && /^[a-zA-Z0-9_-]{1,150}$/.test(id) && !['__proto__', 'prototype', 'constructor'].includes(id);
     if (providers.some((p: Provider) => !validId(p.id)) || new Set(providers.map((p: Provider) => p.id)).size !== providers.length) throw new Error('备份中的供应商 ID 无效或重复');

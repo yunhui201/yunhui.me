@@ -16,7 +16,7 @@ const STATUS: Record<string, string> = { available: '可安装', installed: '已
 const packageLimitations = (id: string) => id === 'bundled:agent-pet' ? '支持随附图片、动图与音效。自定义音效导入、大肥鱼余额及专项统计尚未接入。' : '';
 const PACKAGE_DESCRIPTIONS: Record<string, string> = {
   'bundled:agent-pet': '在桌面客户端显示图片或动图桌宠，支持按压互动与内置音效。',
-  'bundled:proxy-request-status': '请求经过云桥网关时，在桌面客户端输入框上方显示发送、等待、重试和生成进度。停用后不再显示或查询请求状态。',
+  'bundled:proxy-request-status': '请求经过云汇网关时，在桌面客户端输入框上方显示发送、等待、重试和生成进度。停用后不再显示或查询请求状态。',
 };
 const packageDescription = (item: ExtensionItem) => PACKAGE_DESCRIPTIONS[item.id] || item.description;
 const unsupportedPetField = (key: string) => /^codexAppWhaleBalance/.test(key) || ['customSoundPress', 'customSoundRelease'].includes(key);
@@ -184,7 +184,7 @@ export default function DesktopExtensions() {
       {error && !editing && !settingsOpen && !detail && <div className="notice warning" role="alert">{error}<div className="grow" /><Btn size="sm" disabled={blocked} onClick={load}>重新检测</Btn></div>}
       {listError && <div className="notice warning" role="alert">插件列表刷新失败：{listError}<div className="grow" /><Btn size="sm" disabled={blocked || loading} onClick={() => load(false)}>刷新列表</Btn></div>}
       {errors.length > 0 && <details className="notice warning" style={{ display: 'block' }}><summary>有 {errors.length} 个扩展未能生效，查看原因</summary>{errors.map((e, i) => <p key={i}>{typeof e === 'string' ? e : `${e.id || e.name || ''}：${e.message || e.error || '运行失败'}`}</p>)}</details>}
-      <div className="extension-banner"><div><div className="eyebrow">云桥桌面扩展</div><h3>为你的桌面工作空间添加更多能力</h3><p>管理内置增强、拓展包与市场插件，查看兼容状态和实际运行结果。</p></div><div className="extension-totals"><div><strong>{counts.builtin || 0}</strong><small>内置增强</small></div><div><strong>{counts.bundled || 0}</strong><small>拓展包</small></div><div><strong>{counts.installed || 0}</strong><small>已安装</small></div></div></div>
+      <div className="extension-banner"><div><div className="eyebrow">云汇桌面扩展</div><h3>为你的桌面工作空间添加更多能力</h3><p>管理内置增强、拓展包与市场插件，查看兼容状态和实际运行结果。</p></div><div className="extension-totals"><div><strong>{counts.builtin || 0}</strong><small>内置增强</small></div><div><strong>{counts.bundled || 0}</strong><small>拓展包</small></div><div><strong>{counts.installed || 0}</strong><small>已安装</small></div></div></div>
       <div className="filter-bar"><div className="segments">{Object.entries(SOURCES).map(([id, label]) => <button key={id} className={source === id ? 'selected' : ''} onClick={() => setSource(id)}>{label}{id !== 'all' && counts[id] ? ` ${counts[id]}` : ''}</button>)}</div></div>
       <div className="repair-toolbar"><div className="search-input"><Ico name="search" size={14} /><input aria-label="搜索桌面插件" value={query} onChange={e => setQuery(e.target.value)} placeholder="搜索插件名称、功能或标签…" style={{ width: 240 }} /></div><span className="muted">{list.length} 项</span><div className="grow" /><Btn size="sm" disabled={blocked} onClick={() => refreshMarkets(source === 'full' || source === 'public' ? source : undefined)}><Ico name="cloud" size={13} />{busy === 'extension.refresh' ? '同步中…' : '同步市场索引'}</Btn><Btn size="sm" disabled={blocked || loading} onClick={load}><Ico name="refresh" size={13} />刷新状态</Btn></div>
       {sync && <div className={`notice ${!sync.pending && !sync.complete ? 'warning' : ''}`} role={!sync.pending && !sync.complete ? 'alert' : 'status'} aria-label="市场同步状态" style={{ alignItems: 'flex-start' }}>

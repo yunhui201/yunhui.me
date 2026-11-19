@@ -7,7 +7,7 @@ import http from 'node:http';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-model-context-')));
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-model-context-')));
 const previousHome = process.env.AURORA_CLIENT_HOME;
 const write = (file, value) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, typeof value === 'string' ? value : JSON.stringify(value)); };
 let checks = 0, sequence = 0, responseModels = [], pendingResponse, received;
@@ -112,5 +112,5 @@ try {
 } finally {
   if (previousHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = previousHome;
   server.closeAllConnections(); await new Promise(resolve => server.close(resolve));
-  assert.equal(fs.realpathSync(path.dirname(scratch)), fs.realpathSync(os.tmpdir())); assert(path.basename(scratch).startsWith('yunqiao-model-context-')); fs.rmSync(scratch, { recursive: true, force: true });
+  assert.equal(fs.realpathSync(path.dirname(scratch)), fs.realpathSync(os.tmpdir())); assert(path.basename(scratch).startsWith('yunhui-model-context-')); fs.rmSync(scratch, { recursive: true, force: true });
 }

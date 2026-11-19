@@ -109,7 +109,7 @@ def own_process_cleanup(process):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--exe', type=Path, required=True, help='Fresh unpacked YunQiaoAI.exe supplied by the build owner')
+    parser.add_argument('--exe', type=Path, required=True, help='Fresh unpacked YunHuiAI.exe supplied by the build owner')
     parser.add_argument('--version', default='0.6.0')
     parser.add_argument('--live', action='store_true', help='After isolated failures, clear only the test proxy and verify real read-only GitHub synchronization')
     args = parser.parse_args()
@@ -123,11 +123,11 @@ def main():
     assert built_main.is_file(), 'Build the source before packaged acceptance'
     packaged_main = HELPERS.read_asar(asar, 'dist/main/main.cjs')
     assert packaged_main == built_main.read_bytes(), 'The package does not contain the current main build'
-    assert b'YUNQIAO_TEST_ISOLATED' in packaged_main, 'Refusing to launch a package without the isolated-test login-item guard'
+    assert b'YUNHUI_TEST_ISOLATED' in packaged_main, 'Refusing to launch a package without the isolated-test login-item guard'
     assert HELPERS.read_asar(asar, 'dist/ui/index.html') == (ROOT / 'dist/ui/index.html').read_bytes(), 'The package does not contain the current UI build'
     resource_manifest = HELPERS.verify_packaged_resources(resources / 'codexplusplus')
 
-    profile = Path(tempfile.mkdtemp(prefix='yunqiao-packaged-market-'))
+    profile = Path(tempfile.mkdtemp(prefix='yunhui-packaged-market-'))
     data, clients, chromium = profile / 'data', profile / 'clients', profile / 'chromium'
     for folder in [data, clients / '.claude', clients / '.codex', chromium, profile / 'appdata', profile / 'localappdata']:
         folder.mkdir(parents=True, exist_ok=True)
@@ -162,7 +162,7 @@ def main():
             'programfiles(x86)', 'programdata', 'commonprogramfiles', 'commonprogramfiles(x86)',
             'processor_architecture', 'number_of_processors', 'os'}
     environment = {key: value for key, value in os.environ.items() if key.lower() in keep}
-    environment.update(AURORA_HOME=str(data), YUNQIAO_HOME=str(data), AURORA_CLIENT_HOME=str(clients), YUNQIAO_TEST_ISOLATED='1',
+    environment.update(AURORA_HOME=str(data), YUNHUI_HOME=str(data), AURORA_CLIENT_HOME=str(clients), YUNHUI_TEST_ISOLATED='1',
                        USERPROFILE=str(clients), HOME=str(clients), CODEX_HOME=str(clients / '.codex'),
                        APPDATA=str(profile / 'appdata'), LOCALAPPDATA=str(profile / 'localappdata'),
                        HTTP_PROXY=proxy_url, HTTPS_PROXY=proxy_url, ALL_PROXY=proxy_url,

@@ -2,7 +2,7 @@
 
 核验日期：2026-11-15。只以厂商当前官方 API 文档或其自己的公开模型接口作为默认 API ID 的证据；厂商展示名、另一家中转站的模型别名不能互相替代。
 
-**本次结果：44 个供应商预设全部检查；20 家有公开证实的默认模型，共 51 条供应商模型项；云桥另有 8 条通过授权管理接口样本与原厂文档交叉核对的默认项；其余 23 家保留供应商配置入口，由账号或本地服务读取实际列表。** 云桥清单来源于用户授权的只读账号样本，不是对所有分组权限的保证。
+**本次结果：44 个供应商预设全部检查；20 家有公开证实的默认模型，共 51 条供应商模型项；云汇另有 8 条通过授权管理接口样本与原厂文档交叉核对的默认项；其余 23 家保留供应商配置入口，由账号或本地服务读取实际列表。** 云汇清单来源于用户授权的只读账号样本，不是对所有分组权限的保证。
 
 公开目录证明模型 ID 已列出，不证明每个用户的账号有权限，也不代表已用用户密钥完成推理请求。预设更新仅影响新建供应商/云端可选目录，不覆盖用户已有配置、删除记录或自定义模型。
 
@@ -272,20 +272,20 @@
 > Z.ai \| GLM-5.3 \| zai-org/GLM-5.3 \| 1048575 \| $1.40 \| $0.26 \| $4.40 \| FP4 \| Yes \| Yes
 
 
-### 云桥AI 官方中转（yunqiao）
+### 云汇AI 官方中转（yunhui）
 
 用户授权管理接口只读查询前 100 个账号，去重得到 50 个模型 ID；仅选择与原厂当前 API 文档交叉验证的 8 个通用会话模型。图像模型、auto-review 和旧别名未作为默认会话模型。每个会员分组的实际可用模型，仍以其自己的 API Key 调用 `/v1/models` 结果为准。
 
-- `gpt-6.1-sol` — [云桥服务](https://api.yunqiao.me)；[原厂 API ID 证明](https://developers.openai.com/api/docs/models)。样本原文 `"gpt-6.1-sol"`。
-- `gpt-6-astra` — [云桥服务](https://api.yunqiao.me)；[原厂 API ID 证明](https://developers.openai.com/api/docs/models)。样本原文 `"gpt-6-astra"`。
-- `gpt-6-luna` — [云桥服务](https://api.yunqiao.me)；[原厂 API ID 证明](https://developers.openai.com/api/docs/models)。样本原文 `"gpt-6-luna"`。
-- `claude-sonnet-5-5` — [云桥服务](https://api.yunqiao.me)；[原厂 API ID 证明](https://platform.claude.com/docs/en/models/overview.md)。样本原文 `"claude-sonnet-5-5"`。
-- `claude-opus-5-5` — [云桥服务](https://api.yunqiao.me)；[原厂 API ID 证明](https://platform.claude.com/docs/en/models/overview.md)。样本原文 `"claude-opus-5-5"`。
-- `claude-haiku-5-5` — [云桥服务](https://api.yunqiao.me)；[原厂 API ID 证明](https://platform.claude.com/docs/en/models/overview.md)。样本原文 `"claude-haiku-5-5"`。
-- `claude-fable-5-2` — [云桥服务](https://api.yunqiao.me)；[原厂 API ID 证明](https://platform.claude.com/docs/en/models/overview.md)。样本原文 `"claude-fable-5-2"`。
-- `deepseek-flash` — [云桥服务](https://api.yunqiao.me)；[原厂 API ID 证明](https://api-docs.deepseek.com/quick_start/pricing/)。样本原文 `"deepseek-flash"`。
+- `gpt-6.1-sol` — [云汇服务](https://api.yunhui.me)；[原厂 API ID 证明](https://developers.openai.com/api/docs/models)。样本原文 `"gpt-6.1-sol"`。
+- `gpt-6-astra` — [云汇服务](https://api.yunhui.me)；[原厂 API ID 证明](https://developers.openai.com/api/docs/models)。样本原文 `"gpt-6-astra"`。
+- `gpt-6-luna` — [云汇服务](https://api.yunhui.me)；[原厂 API ID 证明](https://developers.openai.com/api/docs/models)。样本原文 `"gpt-6-luna"`。
+- `claude-sonnet-5-5` — [云汇服务](https://api.yunhui.me)；[原厂 API ID 证明](https://platform.claude.com/docs/en/models/overview.md)。样本原文 `"claude-sonnet-5-5"`。
+- `claude-opus-5-5` — [云汇服务](https://api.yunhui.me)；[原厂 API ID 证明](https://platform.claude.com/docs/en/models/overview.md)。样本原文 `"claude-opus-5-5"`。
+- `claude-haiku-5-5` — [云汇服务](https://api.yunhui.me)；[原厂 API ID 证明](https://platform.claude.com/docs/en/models/overview.md)。样本原文 `"claude-haiku-5-5"`。
+- `claude-fable-5-2` — [云汇服务](https://api.yunhui.me)；[原厂 API ID 证明](https://platform.claude.com/docs/en/models/overview.md)。样本原文 `"claude-fable-5-2"`。
+- `deepseek-flash` — [云汇服务](https://api.yunhui.me)；[原厂 API ID 证明](https://api-docs.deepseek.com/quick_start/pricing/)。样本原文 `"deepseek-flash"`。
 
-云桥路由价格与上下文配额未由该样本证实，因此没有复制原厂目录价冒充云桥实收价。账号、API Key、管理密钥均未写入证据文档或仓库。
+云汇路由价格与上下文配额未由该样本证实，因此没有复制原厂目录价冒充云汇实收价。账号、API Key、管理密钥均未写入证据文档或仓库。
 
 ## 重要字段与协议核验
 

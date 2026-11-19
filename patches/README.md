@@ -9,7 +9,7 @@ Source: <https://github.com/electron-userland/electron-builder>, package `app-bu
 Verify a built portable launcher with:
 
 ```powershell
-python scripts/test-portable-startup.py --exe release/win-unpacked/YunQiaoAI.exe --launcher release/YunQiaoAI-0.6.0-win-x64-portable.exe
+python scripts/test-portable-startup.py --exe release/win-unpacked/YunHuiAI.exe --launcher release/YunHuiAI-0.6.0-win-x64-portable.exe
 ```
 
 The test starts two isolated copies, verifies their extraction directories and single-instance behavior, then holds a native Windows read handle without delete sharing while the surviving app exits. It verifies that cleanup waits for that handle to close and removes only the current extraction directory.

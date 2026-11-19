@@ -98,7 +98,7 @@ if (($argv[1] ?? '') === '--worker') {
     exit;
 }
 
-$root = sys_get_temp_dir() . '/yunqiao-member-renewal-' . bin2hex(random_bytes(6)); mkdir($root, 0700, true);
+$root = sys_get_temp_dir() . '/yunhui-member-renewal-' . bin2hex(random_bytes(6)); mkdir($root, 0700, true);
 $count = 0;
 $test = static function (string $name, callable $run) use ($root, &$count): void {
     $dir = $root . '/' . (++$count); mkdir($dir, 0700, true); $run($dir); echo 'PASS ' . $name . PHP_EOL;

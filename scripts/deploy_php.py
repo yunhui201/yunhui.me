@@ -11,7 +11,7 @@ parser.add_argument('--apply', action='store_true', help='Perform the displayed 
 parser.add_argument('--php-bin', default='/www/server/php/82/bin/php', help='Remote PHP 8.1+ CLI path, matching the website FPM version')
 args = parser.parse_args()
 root = Path(__file__).resolve().parents[1]
-webroot = '/www/wwwroot/ai.haowucm.cn'
+webroot = '/www/wwwroot/yunhui.me'
 files = ['lib.php', 'api.php', 'pub.php', 'index.php', 'member_service.php', 'member.php', 'member_admin.php', 'catalog_sync.php', 'catalog_sync_admin.php']
 print('PHP deployment:', ', '.join(files), '->', webroot)
 print('Remote PHP syntax checks:', args.php_bin)

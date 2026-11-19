@@ -38,11 +38,11 @@ def main():
     config = clients / '.claude' / 'settings.json'; config.write_text(original, encoding='utf-8')
     session = clients / '.claude' / 'projects' / 'aurora-ui' / 'ui-session.jsonl'; session.parent.mkdir(parents=True)
     session.write_text('\n'.join(json.dumps(x, ensure_ascii=False) for x in [
-        {'type': 'user', 'sessionId': 'ui-session', 'cwd': str(clients), 'timestamp': '2026-11-15T01:00:00Z', 'message': {'role': 'user', 'content': '这是云桥界面验证会话'}},
+        {'type': 'user', 'sessionId': 'ui-session', 'cwd': str(clients), 'timestamp': '2026-11-15T01:00:00Z', 'message': {'role': 'user', 'content': '这是云汇界面验证会话'}},
         {'type': 'assistant', 'timestamp': '2026-11-15T01:00:01Z', 'message': {'role': 'assistant', 'content': [{'type': 'text', 'text': '会话读取成功，配置保持完整。'}]}},
     ]), encoding='utf-8')
     codex = clients / '.codex'; (codex / 'sessions').mkdir(parents=True)
-    (codex / 'config.toml').write_text('model_provider = "yunqiao"\n[model_providers.yunqiao]\nname = "yunqiao.me"\nbase_url = "http://127.0.0.1:3425/v1"\n', encoding='utf-8')
+    (codex / 'config.toml').write_text('model_provider = "yunhui"\n[model_providers.yunhui]\nname = "yunhui.me"\nbase_url = "http://127.0.0.1:3425/v1"\n', encoding='utf-8')
     repair_id = '10000000-0000-4000-8000-000000000001'
     rollout = codex / 'sessions' / ('rollout-' + repair_id + '.jsonl')
     rollout.write_text(json.dumps({'type':'session_meta','payload':{'id':repair_id,'model_provider':'old','source':'cli'}})+'\n'+json.dumps({'type':'event_msg','payload':{'type':'user_message','message':'UI repair fixture'}})+'\n', encoding='utf-8')
@@ -54,7 +54,7 @@ def main():
     (data / 'settings.json').write_text(json.dumps({'theme': 'light', 'gatewayPort': port, 'autoCheckUpdate': False, 'closeToTray': False}), encoding='utf-8')
     server = ThreadingHTTPServer(('127.0.0.1', 0), Upstream)
     threading.Thread(target=server.serve_forever, daemon=True).start()
-    env = dict(os.environ, YUNQIAO_TEST_ISOLATED='1', AURORA_HOME=str(data), YUNQIAO_HOME=str(data), AURORA_CLIENT_HOME=str(clients), AURORA_UI_TEST='1')
+    env = dict(os.environ, YUNHUI_TEST_ISOLATED='1', AURORA_HOME=str(data), YUNHUI_HOME=str(data), AURORA_CLIENT_HOME=str(clients), AURORA_UI_TEST='1')
     env.pop('ELECTRON_RUN_AS_NODE', None)
     logs = open(profile / 'electron.log', 'w', encoding='utf-8')
     process = subprocess.Popen([str(ROOT / 'node_modules/electron/dist/electron.exe'), str(ROOT), f'--remote-debugging-port={debug_port}', f'--user-data-dir={profile / "chromium"}'], env=env, stdout=logs, stderr=logs, creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
@@ -75,7 +75,7 @@ def main():
             assert page.locator('article.client-card').count() >= 9
             assert page.get_by_role('heading', name='ChatGPT 桌面版', exact=True).count() == 1
             assert page.get_by_role('heading', name='Codex 桌面版', exact=True).count() == 0
-            assert page.get_by_text('yunqiao.me', exact=True).count() > 0
+            assert page.get_by_text('yunhui.me', exact=True).count() > 0
             assert not page.evaluate('document.querySelector("main").scrollWidth > document.querySelector("main").clientWidth')
             (ROOT / 'docs/images').mkdir(exist_ok=True)
             page.screenshot(animations="disabled", path=str(ROOT / 'docs/images/clients-v0.6.png'))
@@ -152,13 +152,13 @@ def main():
             assert gateway_token not in guide.inner_text() and 'test-only-no-real-key' not in guide.inner_text()
             guide.get_by_label('手动指南版本', exact=True).select_option('codebuddy-cli')
             expect(guide).to_contain_text('.codebuddy\\models.json')
-            expect(guide.locator('.manual-guide-document')).to_contain_text('YOUR_YUNQIAO_GATEWAY_TOKEN')
+            expect(guide.locator('.manual-guide-document')).to_contain_text('YOUR_YUNHUI_GATEWAY_TOKEN')
             expect(manual_modal.get_by_role('button', name='保存配置', exact=True)).to_have_count(0)
             manual_modal.get_by_role('button', name='取消', exact=True).click()
             assert not (clients / '.codebuddy').exists()
             passed('Dedicated manual wizard uses real reviewed gateway parameters, explicit client variants and placeholder-only previews without modifying client files')
             page.locator('nav').get_by_role('button', name='历史会话', exact=True).click()
-            page.get_by_text('这是云桥界面验证会话', exact=True).first.click()
+            page.get_by_text('这是云汇界面验证会话', exact=True).first.click()
             page.get_by_text('会话读取成功，配置保持完整。', exact=False).wait_for()
             with page.expect_download() as download_info:
                 page.get_by_role('button', name='导出', exact=True).click()
@@ -248,8 +248,8 @@ def main():
             page.locator('main h1').wait_for()
             assert page.get_by_text('MCP 服务器', exact=False).count() > 0
             passed('Codex extension workspace renders local resource categories')
-            page.locator('nav').get_by_role('button', name='云桥会员', exact=True).click()
-            page.get_by_role('heading', name='云桥会员', exact=True).wait_for()
+            page.locator('nav').get_by_role('button', name='云汇会员', exact=True).click()
+            page.get_by_role('heading', name='云汇会员', exact=True).wait_for()
             assert page.get_by_label('平台会员邮箱', exact=True).count()==1
             page.screenshot(animations='disabled', path=str(ROOT / 'docs/images/membership-v0.6.png'))
             passed('Membership onboarding renders without embedding administrator credentials')

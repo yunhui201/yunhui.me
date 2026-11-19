@@ -4,7 +4,7 @@
 
 当前阶段为本地功能完善，未发布包含本轮改动的新版本，也未更新线上下载元数据。已有早期 0.6.0 安装包不能代替本次调试包。
 
-该阶段调试入口：`release/data-clean-debug-0.6.0/win-unpacked/YunQiaoAI.exe`。先从托盘退出早期版本，再启动新包；侧栏显示「调试」，在「系统设置 → 版本更新」可核对构建时间。
+该阶段调试入口：`release/data-clean-debug-0.6.0/win-unpacked/YunHuiAI.exe`。先从托盘退出早期版本，再启动新包；侧栏显示「调试」，在「系统设置 → 版本更新」可核对构建时间。
 
 运行或复制时保留整个 `win-unpacked` 目录。该入口直接运行已解压程序，适用于本机 C 盘临时空间不足的情况。本次仅生成已解压调试版；上一轮便携包不包含本次数据清理。
 
@@ -62,13 +62,13 @@
 直接启动已解压 EXE 完成 11 项检查，并针对实际发布资源完成 29 项扩展回归。复现打包验收：
 
 ```powershell
-python scripts/test-packaged.py --exe release/data-clean-debug-0.6.0/win-unpacked/YunQiaoAI.exe
+python scripts/test-packaged.py --exe release/data-clean-debug-0.6.0/win-unpacked/YunHuiAI.exe
 ```
 
 该阶段调试包 SHA-256：
 
 ```text
-YunQiaoAI.exe  d0cf3507614eb9f047c4b141f7c3fc1958c781d1570d3b6a17c8b27a4b6ea96d
+YunHuiAI.exe  d0cf3507614eb9f047c4b141f7c3fc1958c781d1570d3b6a17c8b27a4b6ea96d
 app.asar      21f2c353d0bc6df4a06ec0d86889c4cd56da8262be295c54587176fc927aed7a
 ```
 

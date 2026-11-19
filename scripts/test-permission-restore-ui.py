@@ -6,7 +6,7 @@ import tempfile
 from playwright.sync_api import sync_playwright, expect
 
 ROOT = Path(__file__).resolve().parents[1]
-with tempfile.TemporaryDirectory(prefix='yunqiao-permission-ui-') as temporary:
+with tempfile.TemporaryDirectory(prefix='yunhui-permission-ui-') as temporary:
     bundle = Path(temporary) / 'ui.js'
     source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import ClientPermissions from './ui/src/components/ClientPermissions.tsx';

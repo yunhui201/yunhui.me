@@ -9,7 +9,7 @@ print('Verified defaults:',len(seed['providers']),'vendors,',sum(len(p.get('mode
 if not args.apply:raise SystemExit('Use --apply to publish after reviewing model sources.')
 stamp=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%SZ');backup='/www/aurora-backups/catalog-'+stamp
 php='''<?php
-require '/www/wwwroot/ai.haowucm.cn/lib.php';
+require '/www/wwwroot/yunhui.me/lib.php';
 $lock=fopen(data_path('catalog-write.lock'),'c');if(!$lock||!flock($lock,LOCK_EX))throw new RuntimeException('lock unavailable');
 $current=catalog();$seed=json_decode(file_get_contents(__DIR__.'/seed.json'),true,512,JSON_THROW_ON_ERROR);
 if(!copy(data_path('catalog.json'),__DIR__.'/catalog-before.json'))throw new RuntimeException('backup failed');

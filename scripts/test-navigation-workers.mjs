@@ -10,7 +10,7 @@ import { promisify } from 'node:util';
 import { build } from 'esbuild';
 
 const require = createRequire(import.meta.url), base = process.cwd();
-const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-navigation-workers-')));
+const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-navigation-workers-')));
 const environment = { ...process.env }, childProcess = require('node:child_process');
 const originalExecFile = childProcess.execFile, originalExecFileSync = childProcess.execFileSync, originalFetch = globalThis.fetch;
 const write = (file, value) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, value); };
@@ -18,7 +18,7 @@ function desktopFixture(home, custom = false) {
   if (process.platform === 'darwin') {
     const bundle = path.join(home, 'Applications', custom ? 'Custom Coding.app' : 'ChatGPT.app');
     const executable = path.join(bundle, 'Contents', 'MacOS', 'Fixture Desktop');
-    write(path.join(bundle, 'Contents', 'Info.plist'), '<?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict><key>CFBundleExecutable</key><string>Fixture Desktop</string><key>CFBundleIdentifier</key><string>io.yunqiao.navigation.fixture</string><key>CFBundleName</key><string>Fixture Desktop</string></dict></plist>');
+    write(path.join(bundle, 'Contents', 'Info.plist'), '<?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict><key>CFBundleExecutable</key><string>Fixture Desktop</string><key>CFBundleIdentifier</key><string>io.yunhui.navigation.fixture</string><key>CFBundleName</key><string>Fixture Desktop</string></dict></plist>');
     write(executable, '#!/bin/sh\nexit 0\n'); fs.chmodSync(executable, 0o700);
     return executable;
   }
@@ -35,7 +35,7 @@ try {
     await build({ entryPoints: [path.join(base, input)], outfile: path.join(application, output), bundle: true, platform: 'node', format: 'cjs', logLevel: 'silent' });
   }
   process.env.AURORA_CLIENT_HOME = home;
-  process.env.AURORA_HOME = process.env.YUNQIAO_HOME = path.join(root, 'store');
+  process.env.AURORA_HOME = process.env.YUNHUI_HOME = path.join(root, 'store');
   process.env.PATH = path.join(root, 'empty-bin');
   process.env.APPDATA = path.join(root, 'appdata'); process.env.LOCALAPPDATA = path.join(root, 'localappdata');
   const codex = path.join(home, '.codex'), sessions = path.join(codex, 'sessions');
@@ -182,6 +182,6 @@ try {
 } finally {
   childProcess.execFile = originalExecFile; childProcess.execFileSync = originalExecFileSync; globalThis.fetch = originalFetch;
   for (const key of Object.keys(process.env)) delete process.env[key]; Object.assign(process.env, environment);
-  assert.equal(fs.realpathSync(path.dirname(root)), fs.realpathSync(os.tmpdir())); assert(path.basename(root).startsWith('yunqiao-navigation-workers-'));
+  assert.equal(fs.realpathSync(path.dirname(root)), fs.realpathSync(os.tmpdir())); assert(path.basename(root).startsWith('yunhui-navigation-workers-'));
   fs.rmSync(root, { recursive: true, force: true });
 }

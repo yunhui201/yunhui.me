@@ -7,13 +7,13 @@ import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
 const workspace = path.resolve(import.meta.dirname, '..');
-const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-connection-history-')));
+const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-connection-history-')));
 const databases = [];
 const originalClientHome = process.env.AURORA_CLIENT_HOME;
 const write = (file, text) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, text); };
 const read = file => fs.readFileSync(file, 'utf8');
 const id = number => `20000000-0000-4000-8000-${String(number).padStart(12, '0')}`;
-const plannedConfiguration = 'model_provider = "yunqiao"\nmodel = "gpt-current"\n[model_providers.yunqiao]\nname = "云桥 AI"\nbase_url = "https://example.invalid/v1"\n';
+const plannedConfiguration = 'model_provider = "yunhui"\nmodel = "gpt-current"\n[model_providers.yunhui]\nname = "云汇 AI"\nbase_url = "https://example.invalid/v1"\n';
 const automatic = { configurationText: plannedConfiguration, backupAll: true, includeSubagents: true, requireAll: true, preserveMissingSourceIndexes: true };
 let checks = 0;
 async function check(name, run) { await run(); checks++; console.log('PASS', name); }
@@ -61,7 +61,7 @@ try {
     return { schema, tables };
   }
   function crossDatabaseFixture(name) {
-    const f = fixture(name), real = Array.from({ length: 10 }, (_, i) => f.add(1000 + i, { provider: i === 9 ? 'yunqiao' : 'previous', archived: i % 2 === 1 }));
+    const f = fixture(name), real = Array.from({ length: 10 }, (_, i) => f.add(1000 + i, { provider: i === 9 ? 'yunhui' : 'previous', archived: i % 2 === 1 }));
     const logs = real.map(item => ({ path: item.file, content: item.content }));
     // 10 native sessions with repeated physical rollouts: 10 + 30 + 2 = 42
     // files. These are private fixture counts, not copies of customer data.
@@ -112,7 +112,7 @@ try {
     for (const file of ['D:\\elsewhere\\rollout.jsonl', '\\\\server\\share\\rollout.jsonl', '//server/share/rollout.jsonl', '/Users/other/.codex/sessions/log.jsonl', 'sessions\\..\\..\\outside.jsonl', 'sessions-other\\rollout.jsonl']) assert.equal(historyIndexSourcePath(home, file, 'win32'), undefined);
   });
   await check('Planned configuration migrates all provider regions, archived histories and parent/child sessions while preserving content and settings', async () => {
-    const f = fixture('whole-tree'), parent = f.add(1), child = f.add(2, { parent: parent.id, provider: 'old-secondary' }), archived = f.add(3, { archived: true, provider: 'other' }), aligned = f.add(4, { provider: 'yunqiao' });
+    const f = fixture('whole-tree'), parent = f.add(1), child = f.add(2, { parent: parent.id, provider: 'old-secondary' }), archived = f.add(3, { archived: true, provider: 'other' }), aligned = f.add(4, { provider: 'yunhui' });
     const unrelatedPath = path.join(f.home, 'sqlite', 'auxiliary.db'); fs.mkdirSync(path.dirname(unrelatedPath), { recursive: true });
     const unrelated = new DatabaseSync(unrelatedPath); databases.push(unrelated); unrelated.exec("CREATE TABLE unrelated(value TEXT); INSERT INTO unrelated VALUES('keep auxiliary data');");
     const configBefore = read(f.configPath), alignedMtime = fs.statSync(aligned.file).mtimeMs;
@@ -129,11 +129,11 @@ try {
     const journal = JSON.parse(read(path.join(result.backup, 'manifest.json')));
     assert.equal(journal.files.length, 4); assert.equal(journal.databases.length, 2);
     for (const thread of [parent, child, archived, aligned]) {
-      assert.equal(f.provider(thread.id), 'yunqiao');
+      assert.equal(f.provider(thread.id), 'yunhui');
       const before = thread.content.split('\r\n'), after = read(thread.file).split('\r\n');
       assert.deepEqual(after.slice(1), before.slice(1));
       const oldMeta = JSON.parse(before[0].replace(/^\ufeff/, '')), newMeta = JSON.parse(after[0].replace(/^\ufeff/, ''));
-      assert.deepEqual(newMeta, { ...oldMeta, payload: { ...oldMeta.payload, model_provider: 'yunqiao' } });
+      assert.deepEqual(newMeta, { ...oldMeta, payload: { ...oldMeta.payload, model_provider: 'yunhui' } });
       assert.equal(read(journal.files.find(entry => entry.path === thread.file).original), thread.content);
       const row = f.db.prepare('SELECT * FROM threads WHERE id=?').get(thread.id);
       assert.equal(row.model, 'gpt-history'); assert.equal(row.reasoning_effort, 'high'); assert.equal(row.archived, thread.archived ? 1 : 0); assert.equal(row.parent_thread_id, thread.parent || null);
@@ -148,12 +148,12 @@ try {
   await check('An absent config can be planned and migrated without creating config.toml', async () => {
     const f = fixture('missing-config', { noConfiguration: true }), thread = f.add(10);
     const { result } = await apply(f.service()); assert(result.ok, result.message);
-    assert.equal(f.provider(thread.id), 'yunqiao'); assert.equal(fs.existsSync(f.configPath), false);
+    assert.equal(f.provider(thread.id), 'yunhui'); assert.equal(fs.existsSync(f.configPath), false);
     await restore(f.service(), result); assert.equal(read(thread.file), thread.content);
     assert.equal((await createHistoryRepairService(f.ctx).preview()).ok, false);
   });
   await check('Full backups are produced even when every history provider already matches', async () => {
-    const f = fixture('already-aligned'), thread = f.add(20, { provider: 'yunqiao' });
+    const f = fixture('already-aligned'), thread = f.add(20, { provider: 'yunhui' });
     const beforeStat = fs.statSync(thread.file), { result } = await apply(f.service());
     assert(result.ok, result.message); assert.equal(result.updated, 0); assert.equal(result.summary.repairable, 0); assert(result.backupId);
     const journal = JSON.parse(read(path.join(result.backup, 'manifest.json')));
@@ -182,7 +182,7 @@ try {
     const manual = await createHistoryRepairService(f.ctx).preview({ includeSubagents: true, backupAll: true, requireAll: true });
     assert(manual.ok); assert.equal(manual.items.find(item => item.id === child.id).status, 'blocked');
     process.env.AURORA_CLIENT_HOME = path.dirname(f.home);
-    const rpc = await runHistoryRepairAction('codex.repair.preview', { targetProvider: 'yunqiao', configurationText: plannedConfiguration, includeSubagents: true });
+    const rpc = await runHistoryRepairAction('codex.repair.preview', { targetProvider: 'yunhui', configurationText: plannedConfiguration, includeSubagents: true });
     assert.equal(rpc.ok, false); assert.match(rpc.message, /目标供应商/);
   });
   await check('Disk existence/content and planned config changes invalidate a previous preview', async () => {
@@ -236,13 +236,13 @@ try {
   });
   await check('SQLite failure after full snapshots and source replacement restores exact bytes and providers', async () => {
     const f = fixture('database-failure'), thread = f.add(110);
-    f.db.exec("CREATE TRIGGER reject_switch BEFORE UPDATE OF model_provider ON local_thread_catalog WHEN NEW.model_provider='yunqiao' BEGIN SELECT RAISE(FAIL,'private database failure'); END;");
+    f.db.exec("CREATE TRIGGER reject_switch BEFORE UPDATE OF model_provider ON local_thread_catalog WHEN NEW.model_provider='yunhui' BEGIN SELECT RAISE(FAIL,'private database failure'); END;");
     const { result } = await apply(f.service()); assert.equal(result.ok, false); assert.equal(result.rolledBack, true);
     assert.equal(read(thread.file), thread.content); assert.equal(f.provider(thread.id), 'previous');
     assert.equal(f.db.prepare('SELECT model_provider FROM local_thread_catalog WHERE host_id=? AND thread_id=?').get('desktop', thread.id).model_provider, 'previous');
   });
   await check('Concurrent changes to an untouched backed-up log prevent apply and remain intact while actual changes roll back', async () => {
-    const f = fixture('preserve-append'), first = f.add(120), aligned = f.add(121, { provider: 'yunqiao' });
+    const f = fixture('preserve-append'), first = f.add(120), aligned = f.add(121, { provider: 'yunhui' });
     const originalRename = fs.promises.rename; let appended;
     fs.promises.rename = async (from, to) => { const value = await originalRename(from, to); if (to === first.file) { appended = read(aligned.file) + '{"type":"event_msg","payload":{"message":"new work"}}\n'; write(aligned.file, appended); } return value; };
     let result;
@@ -252,7 +252,7 @@ try {
     assert.equal(f.provider(first.id), 'previous');
   });
   await check('Restoring a trusted legacy managed current provider is allowed only with its actual provider table', async () => {
-    const f = fixture('restore-legacy-managed'), thread = f.add(130, { provider: 'yunqiao' });
+    const f = fixture('restore-legacy-managed'), thread = f.add(130, { provider: 'yunhui' });
     const legacy = 'model_provider="codex_plus_managed"\n[model_providers.codex_plus_managed]\nname="Legacy"\nbase_url="http://127.0.0.1:3425/v1"\n';
     const service = f.service({ ...automatic, configurationText: legacy });
     const { preview, result } = await apply(service); assert.equal(preview.currentProvider, 'codex_plus_managed'); assert(result.ok, result.message);
@@ -543,7 +543,7 @@ try {
       else if (kind === 'invalid-first-line-index-reference') { write(a.file, '{invalid'); f.db.prepare('UPDATE threads SET rollout_path=? WHERE id=?').run(a.file, b.id); f.db.prepare('UPDATE threads SET rollout_path=? WHERE id=?').run(b.file, c.id); }
       else { f.db.prepare('UPDATE threads SET rollout_path=? WHERE id=?').run(b.file, a.id); f.db.prepare('UPDATE threads SET rollout_path=? WHERE id=?').run(c.file, b.id); }
       const bytes = [a, b, c].map(item => [item.file, fs.readFileSync(item.file)]), before = f.db.prepare('SELECT * FROM threads ORDER BY id').all(), { preview, result } = await apply(f.service(resilient));
-      assert(result.ok, result.message); assert.equal(preview.summary.skipped, 3, kind); assert.equal(preview.summary.repairable, 1, kind); assert.equal(f.provider(safe.id), 'yunqiao');
+      assert(result.ok, result.message); assert.equal(preview.summary.skipped, 3, kind); assert.equal(preview.summary.repairable, 1, kind); assert.equal(f.provider(safe.id), 'yunhui');
       for (const [file, content] of bytes) assert.deepEqual(fs.readFileSync(file), content); for (const item of [a, b, c]) assert.deepEqual(f.db.prepare('SELECT * FROM threads WHERE id=?').get(item.id), before.find(row => row.id === item.id));
     }
   });
@@ -615,6 +615,6 @@ try {
 } finally {
   for (const db of databases) { try { db.close(); } catch {} }
   if (originalClientHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = originalClientHome;
-  assert.equal(path.dirname(root), fs.realpathSync(os.tmpdir())); assert(path.basename(root).startsWith('yunqiao-connection-history-'));
+  assert.equal(path.dirname(root), fs.realpathSync(os.tmpdir())); assert(path.basename(root).startsWith('yunhui-connection-history-'));
   fs.rmSync(root, { recursive: true, force: true });
 }

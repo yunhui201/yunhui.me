@@ -68,7 +68,7 @@ function inspectClient(deps: ActionDeps, payload: unknown): ClientDiagnosticRepo
     }
     add('format', invalid ? 'error' : present ? 'ok' : 'info', '配置可读性', invalid ? '配置无法读取、格式无效或不是普通文件。请先修复原配置与权限，再重新预览。' : present ? '已存在的受支持配置文件可以读取，JSON／TOML 格式检查通过；未验证客户端所有扩展字段。' : '尚无受支持的用户级配置，可通过配置向导创建。');
   }
-  add('connection', state?.pendingReapply ? 'warning' : state?.connected ? 'ok' : 'info', '云桥连接记录', state?.pendingReapply ? '导入的设置尚未应用到此电脑，请重新预览并应用客户端配置。' : state?.connected ? '存在已应用的连接记录，继续核对配置与依赖。' : '未记录云桥自动接入；客户端可能正在使用原有官方账号或手动配置。');
+  add('connection', state?.pendingReapply ? 'warning' : state?.connected ? 'ok' : 'info', '云汇连接记录', state?.pendingReapply ? '导入的设置尚未应用到此电脑，请重新预览并应用客户端配置。' : state?.connected ? '存在已应用的连接记录，继续核对配置与依赖。' : '未记录云汇自动接入；客户端可能正在使用原有官方账号或手动配置。');
   if (state?.connected || state?.pendingReapply) {
     let provider = state.providerId ? deps.store.getProvider(state.providerId) : undefined;
     const official = shared && state.authMode === 'coexist' && state.providerId === 'official';
@@ -94,7 +94,7 @@ function inspectClient(deps: ActionDeps, payload: unknown): ClientDiagnosticRepo
     }
     if (state.mode !== 'direct' || state.authMode === 'coexist') {
       const running = deps.gatewayStatus().running;
-      add('gateway', running ? 'ok' : 'error', '本地网关', running ? '网关正在运行；使用网关接入期间请保持云桥运行。' : '网关未运行，请在系统设置中启动网关，然后重试。');
+      add('gateway', running ? 'ok' : 'error', '本地网关', running ? '网关正在运行；使用网关接入期间请保持云汇运行。' : '网关未运行，请在系统设置中启动网关，然后重试。');
     }
     if (state.authMode === 'coexist' && shared) {
       const identity = readOfficialCodexIdentity();
@@ -103,7 +103,7 @@ function inspectClient(deps: ActionDeps, payload: unknown): ClientDiagnosticRepo
         const catalog = jsonObject(path.join(deps.store.dir, 'codex-model-catalog.json'));
         const listed = Array.isArray(catalog.models) && catalog.models.some((model: any) => model?.slug === `${state.providerId}/${state.model}`);
         add('coexist-catalog', listed ? 'ok' : 'warning', '共存模型目录', listed ? '本机共存目录包含当前所选模型。' : '本机共存目录缺失或不包含所选模型，请重新预览并应用共存配置。');
-      } catch { add('coexist-catalog', 'error', '共存模型目录', '共存模型目录无法安全读取，请检查云桥数据目录权限后重新应用配置。'); }
+      } catch { add('coexist-catalog', 'error', '共存模型目录', '共存模型目录无法安全读取，请检查云汇数据目录权限后重新应用配置。'); }
     }
     if (state.backupPath) {
       try {
@@ -112,16 +112,16 @@ function inspectClient(deps: ActionDeps, payload: unknown): ClientDiagnosticRepo
         add('backup-location', sameRoot ? 'ok' : 'warning', '备份所属位置', sameRoot ? '备份属于当前配置位置。' : '备份属于此前的配置位置，当前检测到的安装位置已变化；恢复只处理原位置，请核对后再接入新位置。');
         const inspected = inspectAppliedPlan(shared ? 'codex-cli' : adapter.id, state.backupPath, restorePaths);
         add('backup', inspected.backupReadable ? 'ok' : 'error', '原始备份', inspected.backupReadable ? '接入前备份可以读取。' : '接入前的部分备份缺失或不可读，请检查备份目录与权限。');
-        add('drift', inspected.unchanged ? 'ok' : 'warning', '外部配置变更', inspected.unchanged ? '受管理文件与上次应用时的内容一致。' : '受管理文件在应用后被修改或删除。请先检查差异，云桥不会在诊断时覆盖这些变更。');
+        add('drift', inspected.unchanged ? 'ok' : 'warning', '外部配置变更', inspected.unchanged ? '受管理文件与上次应用时的内容一致。' : '受管理文件在应用后被修改或删除。请先检查差异，云汇不会在诊断时覆盖这些变更。');
       } catch { add('backup', 'error', '原始备份', '备份记录无法安全核验。请检查原配置位置和备份文件；诊断不会删除或覆盖配置。'); }
     } else add('backup', 'warning', '原始备份', '没有可核验的自动接入备份，请重新预览配置；手动配置需自行保留原始文件。');
   }
   const names = (ENVIRONMENT[adapter.id] || []).filter(name => !!process.env[name]);
-  add('environment', names.length ? 'warning' : 'info', '环境变量与项目覆盖', names.length ? `云桥进程检测到 ${names.join('、')}。这里只列变量名；其他终端、项目配置与启动参数仍可能覆盖用户配置，请在实际使用环境核对。` : '云桥进程未发现已知覆盖变量；其他终端、项目配置与启动参数仍需在实际使用环境核对。');
+  add('environment', names.length ? 'warning' : 'info', '环境变量与项目覆盖', names.length ? `云汇进程检测到 ${names.join('、')}。这里只列变量名；其他终端、项目配置与启动参数仍可能覆盖用户配置，请在实际使用环境核对。` : '云汇进程未发现已知覆盖变量；其他终端、项目配置与启动参数仍需在实际使用环境核对。');
   add('runtime', 'info', '运行与上游验证', '本次只检查本机配置，不发起模型请求。配置正常不代表运行中的客户端已加载；应用后请重新启动客户端，并在供应商页按需手动测试连接。');
   const platform = ['win32', 'darwin', 'linux'].includes(process.platform) ? process.platform : 'unknown';
   const version = /^\d+\.\d+\.\d+$/.test(deps.version || '') ? deps.version : 'unknown';
   // Every exported line is allowlisted metadata or a static check message. Never serialize store/detection/error objects.
-  const report = ['云桥 AI 本机连接诊断', `client=${adapter.id}`, `platform=${platform}`, `version=${version}`, ...checks.map(check => `[${check.status}] ${check.id}: ${check.title} — ${check.detail}`)].join('\n');
+  const report = ['云汇 AI 本机连接诊断', `client=${adapter.id}`, `platform=${platform}`, `version=${version}`, ...checks.map(check => `[${check.status}] ${check.id}: ${check.title} — ${check.detail}`)].join('\n');
   return { ok: true, agentId: adapter.id, checkedAt: new Date().toISOString(), checks, report };
 }

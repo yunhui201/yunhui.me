@@ -107,7 +107,7 @@ async function openWindowsTerminal(target: ClientTarget, workingDirectory: strin
   if (!path.win32.isAbsolute(workingDirectory) || /[\x00-\x1f\x7f]/.test(workingDirectory)) throw new LifecycleError('终端工作目录无效，请重新检查客户端配置');
   try { if (!fs.statSync(workingDirectory).isDirectory()) throw new Error(); }
   catch { throw new LifecycleError('终端工作目录不存在，请重新检查客户端配置'); }
-  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-terminal-'));
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-terminal-'));
   const reply = path.join(directory, 'ready.json'), nonce = randomBytes(24).toString('hex');
   try {
     const source = input({ executable: target.executable, workingDirectory, reply, nonce }) + terminalReadyScript;
@@ -277,7 +277,7 @@ export const nativeClientLifecycleRuntime: ClientLifecycleRuntime = {
     const real = canonical(executable);
     const realExtension = path.extname(real).toLowerCase(), realBasename = path.basename(real).slice(0, -realExtension.length).toLowerCase();
     if (!definition.binaries.some(name => name.toLowerCase() === realBasename) || !(definition.kind === 'desktop' ? ['.exe'] : ['.exe', '.cmd', '.bat']).includes(realExtension)) throw new LifecycleError('客户端链接的实际目标与此客户端不匹配，请检查安装路径');
-    if (normalized(real) === normalized(canonical(process.execPath))) throw new LifecycleError('此路径是云桥自身程序，不能作为外部客户端重新启动');
+    if (normalized(real) === normalized(canonical(process.execPath))) throw new LifecycleError('此路径是云汇自身程序，不能作为外部客户端重新启动');
     return { agentId, kind: definition.kind, executable: real, identity: fileIdentity(real), ...(aumid ? { aumid } : {}) };
   },
   validateTarget(target) { if (process.platform === 'darwin') return macLifecycle.validateTarget(target); try { return normalized(target.executable) !== normalized(canonical(process.execPath)) && fileIdentity(target.executable) === target.identity; } catch { return false; } },
@@ -343,14 +343,14 @@ export function createClientLifecycle(runtime: ClientLifecycleRuntime) {
         }
         const initial = await runtime.listProcesses(target);
         if (initial.uncertain) return result(false, 'failed', '无法完整确认客户端进程身份，请手动退出客户端后重试');
-        if (initial.processes.some(process => process.protected || process.pid === globalThis.process.pid || process.pid === globalThis.process.ppid)) return result(false, 'failed', '目标包含云桥自身或启动云桥的进程，已停止操作，请在客户端中手动处理');
+        if (initial.processes.some(process => process.protected || process.pid === globalThis.process.pid || process.pid === globalThis.process.ppid)) return result(false, 'failed', '目标包含云汇自身或启动云汇的进程，已停止操作，请在客户端中手动处理');
         if (initial.processes.length) {
           const deadline = runtime.now() + 10000, requested = new Set<string>();
           let remaining = initial;
           while (true) {
             if (remaining.uncertain) return result(false, 'failed', '无法确认客户端是否完全退出，请手动检查后重试');
             if (!remaining.processes.length) break;
-            if (remaining.processes.some(process => process.protected || process.pid === globalThis.process.pid || process.pid === globalThis.process.ppid)) return result(false, 'failed', '目标包含云桥自身或启动云桥的进程，已停止操作，请在客户端中手动处理');
+            if (remaining.processes.some(process => process.protected || process.pid === globalThis.process.pid || process.pid === globalThis.process.ppid)) return result(false, 'failed', '目标包含云汇自身或启动云汇的进程，已停止操作，请在客户端中手动处理');
             if (runtime.now() >= deadline) return result(false, 'failed', '客户端进程尚未完全结束，已停止重新打开，请检查系统权限或后台自动启动程序后重试');
             for (const process of remaining.processes) {
               const identity = `${process.pid}:${process.started}`;

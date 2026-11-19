@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix='yunqiao-extension-connection-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-extension-connection-ui-') as temporary:
         bundle = Path(temporary) / 'ui.js'
         source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import DesktopExtensions from './ui/src/pages/DesktopExtensions.tsx';import {ToastHost} from './ui/src/components/ui.tsx';

@@ -9,7 +9,7 @@ import { classifyUsage, planLegacyUsageCleanup, applyLegacyUsageCleanup, localDa
 // The offline cleanup deliberately rejects symlinked ancestors. macOS exposes
 // its temp directory through /var; Windows runners may expose an 8.3 alias.
 // Use the native canonical path expected by the cleanup safety checks.
-const root = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-legacy-usage-test-')));
+const root = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-legacy-usage-test-')));
 const powershell = path.join(process.env.SystemRoot || 'C:\\Windows', 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe');
 let checks = 0, sequence = 0;
 const pairs = [['prov_claude', 'Claude 官方', 'claude-sonnet-4-5'], ['prov_deepseek', 'DeepSeek 深度求索', 'deepseek-chat'], ['prov_relay', '某某中转站', 'gpt-5.1-codex'], ['prov_kimi', 'Kimi 月之暗面', 'kimi-k2-turbo-preview']];
@@ -140,6 +140,6 @@ try {
 } finally {
   const resolved = path.resolve(root);
   assert.equal(path.dirname(resolved), fs.realpathSync.native(os.tmpdir()));
-  assert(path.basename(resolved).startsWith('yunqiao-legacy-usage-test-'));
+  assert(path.basename(resolved).startsWith('yunhui-legacy-usage-test-'));
   fs.rmSync(resolved, { recursive: true, force: true });
 }

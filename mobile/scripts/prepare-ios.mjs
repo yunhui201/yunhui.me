@@ -13,7 +13,7 @@ if (!fs.existsSync(path.join(root, 'ios/App/App.xcodeproj'))) {
 }
 const plistPath = path.join(root, 'ios/App/App/Info.plist');
 let plist = fs.readFileSync(plistPath, 'utf8');
-plist = plist.replace(/(<key>CFBundleDisplayName<\/key>\s*<string>)[^<]*(<\/string>)/, '$1yunqiao.me$2');
+plist = plist.replace(/(<key>CFBundleDisplayName<\/key>\s*<string>)[^<]*(<\/string>)/, '$1yunhui.me$2');
 // Local gateway addresses are chosen by the user. Native HTTP handles their network requests;
 // the WebView itself keeps loading only the bundled application.
 const additions = [

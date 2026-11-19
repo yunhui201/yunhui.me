@@ -66,7 +66,7 @@ const test = async (label, fn) => { await fn(); passed++; console.log('PASS ' + 
   });
   await test('action applies config and synchronizes all shared client states without changing auth', async () => {
     const result = await call('agent.connect', { ...selected, revision: preview.revision }); assert(result.ok, result.message);
-    const text = read(file); assert(text.includes('model_provider = "yunqiao"')); assert(text.includes('model_context_window = 123456')); assert(text.includes('[mcp_servers.keep]')); assert(text.includes('# preserve comments')); assert(text.includes('requires_openai_auth = false'));
+    const text = read(file); assert(text.includes('model_provider = "yunhui"')); assert(text.includes('model_context_window = 123456')); assert(text.includes('[mcp_servers.keep]')); assert(text.includes('# preserve comments')); assert(text.includes('requires_openai_auth = false'));
     for (const id of ['codex-cli', 'chatgpt-desktop', 'codex-desktop']) { const state = store.listAgents()[id]; assert.equal(state.connected, true); assert.equal(state.configPath, file); assert.equal(state.backupPath, result.backup); }
     const manifest = JSON.parse(read(result.backup)); assert.deepEqual(manifest.files.map(item => item.path), [file]); assertPrivateFiles();
   });

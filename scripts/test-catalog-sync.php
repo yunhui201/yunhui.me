@@ -9,7 +9,7 @@ function sync_error(callable $run, string $expected): void {
 }
 function sync_fixture(string $dir, string $mode = '', ?callable $duringRead = null): CatalogSyncService
 {
-    $config = ['origin' => 'https://api.yunqiao.me', 'adminKey' => 'fixture-admin-secret'];
+    $config = ['origin' => 'https://api.yunhui.me', 'adminKey' => 'fixture-admin-secret'];
     return new CatalogSyncService($config, $dir, static function ($path) use ($mode, $duringRead): array {
         if ($duringRead) $duringRead($path);
         if ($mode === 'failed') return ['status' => 503, 'body' => []];
@@ -30,7 +30,7 @@ function sync_fixture(string $dir, string $mode = '', ?callable $duringRead = nu
 function initial_catalog(string $dir): array
 {
     $catalog = ['version' => 5, 'providers' => [
-        ['key' => 'yunqiao', 'name' => '我的精选', 'enabled' => false, 'format' => 'openai-responses', 'baseUrl' => 'https://api.yunqiao.me/v1', 'note' => '手工备注', 'models' => [['id' => 'gpt-6', 'inputPrice' => 7, 'displayName' => '自定义名称']]],
+        ['key' => 'yunhui', 'name' => '我的精选', 'enabled' => false, 'format' => 'openai-responses', 'baseUrl' => 'https://api.yunhui.me/v1', 'note' => '手工备注', 'models' => [['id' => 'gpt-6', 'inputPrice' => 7, 'displayName' => '自定义名称']]],
         ['key' => 'deepseek', 'name' => '国内官方', 'format' => 'openai-chat', 'baseUrl' => 'https://api.deepseek.com', 'models' => [['id' => 'deepseek-flash', 'contextWindow' => 128000]]]]];
     file_put_contents($dir . '/catalog.json', json_encode($catalog));
     return $catalog;
@@ -53,24 +53,24 @@ $test('daily sync preserves recommendations, disabled state and other vendors', 
 });
 $test('explicit curated selection retains manual metadata and increments version once', static function ($dir): void {
     $service = sync_fixture($dir); $service->sync(); $before = read_catalog($dir);
-    $r = $service->addSelected('yunqiao', ['gpt-6', 'gpt-6.1-sol']); $catalog = read_catalog($dir);
+    $r = $service->addSelected('yunhui', ['gpt-6', 'gpt-6.1-sol']); $catalog = read_catalog($dir);
     assert_sync($r['added'] === 1 && $catalog['version'] === 6, 'one new curated model');
     assert_sync($catalog['providers'][0]['models'][0] === $before['providers'][0]['models'][0], 'manual price and name retained');
     assert_sync($catalog['providers'][0]['models'][1] === ['id' => 'gpt-6.1-sol'], 'unknown prices and capabilities omitted');
     assert_sync($catalog['providers'][1] === $before['providers'][1] && !$catalog['providers'][0]['enabled'], 'other vendor and disabled state retained');
-    $service->addSelected('yunqiao', ['gpt-6.1-sol']); assert_sync(read_catalog($dir)['version'] === 6, 'repeat selection idempotent');
+    $service->addSelected('yunhui', ['gpt-6.1-sol']); assert_sync(read_catalog($dir)['version'] === 6, 'repeat selection idempotent');
 });
 $test('wrong platform, unknown ID and wrong vendor rejected', static function ($dir): void {
     $service = sync_fixture($dir); $service->sync();
-    sync_error(fn() => $service->addSelected('yunqiao', ['deepseek-flash']), 'INVALID_SELECTION');
-    sync_error(fn() => $service->addSelected('yunqiao', ['not-real']), 'INVALID_SELECTION');
+    sync_error(fn() => $service->addSelected('yunhui', ['deepseek-flash']), 'INVALID_SELECTION');
+    sync_error(fn() => $service->addSelected('yunhui', ['not-real']), 'INVALID_SELECTION');
     sync_error(fn() => $service->addSelected('deepseek', ['deepseek-flash']), 'WRONG_PROVIDER');
 });
 $test('manual removal is suppressed and never resurrected by cron', static function ($dir): void {
-    $service = sync_fixture($dir); $service->sync(); $service->addSelected('yunqiao', ['gpt-6.1-sol']);
+    $service = sync_fixture($dir); $service->sync(); $service->addSelected('yunhui', ['gpt-6.1-sol']);
     $catalog = read_catalog($dir); array_pop($catalog['providers'][0]['models']); file_put_contents($dir . '/catalog.json', json_encode($catalog));
     $service->sync(); assert_sync(read_catalog($dir) === $catalog, 'deleted model stays removed');
-    assert_sync($service->status()['status']['suppressed']['yunqiao']['gpt-6.1-sol'] === true, 'suppression audited');
+    assert_sync($service->status()['status']['suppressed']['yunhui']['gpt-6.1-sol'] === true, 'suppression audited');
 });
 $test('failed and empty upstream responses retain last successful cache', static function ($dir): void {
     $service = sync_fixture($dir); $service->sync(); $before = $service->status();

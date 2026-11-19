@@ -1,10 +1,10 @@
-# 云桥 AI · yunqiao.me 0.6.0
+# 云汇 AI · yunhui.me 0.6.0
 
 更新于 **2026 年 11 月 16 日**。
 
 本版围绕“选择客户端 → 选择供应商 → 选择模型 → 测试并应用”完善中文工作空间，补全插件连接恢复、会员自动续期、路由分组和历史管理，并改善扫描与大列表期间的页面切换。
 
-**0.6.0 已发布**。Windows 安装版、免安装版和 ZIP，以及 macOS Apple Silicon / Intel 的 DMG 和 ZIP，均可从 [Releases 下载页](https://github.com/jxb412/yunqiao.me/releases/tag/v0.6.0)直接下载。
+**0.6.0 已发布**。Windows 安装版、免安装版和 ZIP，以及 macOS Apple Silicon / Intel 的 DMG 和 ZIP，均可从 [Releases 下载页](https://github.com/yunhui201/yunhui.me/releases/tag/v0.6.0)直接下载。
 
 ## 客户端连接与恢复
 
@@ -13,7 +13,7 @@
 - **当前连接** 显示客户端、供应商、模型、可观测的最近成功请求、异常和余额，并提供配置、测试与请求入口。工具箱测试通过不会直接标记原客户端已验证。
 - 支持重新启动桌面客户端、在新终端打开命令行工具。原客户端有未保存内容或仍未退出时，按界面提示处理后重试。
 - WorkBuddy、CodeBuddy CLI / IDE、Kimi、OpenCode V1 / V2 和 Qwen 提供各自的手动配置步骤、占位示例和电脑端凭据复制入口。
-- Codex 编程客户端和 Claude Code 可预览执行权限；曾通过云桥开启高级权限且保有可核验备份时，可单独 **恢复原执行权限**，保留供应商、模型和登录配置。
+- Codex 编程客户端和 Claude Code 可预览执行权限；曾通过云汇开启高级权限且保有可核验备份时，可单独 **恢复原执行权限**，保留供应商、模型和登录配置。
 
 ## 插件、资源与历史
 
@@ -26,7 +26,7 @@
 
 ## 供应商、模型与路由
 
-- 厂商目录、接入向导和供应商预设优先展示 **OpenAI（ChatGPT）→ Anthropic（Claude）→ Google（Gemini）**，再展示其他国际、国内、中转和本地服务；云桥位于中转组首位，远端目录更新后保持这一顺序。
+- 厂商目录、接入向导和供应商预设优先展示 **OpenAI（ChatGPT）→ Anthropic（Claude）→ Google（Gemini）**，再展示其他国际、国内、中转和本地服务；云汇位于中转组首位，远端目录更新后保持这一顺序。
 - 模型支持同步、搜索、分页、批量编辑与删除；应用前检查引用及变更。ChatGPT / Codex 编程配置按已知上下文窗口的 **90%** 同步默认自动压缩阈值，实际压缩行为由客户端决定。
 - 余额查询区分供应商余额、Key 额度、未知与查询失败。用量统计显示实时请求、输入输出、缓存读取与写入、命中率和已知价格估算，缺少的数据保持未知。
 - 路由分组提供 **依次、轮换、按权重、用得少的优先、额度余量优先、健康与优先级** 六种策略。轮换和权重按成员分流，不因某家供应商 Key 更多而增加份额；权重为 0 仅在按权重策略中排除该成员。
@@ -42,26 +42,26 @@
 
 ## 下载与升级
 
-打开 [0.6.0 发布页](https://github.com/jxb412/yunqiao.me/releases/tag/v0.6.0)的 **Assets**，或直接点击下表下载安装文件。不要选择 GitHub 自动生成的 **Source code** 压缩包来安装客户端。
+打开 [0.6.0 发布页](https://github.com/yunhui201/yunhui.me/releases/tag/v0.6.0)的 **Assets**，或直接点击下表下载安装文件。不要选择 GitHub 自动生成的 **Source code** 压缩包来安装客户端。
 
 | 平台 | 安装文件 |
 | --- | --- |
-| Windows x64 安装版 | [YunQiaoAI-0.6.0-win-x64-setup.exe](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.0/YunQiaoAI-0.6.0-win-x64-setup.exe) |
-| Windows x64 免安装版 | [YunQiaoAI-0.6.0-win-x64-portable.exe](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.0/YunQiaoAI-0.6.0-win-x64-portable.exe) |
-| Windows x64 完整解压版 | [YunQiaoAI-0.6.0-win-x64.zip](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.0/YunQiaoAI-0.6.0-win-x64.zip) |
-| macOS Apple Silicon | [YunQiaoAI-0.6.0-mac-arm64.dmg](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.0/YunQiaoAI-0.6.0-mac-arm64.dmg) |
-| macOS Intel | [YunQiaoAI-0.6.0-mac-x64.dmg](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.0/YunQiaoAI-0.6.0-mac-x64.dmg) |
+| Windows x64 安装版 | [YunHuiAI-0.6.0-win-x64-setup.exe](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.0/YunHuiAI-0.6.0-win-x64-setup.exe) |
+| Windows x64 免安装版 | [YunHuiAI-0.6.0-win-x64-portable.exe](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.0/YunHuiAI-0.6.0-win-x64-portable.exe) |
+| Windows x64 完整解压版 | [YunHuiAI-0.6.0-win-x64.zip](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.0/YunHuiAI-0.6.0-win-x64.zip) |
+| macOS Apple Silicon | [YunHuiAI-0.6.0-mac-arm64.dmg](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.0/YunHuiAI-0.6.0-mac-arm64.dmg) |
+| macOS Intel | [YunHuiAI-0.6.0-mac-x64.dmg](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.0/YunHuiAI-0.6.0-mac-x64.dmg) |
 
-macOS 同时提供 [Apple Silicon ZIP](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.0/YunQiaoAI-0.6.0-mac-arm64.zip) 和 [Intel ZIP](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.0/YunQiaoAI-0.6.0-mac-x64.zip)，发布页附带 [SHA256 校验清单](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.0/SHA256SUMS.txt)。一般用户可优先选择 Windows 安装版或 macOS DMG。
+macOS 同时提供 [Apple Silicon ZIP](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.0/YunHuiAI-0.6.0-mac-arm64.zip) 和 [Intel ZIP](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.0/YunHuiAI-0.6.0-mac-x64.zip)，发布页附带 [SHA256 校验清单](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.0/SHA256SUMS.txt)。一般用户可优先选择 Windows 安装版或 macOS DMG。
 
-升级前退出云桥。Windows ZIP 要完整解压后运行同目录的 `YunQiaoAI.exe`；macOS 将应用拖入“应用程序”并替换旧版。更新和切换包形式会保留已有本机供应商与设置，首次打开及换电脑步骤见[安装说明](../INSTALLATION.md)。
+升级前退出云汇。Windows ZIP 要完整解压后运行同目录的 `YunHuiAI.exe`；macOS 将应用拖入“应用程序”并替换旧版。更新和切换包形式会保留已有本机供应商与设置，首次打开及换电脑步骤见[安装说明](../INSTALLATION.md)。
 
 旧版会员会话需要用邮箱与密码重新登录一次，平台支持时即可启用自动续期。手动绑定的平台访问令牌无法自动续期；主动退出、平台撤销凭据或长期未使用后仍可能需要重新登录。退出会员登录不会删除已添加供应商的 API Key。
 
 ## 兼容范围与重要限制
 
 - 自动配置、官方账号共存和桌面插件依赖客户端的实际版本与接口。ChatGPT 普通聊天、Claude 云功能和官方订阅权益并不因此支持任意第三方 API；手动指南也不能为原客户端增加它没有的自定义接口。
-- 网关模式需要云桥持续运行。直连请求不会出现在网关用量中；无法区分来源的共享客户端请求会提示继续核验，实际对话仍需在原客户端确认。
+- 网关模式需要云汇持续运行。直连请求不会出现在网关用量中；无法区分来源的共享客户端请求会提示继续核验，实际对话仍需在原客户端确认。
 - “用得少的优先”依据本次网关运行中的成功请求数；“额度余量优先”依据已保存的额度使用比例，缺少数据时排在后面。策略不承诺自动选择最低价格或最低延迟。
 - 请求已被上游接受但返回损坏内容，或响应流已开始时，不会自动重新请求或切换供应商接续回复。重试受错误类型、可用成员和配置次数限制。
 - 权限独立恢复需要可核验的原始备份；存在冲突或旧备份信息不足时，请按提示在原客户端调整。历史迁移不保证不同账号或供应商的旧加密内容能继续对话。

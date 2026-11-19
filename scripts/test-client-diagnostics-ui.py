@@ -7,7 +7,7 @@ from playwright.sync_api import sync_playwright, expect
 
 ROOT = Path(__file__).resolve().parents[1]
 
-with tempfile.TemporaryDirectory(prefix='yunqiao-diagnostics-ui-') as temporary:
+with tempfile.TemporaryDirectory(prefix='yunhui-diagnostics-ui-') as temporary:
     bundle = Path(temporary) / 'ui.js'
     source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import ClientDiagnostics from './ui/src/components/ClientDiagnostics.tsx';import {Modal,ToastHost} from './ui/src/components/ui.tsx';

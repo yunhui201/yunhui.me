@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 import { DatabaseSync } from 'node:sqlite';
 import { build } from 'esbuild';
 
-const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'yunqiao-extension-history-'));
+const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'yunhui-extension-history-'));
 process.env.AURORA_CLIENT_HOME=path.join(tmp,'client');
 const root=path.join(process.env.AURORA_CLIENT_HOME,'.codex'),dir=path.join(root,'sessions');fs.mkdirSync(dir,{recursive:true});
 await build({stdin:{contents:"export { sessionRoute } from './src/core/extensions/sessions.ts'; export { AuroraStore } from './src/core/store/index.ts';",resolveDir:process.cwd(),loader:'ts'},bundle:true,platform:'node',format:'cjs',outfile:path.join(tmp,'bundle.cjs'),logLevel:'silent'});
@@ -79,5 +79,5 @@ try{
   });
   console.log(`Extension history: ${passed} tests passed`);
 }finally{
-  db.close();const resolved=path.resolve(tmp);if(resolved.startsWith(path.resolve(os.tmpdir())+path.sep)&&path.basename(resolved).startsWith('yunqiao-extension-history-'))fs.rmSync(resolved,{recursive:true,force:true});
+  db.close();const resolved=path.resolve(tmp);if(resolved.startsWith(path.resolve(os.tmpdir())+path.sep)&&path.basename(resolved).startsWith('yunhui-extension-history-'))fs.rmSync(resolved,{recursive:true,force:true});
 }

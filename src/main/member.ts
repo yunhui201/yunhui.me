@@ -4,7 +4,7 @@ import path from 'node:path';
 import { randomBytes, randomUUID } from 'node:crypto';
 import type { AuroraStore } from '../core/store/index.js';
 
-const endpoint = 'https://ai.haowucm.cn/member.php';
+const endpoint = 'https://yunhui.me/member.php';
 let sessionToken = '';
 let sessionRevision = 0;
 let restored = false;
@@ -188,17 +188,17 @@ export async function memberAction(store: AuroraStore, action: string, payload: 
       if (typeof key !== 'string' || !key) throw new Error('会员服务没有返回客户端 API Key');
       const baseUrl = new URL(result.baseUrl);
       const formats: Record<string, string> = { openai: 'openai-responses', anthropic: 'anthropic', gemini: 'gemini', deepseek: 'openai-chat', grok: 'openai-chat' };
-      if (baseUrl.origin !== 'https://api.yunqiao.me' || baseUrl.username || baseUrl.password || baseUrl.search || baseUrl.hash
+      if (baseUrl.origin !== 'https://api.yunhui.me' || baseUrl.username || baseUrl.password || baseUrl.search || baseUrl.hash
         || !formats[result.group?.platform] || formats[result.group.platform] !== result.format || !Number.isSafeInteger(result.memberId) || result.memberId < 1
         || !Number.isSafeInteger(result.group?.id) || result.group.id < 1
         || (payload.groupId !== undefined && result.group.id !== payload.groupId)) throw new Error('会员供应商地址、分组或协议无效');
       // Different members must never share a provider's key rotation pool.
-      const presetId = `yunqiao-member-${result.memberId}-group-${result.group.id}`;
+      const presetId = `yunhui-member-${result.memberId}-group-${result.group.id}`;
       const previous = store.listProviders().find(p => p.presetId === presetId);
       const apiKeys = (previous?.apiKeys || []).map(k => k.key === key ? { ...k, enabled: true } : { ...k });
       if (!apiKeys.some(k => k.key === key)) apiKeys.push({ id: randomUUID(), label: '会员客户端密钥', key, enabled: true, weight: 1 });
-      const provider = store.saveProvider({ ...previous, name: `云桥 · ${result.group?.name || '会员服务'}`, presetId, format: result.format, baseUrl: result.baseUrl, models: previous?.models || [], enabled: true, apiKeys });
-      return { ok: true, providerId: provider.id, message: '云桥供应商已添加。选择你的客户端即可继续配置。' };
+      const provider = store.saveProvider({ ...previous, name: `云汇 · ${result.group?.name || '会员服务'}`, presetId, format: result.format, baseUrl: result.baseUrl, models: previous?.models || [], enabled: true, apiKeys });
+      return { ok: true, providerId: provider.id, message: '云汇供应商已添加。选择你的客户端即可继续配置。' };
     }
     throw new Error('未知会员操作');
   } catch (error) {

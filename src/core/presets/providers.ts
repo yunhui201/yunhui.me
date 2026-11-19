@@ -27,17 +27,17 @@ export interface ProviderPreset {
  */
 export const PROVIDER_PRESETS: ProviderPreset[] = [
   {
-    id: 'yunqiao',
-    name: 'YunQiao',
-    nameZh: '云桥AI 官方中转',
-    vendor: '云桥AI',
+    id: 'yunhui',
+    name: 'YunHui',
+    nameZh: '云汇AI 官方中转',
+    vendor: '云汇AI',
     region: 'relay',
     format: 'openai-responses',
-    baseUrl: 'https://api.yunqiao.me',
+    baseUrl: 'https://api.yunhui.me',
     color: '#6d8cff',
     icon: '🌉',
-    docs: 'https://api.yunqiao.me',
-    note: "云桥AI 官方中转 · 登录后查看会员活动与账号实际可用模型。",
+    docs: 'https://api.yunhui.me',
+    note: "云汇AI 官方中转 · 登录后查看会员活动与账号实际可用模型。",
     models: [
       {
         "id": "gpt-6.1-sol"
@@ -1162,10 +1162,10 @@ export const PRESET_REGIONS: Record<string, string> = {
 /**
  * 推荐顺序：客户端视角的默认序 —— ChatGPT 系(OpenAI/Codex) 最前，
  * 其次 Claude，再次 DeepSeek，然后才是其它国内/海外/本地。
- * 云桥AI 官方中转在中转服务组内优先展示。
+ * 云汇AI 官方中转在中转服务组内优先展示。
  */
 const PRESET_RANK: Record<string, number> = {
-  yunqiao: 0,
+  yunhui: 0,
   openai: 10,
   'chatgpt-subscription': 11,
   codex: 12,

@@ -7,7 +7,7 @@ import http from 'node:http';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-routing-groups-')));
+const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-routing-groups-')));
 const priorHome = process.env.AURORA_CLIENT_HOME; process.env.AURORA_CLIENT_HOME = path.join(root, 'clients');
 const records = [], behaviors = new Map();
 let api, passed = 0, sequence = 0, active;
@@ -214,5 +214,5 @@ try {
 } finally {
   await active?.stop(); upstream.closeAllConnections(); await new Promise(resolve => upstream.close(resolve));
   if (priorHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = priorHome;
-  assert.equal(fs.realpathSync(path.dirname(root)), fs.realpathSync(os.tmpdir())); assert(path.basename(root).startsWith('yunqiao-routing-groups-')); fs.rmSync(root, { recursive: true, force: true });
+  assert.equal(fs.realpathSync(path.dirname(root)), fs.realpathSync(os.tmpdir())); assert(path.basename(root).startsWith('yunhui-routing-groups-')); fs.rmSync(root, { recursive: true, force: true });
 }

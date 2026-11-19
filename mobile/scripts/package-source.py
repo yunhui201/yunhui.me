@@ -5,7 +5,7 @@ import zipfile
 
 root = pathlib.Path(__file__).resolve().parents[1]
 version = json.loads((root / 'package.json').read_text(encoding='utf-8'))['version']
-destination = root / 'build' / f'YunQiaoAI-{version}-iOS-source.zip'
+destination = root / 'build' / f'YunHuiAI-{version}-iOS-source.zip'
 destination.parent.mkdir(exist_ok=True)
 files = [root / name for name in ['README.md', 'package.json', 'package-lock.json', 'capacitor.config.json', '.gitignore']]
 for name in ['src', 'www', 'scripts', 'tests', 'assets', 'ios']:

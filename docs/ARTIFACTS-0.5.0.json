@@ -1,16 +1,16 @@
 [
   {
-    "file": "release\\YunQiaoAI-0.5.0-win-x64-setup.exe",
+    "file": "release\\YunHuiAI-0.5.0-win-x64-setup.exe",
     "bytes": 102478748,
     "sha256": "ff1e0b21fe0761266c13c481f94dde88a970e69b79b98a15e8020cbe69932546"
   },
   {
-    "file": "release\\YunQiaoAI-0.5.0-win-x64-portable.exe",
+    "file": "release\\YunHuiAI-0.5.0-win-x64-portable.exe",
     "bytes": 94329798,
     "sha256": "35a25f249740714ff91fc2fd8bf594a5f2d0f513605035cf365fe71ead0e8c5c"
   },
   {
-    "file": "mobile\\build\\YunQiaoAI-0.5.0-iOS-source.zip",
+    "file": "mobile\\build\\YunHuiAI-0.5.0-iOS-source.zip",
     "bytes": 380418,
     "sha256": "4b65a9ef47b6ddb43feea77d16527758198b3fde14df72f3734dfaeb7d2b6822"
   }

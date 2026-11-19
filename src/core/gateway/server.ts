@@ -249,7 +249,7 @@ export class GatewayServer {
       const state = this.deps.store.listAgents()['claude-desktop'];
       const families = ['sonnet', 'opus', 'haiku'];
       const data = state?.connected ? families.map((family) => ({
-        id: `claude-${family}-aurora`, type: 'model', display_name: `云桥 · ${family}`, created_at: '2026-01-01T00:00:00Z',
+        id: `claude-${family}-aurora`, type: 'model', display_name: `云汇 · ${family}`, created_at: '2026-01-01T00:00:00Z',
       })) : [];
       const id = path.slice('/claude-desktop/v1/models/'.length);
       const model = data.find((item) => item.id === id);
@@ -490,7 +490,7 @@ export class GatewayServer {
       const id = `group/${g.name}`;
       if (seen.has(id)) continue;
       seen.add(id);
-      data.push({ id, object: 'model', created: Math.floor(Date.now() / 1000), owned_by: 'yunqiao.me 分组' });
+      data.push({ id, object: 'model', created: Math.floor(Date.now() / 1000), owned_by: 'yunhui.me 分组' });
     }
     return { object: 'list', data };
   }
@@ -723,7 +723,7 @@ export class GatewayServer {
     if (s.includes('gemini')) return 'Gemini CLI';
     if (s.includes('workbuddy')) return 'WorkBuddy';
     if (s.includes('deepseek')) return 'DeepSeek';
-    if (s.includes('aurora') || s.includes('yunqiao')) return '云桥AI 工具箱';
+    if (s.includes('aurora') || s.includes('yunhui')) return '云汇AI 工具箱';
     return ua.slice(0, 40) || '未知客户端';
   }
 

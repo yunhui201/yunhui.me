@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix='yunqiao-local-client-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-local-client-ui-') as temporary:
         bundle = str(Path(temporary) / 'local-clients.js')
         source = """import React from 'react';
 import {createRoot} from 'react-dom/client';

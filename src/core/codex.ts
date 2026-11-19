@@ -176,7 +176,7 @@ export function repairSessions(targetProvider?: string): RepairResult {
   // VACUUM INTO creates a consistent snapshot including committed WAL content.
   let backup = '';
   try {
-    backup = `${dbPath}.yunqiao-${Date.now()}.bak`;
+    backup = `${dbPath}.yunhui-${Date.now()}.bak`;
     db.prepare('PRAGMA busy_timeout = 1500').run();
     db.prepare('VACUUM INTO ?').run(backup);
   } catch (e: any) {

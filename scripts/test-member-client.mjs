@@ -46,7 +46,7 @@ function fixture(label) {
   const formats = { openai: 'openai-responses', anthropic: 'anthropic', gemini: 'gemini', deepseek: 'openai-chat', grok: 'openai-chat' };
   globalThis.fetch = async (url, options) => {
     const parsed = new URL(url);
-    assert.equal(parsed.origin, 'https://ai.haowucm.cn'); assert.equal(parsed.pathname, '/member.php'); assert.equal(options.redirect, 'error');
+    assert.equal(parsed.origin, 'https://yunhui.me'); assert.equal(parsed.pathname, '/member.php'); assert.equal(options.redirect, 'error');
     const action = parsed.searchParams.get('a'); const body = options.body ? JSON.parse(options.body) : null;
     control.requests.push({ action, body, headers: { ...options.headers }, method: options.method });
     const respond = (value, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'content-type': 'application/json' } });
@@ -69,7 +69,7 @@ function fixture(label) {
     if (action === 'logout') { if (control.offlineLogout) throw new Error('simulated network failure'); return respond({ ok: true }); }
     if (action === 'create-client-key') {
       const group = groups.find(g => g.id === body.groupId); assert(group);
-      let value = { ok: true, memberId: control.activeUser, id: 123, apiKey: `sk-user-${control.activeUser}-group-${group.id}-private`, group, name: '云桥会员', format: formats[group.platform], baseUrl: 'https://api.yunqiao.me' + (group.platform === 'gemini' ? '' : '/v1') };
+      let value = { ok: true, memberId: control.activeUser, id: 123, apiKey: `sk-user-${control.activeUser}-group-${group.id}-private`, group, name: '云汇会员', format: formats[group.platform], baseUrl: 'https://api.yunhui.me' + (group.platform === 'gemini' ? '' : '/v1') };
       if (control.alterKey) value = control.alterKey(value);
       return respond(value);
     }

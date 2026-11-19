@@ -298,9 +298,9 @@ type TomlValue = string | number | boolean | null;
 function toml(value: Exclude<TomlValue, null>): string { return typeof value === 'string' ? JSON.stringify(value) : String(value); }
 function tableIdentity(section: string): string {
   if (!section) return '';
-  let value: any = parseToml(`[${section}]\n__yunqiao_edit_marker = true`);
+  let value: any = parseToml(`[${section}]\n__yunhui_edit_marker = true`);
   const parts: string[] = [];
-  while (value && typeof value === 'object' && value.__yunqiao_edit_marker !== true) {
+  while (value && typeof value === 'object' && value.__yunhui_edit_marker !== true) {
     const keys = Object.keys(value);
     if (keys.length !== 1 || Array.isArray(value[keys[0]])) throw new Error('不支持修改此 TOML 表');
     parts.push(keys[0]); value = value[keys[0]];

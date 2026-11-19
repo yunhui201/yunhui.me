@@ -29,7 +29,7 @@ function prepare(deps: ActionDeps, agentId: string) {
   if (!adapter || !shared && adapter.id !== 'claude-code') throw new PermissionError('此客户端不支持单独恢复执行权限');
   const agentSnapshot = deps.store.readAgentSnapshot(), all = agentSnapshot.states, ids: AgentId[] = shared ? aliases : ['claude-code'];
   const state = all[adapter.id] || (shared ? all['codex-cli'] || all['chatgpt-desktop'] || all['codex-desktop'] : undefined);
-  if (!state?.connected || state.pendingReapply || !state.backupPath) throw new PermissionError('没有已应用且可核验的云桥连接备份，无法单独恢复权限');
+  if (!state?.connected || state.pendingReapply || !state.backupPath) throw new PermissionError('没有已应用且可核验的云汇连接备份，无法单独恢复权限');
   const paths = adapter.configPaths(), canonical = shared ? 'codex-cli' : 'claude-code';
   const snapshot = managedPlanSnapshot(canonical, state.backupPath, paths);
   const files = snapshot.files.map(({ original: _, ...file }) => file);
@@ -42,7 +42,7 @@ function prepare(deps: ActionDeps, agentId: string) {
   if (!scope) {
     // Older manifests have no field ownership record. Only an explicit saved
     // full-access choice plus the exact installed policy permits this migration.
-    if (state.permissionMode !== 'full-access') throw new PermissionError('没有云桥修改执行权限的可核验记录；现有权限将保留');
+    if (state.permissionMode !== 'full-access') throw new PermissionError('没有云汇修改执行权限的可核验记录；现有权限将保留');
     scope = shared ? { kind: 'codex-execution-v1', ...(typeof current.profile === 'string' ? { profile: current.profile } : {}) } : { kind: 'claude-execution-v1' };
   }
   const changes: PermissionChange[] = [], warnings: string[] = [];
@@ -55,7 +55,7 @@ function prepare(deps: ActionDeps, agentId: string) {
       layers.push({ name: `Profile：${scope.profile}`, section: `profiles.${JSON.stringify(scope.profile)}`, current: active, original: original.profiles?.[scope.profile] || {} });
     }
     for (const layer of layers) {
-      if (layer.current.approval_policy !== 'never' || layer.current.sandbox_mode !== 'danger-full-access' || layer.current.default_permissions !== undefined) throw new PermissionError('执行权限已偏离云桥应用的设置，请先处理冲突；不会覆盖其他程序的修改');
+      if (layer.current.approval_policy !== 'never' || layer.current.sandbox_mode !== 'danger-full-access' || layer.current.default_permissions !== undefined) throw new PermissionError('执行权限已偏离云汇应用的设置，请先处理冲突；不会覆盖其他程序的修改');
       const values: Record<string, string | null> = {};
       for (const field of fields) {
         values[field] = scalar(layer.original[field]);
@@ -66,7 +66,7 @@ function prepare(deps: ActionDeps, agentId: string) {
       if (layer.original.default_permissions !== undefined) warnings.push(`${layer.name}将恢复原有权限方案，实际执行范围以该方案及客户端策略为准。`);
     }
   } else {
-    if (scope.kind !== 'claude-execution-v1' || !current.permissions || current.permissions.defaultMode !== 'bypassPermissions') throw new PermissionError('Claude 执行权限已偏离云桥应用的设置，请先处理冲突');
+    if (scope.kind !== 'claude-execution-v1' || !current.permissions || current.permissions.defaultMode !== 'bypassPermissions') throw new PermissionError('Claude 执行权限已偏离云汇应用的设置，请先处理冲突');
     const value = scalar(original.permissions?.defaultMode);
     changes.push({ scope: '用户配置', field: 'permissions.defaultMode', before: 'bypassPermissions', after: display(value) });
     if (value === null) delete current.permissions.defaultMode; else current.permissions.defaultMode = value;
@@ -79,7 +79,7 @@ function prepare(deps: ActionDeps, agentId: string) {
   if (alreadyOriginal) target.after = target.before;
   warnings.push('恢复后请重新启动客户端或打开新终端。项目配置、启动参数和组织策略仍可能影响实际权限。');
   const preview: PermissionPreview = { ok: true, agentId, revision: digest(JSON.stringify([snapshot.revision, agentSnapshot.revision, files])), changes, warnings, alreadyOriginal,
-    message: alreadyOriginal ? '原始权限与当前权限相同；确认后将结束云桥的高级权限管理。' : '仅恢复首次接入前的执行权限，保留当前供应商、模型和登录配置。' };
+    message: alreadyOriginal ? '原始权限与当前权限相同；确认后将结束云汇的高级权限管理。' : '仅恢复首次接入前的执行权限，保留当前供应商、模型和登录配置。' };
   return { preview, files, canonical, state, ids, adapter, agentSnapshot };
 }
 
@@ -115,7 +115,7 @@ export function runPermissionAction(deps: ActionDeps, action: string, payload: u
       return failure(failed ? '无法保存连接记录，部分配置已被其他程序修改或无法回滚；原始备份保留，请检查配置后重新预览' : '无法保存连接记录，已撤回本次权限恢复；原始备份和供应商连接保留');
     }
     detectReset();
-    return { ok: true, agentId: input.agentId, restartRequired: true, message: prepared.preview.alreadyOriginal ? '已保留原有权限并结束云桥的高级权限管理；原权限本身未降低。请重新启动客户端核对。' : '已恢复原执行权限，供应商连接保留。请重新启动客户端或打开新终端。' };
+    return { ok: true, agentId: input.agentId, restartRequired: true, message: prepared.preview.alreadyOriginal ? '已保留原有权限并结束云汇的高级权限管理；原权限本身未降低。请重新启动客户端核对。' : '已恢复原执行权限，供应商连接保留。请重新启动客户端或打开新终端。' };
   } catch (error) {
     if (error instanceof PermissionError || error instanceof UnverifiedOriginalBackupError) return failure(error.message);
     // Parsers and storage errors may embed configuration contents or credentials.

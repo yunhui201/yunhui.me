@@ -82,7 +82,7 @@ export function resolveClaudeDesktopConfig(options: ClaudeDesktopPathOptions = {
     return { status: 'blocked', candidates, reason: 'Claude 桌面配置目录无法安全核对，已停止自动读写：' + String((error as Error).message) };
   }
   const existing = candidates.filter(candidate => candidate.existing);
-  if (existing.length > 1) return { status: 'ambiguous', candidates, reason: '发现多个 Claude 桌面配置位置（普通版或商店版），无法确认客户端实际使用哪一份。请在 Claude 的第三方模型设置中核对配置目录；云桥未自动写入任何位置。' };
+  if (existing.length > 1) return { status: 'ambiguous', candidates, reason: '发现多个 Claude 桌面配置位置（普通版或商店版），无法确认客户端实际使用哪一份。请在 Claude 的第三方模型设置中核对配置目录；云汇未自动写入任何位置。' };
   const selected = existing[0] ?? candidates[0];
   return { status: 'resolved', source: selected.source, root: selected.root, candidates,
     reason: selected.source === 'msix' ? '已识别 Claude 商店版的独立配置目录' : '使用 Claude 桌面标准配置目录' };

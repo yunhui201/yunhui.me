@@ -10,7 +10,7 @@ import { parse } from 'smol-toml';
 import ts from 'typescript';
 import { runInNewContext } from 'node:vm';
 
-const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-permissions-')));
+const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-permissions-')));
 const priorHome = process.env.AURORA_CLIENT_HOME;
 const read = file => fs.readFileSync(file, 'utf8');
 const write = (file, value) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, value); };
@@ -40,7 +40,7 @@ try {
     assert.equal(parsed.sandbox_mode, undefined); assert.equal(parsed.forced_login_method, undefined);
     assert.equal(parsed.profiles['work.v2'].forced_login_method, undefined);
     assert.equal(parsed.profiles['work.v2'].approval_policy, 'on-request');
-    assert.equal(fs.existsSync(auth), false); assert.equal(parsed.model_providers.yunqiao.requires_openai_auth, false);
+    assert.equal(fs.existsSync(auth), false); assert.equal(parsed.model_providers.yunhui.requires_openai_auth, false);
     assert(f.adapter.disconnect(result.backup).ok); assert.equal(read(f.config), codexOriginal);
   });
   await test('explicit full access updates root and active profile while retaining named and inactive policies', () => {
@@ -252,6 +252,6 @@ try {
   console.log(`Client permissions and onboarding: ${checks} checks passed.`);
 } finally {
   if (priorHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = priorHome;
-  assert.equal(fs.realpathSync(path.dirname(root)), fs.realpathSync(os.tmpdir())); assert(path.basename(root).startsWith('yunqiao-permissions-'));
+  assert.equal(fs.realpathSync(path.dirname(root)), fs.realpathSync(os.tmpdir())); assert(path.basename(root).startsWith('yunhui-permissions-'));
   fs.rmSync(root, { recursive: true, force: true });
 }

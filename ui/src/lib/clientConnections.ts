@@ -22,7 +22,7 @@ const successful = (request: UsageRecord) => request.status >= 200 && request.st
 function belongsToClient(record: UsageRecord, agent: AgentCatalogItem): boolean {
   const name = record.agent.toLowerCase().trim();
   // Test traffic must never validate a client. Unknown agents cannot prove identity.
-  if (!name || /yunqiao|aurora|云桥|test|测试/.test(name)) return false;
+  if (!name || /yunhui|aurora|云汇|test|测试/.test(name)) return false;
   if (codingIds.has(agent.id)) return ['codex', 'codex cli', 'codex / chatgpt 桌面版', 'chatgpt-desktop', 'codex-cli', 'codex-desktop'].includes(name);
   if (agent.id === 'claude-code') return ['claude code', 'claude-code'].includes(name);
   // The gateway currently labels Claude desktop traffic as Claude Code. Do not
@@ -71,7 +71,7 @@ export function clientConnectionRows(state: AppState, records: UsageRecord[], no
     if (connection.pendingReapply) { row.label = '待应用到本机'; row.detail = '导入的连接尚未写入本机客户端，请重新预览并应用。'; }
     else if (!official && !provider) { row.status = 'warning'; row.label = '供应商已删除'; row.detail = '重新选择供应商后应用配置。'; }
     else if (provider && !provider.enabled) { row.status = 'warning'; row.label = '供应商已停用'; row.detail = '启用供应商或为客户端更换连接。'; }
-    else if (connection.mode === 'direct') { row.label = '直连配置 · 待客户端验证'; row.detail = '直连请求不经过云桥；请在原客户端确认对话和模型可用。'; }
+    else if (connection.mode === 'direct') { row.label = '直连配置 · 待客户端验证'; row.detail = '直连请求不经过云汇；请在原客户端确认对话和模型可用。'; }
     else {
       const matching = records.filter(record => {
         const time = timestamp(record.ts);

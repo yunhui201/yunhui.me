@@ -134,7 +134,7 @@ export class DesktopCdp {
   }
   async setBridge(handler: BridgeHandler): Promise<string> {
     this.bridge = handler; await this.send('Runtime.addBinding', { name: this.binding });
-    return `(() => { if(window!==top||!/^app:\\/\\/-\\//i.test(location.href))return; const pending=new Map(); let seq=0; window.__auroraBridgeResolve=(r)=>{const p=pending.get(r.id);if(!p)return;clearTimeout(p.timer);pending.delete(r.id);r.error?p.reject(new Error(r.error)):p.resolve(r.value)};window.__codexSessionDeleteBridge=(route,payload)=>new Promise((resolve,reject)=>{const id=Date.now()+':'+(++seq);const timer=setTimeout(()=>{pending.delete(id);reject(new Error('云桥桌面桥接超时'))},route==='/plugin-market/list'&&payload?.refresh===true?130000:30000);pending.set(id,{resolve,reject,timer});window[${JSON.stringify(this.binding)}](JSON.stringify({id,route,payload}));}); })();`;
+    return `(() => { if(window!==top||!/^app:\\/\\/-\\//i.test(location.href))return; const pending=new Map(); let seq=0; window.__auroraBridgeResolve=(r)=>{const p=pending.get(r.id);if(!p)return;clearTimeout(p.timer);pending.delete(r.id);r.error?p.reject(new Error(r.error)):p.resolve(r.value)};window.__codexSessionDeleteBridge=(route,payload)=>new Promise((resolve,reject)=>{const id=Date.now()+':'+(++seq);const timer=setTimeout(()=>{pending.delete(id);reject(new Error('云汇桌面桥接超时'))},route==='/plugin-market/list'&&payload?.refresh===true?130000:30000);pending.set(id,{resolve,reject,timer});window[${JSON.stringify(this.binding)}](JSON.stringify({id,route,payload}));}); })();`;
   }
   async updateDocumentSource(source: string): Promise<void> {
     for (const identifier of this.scriptIds.splice(0)) await this.send('Page.removeScriptToEvaluateOnNewDocument', { identifier });

@@ -37,7 +37,7 @@
   ],
   "lifecycleSourceSha256": "6a86a63b94be6410ae0ab4ec4a9c797b11a17b9329a6ad021a08fa0449395a49",
   "windowsDebug": {
-    "executable": "release\\client-restart-debug-0.6.0\\win-unpacked\\YunQiaoAI.exe",
+    "executable": "release\\client-restart-debug-0.6.0\\win-unpacked\\YunHuiAI.exe",
     "exeSha256": "fc91193c967fd98a0271e8501496b227a89fb47a5aacbc4e6b74322d596297c8",
     "asarSha256": "a99610b88064b357ff33c2503e823c2576aa9f90c95418e2525bbc1b1deedfbc",
     "build": {

@@ -108,7 +108,7 @@ def main():
         page.get_by_label('访问令牌').fill('mobile-test-token')
         page.get_by_role('button', name='连接工作台').click()
         expect(page.get_by_role('heading', name='一切，尽在掌握')).to_be_visible()
-        expect(page.get_by_text('yunqiao.me', exact=True)).to_be_visible()
+        expect(page.get_by_text('yunhui.me', exact=True)).to_be_visible()
         expect(page.get_by_label('缓存用量')).to_contain_text('75.0%')
         expect(page.get_by_label('实时请求')).to_contain_text('输出 约 24')
         expect(page.get_by_label('实时请求')).to_contain_text('缓存读 0')
@@ -151,7 +151,7 @@ def main():
         expect(page.get_by_role('dialog')).to_have_count(0)
         assert STATE['agents']['codex-cli']['authMode'] == 'coexist'
         page.get_by_role('button', name='ChatGPT Desktop').click()
-        expect(page.get_by_text('此客户端暂不支持通过云桥自动更换模型服务。请在电脑端查看官方接入方式。')).to_be_visible()
+        expect(page.get_by_text('此客户端暂不支持通过云汇自动更换模型服务。请在电脑端查看官方接入方式。')).to_be_visible()
         expect(page.get_by_role('button', name='预览电脑上的配置变更')).to_have_count(0)
         page.get_by_role('button', name='关闭', exact=True).click()
         page.get_by_role('button', name='供应商', exact=True).click()

@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix='yunqiao-navigation-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-navigation-ui-') as temporary:
         bundle = Path(temporary) / 'app.js'
         options = {
             'stdin': {'contents': "import React from 'react';import {createRoot} from 'react-dom/client';import App from './ui/src/App.tsx';createRoot(document.getElementById('root')).render(<App/>);", 'resolveDir': str(ROOT), 'loader': 'tsx'},

@@ -85,7 +85,7 @@ export default function CodexEnhance({ go }: PageProps) {
   }
   return <>
     <div className="page-head"><div><div className="eyebrow">DESKTOP WORKSPACE</div><h1>桌面工作台</h1><p>管理本机扩展与工作约定，查看会话状态和客户端配置。</p></div><div className="actions"><Btn onClick={() => go('sessions')}><Ico name="chat" size={14} /> 历史会话</Btn><Btn disabled={remote || loading || !!busy || tab === 'diagnosis'} onClick={() => { void load(); }}><Ico name="refresh" size={14} /> {loading ? '检测中…' : '重新检测'}</Btn></div></div>
-    {remote ? <div className="card"><Empty icon="⌘" title="在电脑客户端管理本地资源" hint="远程控制台不开放本机插件、提示词和数据库写入。请在电脑上的云桥 AI 打开此页；远程查看会话可使用「历史会话」。" /></div> : <>
+    {remote ? <div className="card"><Empty icon="⌘" title="在电脑客户端管理本地资源" hint="远程控制台不开放本机插件、提示词和数据库写入。请在电脑上的云汇 AI 打开此页；远程查看会话可使用「历史会话」。" /></div> : <>
       <div className="row" style={{ marginBottom: 20, gap: 8 }}>{([['assets', '资源库', 'puzzle'], ['diagnosis', '会话诊断', 'chat'], ['advanced', '高级设置', 'gear']] as const).map(([id, title, icon]) => <Btn key={id} variant={tab === id ? 'primary' : 'default'} onClick={() => setTab(id)}><Ico name={icon} size={14} /> {title}</Btn>)}</div>
       {tab === 'assets' && <>
         <div className="row" style={{ gap: 12, marginBottom: 18 }}><input className="input grow" value={search} onChange={e => setSearch(e.target.value)} placeholder="搜索本机资源名称或说明" aria-label="搜索 Codex 资源" style={{ maxWidth: 390 }} /><div className="grow" /><Btn disabled={!!busy} onClick={editPrompt}><Ico name="plus" size={14} /> 编辑全局提示词</Btn></div>
@@ -95,12 +95,12 @@ export default function CodexEnhance({ go }: PageProps) {
           return <div className="card" key={kind}>
             <div className="card-title"><Ico name={meta.icon} /><span>{meta.label}</span><span className="sub">{items.length} 个</span></div>
             <p style={{ fontSize: 12, color: 'var(--muted)', marginBottom: 16 }}>{meta.hint}</p>
-            {!items.length ? <div style={{ padding: '14px 0 22px', color: 'var(--muted)', fontSize: 12 }}>{loading ? '正在发现本地资源…' : search ? '没有匹配的资源。' : kind === 'plugin' ? '此处显示原客户端目录中的插件；云桥管理的插件请到插件中心查看。' : kind === 'prompt' ? '尚未创建全局提示词，可从右上角开始。' : '尚未发现已安装资源，可查看官方文档了解安装方式。'}</div> : <div className="list">{items.map(a => <div className="list-row" key={a.id}>
+            {!items.length ? <div style={{ padding: '14px 0 22px', color: 'var(--muted)', fontSize: 12 }}>{loading ? '正在发现本地资源…' : search ? '没有匹配的资源。' : kind === 'plugin' ? '此处显示原客户端目录中的插件；云汇管理的插件请到插件中心查看。' : kind === 'prompt' ? '尚未创建全局提示词，可从右上角开始。' : '尚未发现已安装资源，可查看官方文档了解安装方式。'}</div> : <div className="list">{items.map(a => <div className="list-row" key={a.id}>
               <div className="grow"><strong className="ellipsis" title={a.name}>{a.name}</strong><div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 4, overflowWrap: 'anywhere' }}>{a.description || a.path}</div></div>
               {a.kind === 'prompt' ? <Btn size="sm" disabled={!!busy} onClick={editPrompt}>编辑</Btn> : a.mutable ? <fieldset disabled={!!busy} style={{ padding: 0, margin: 0, border: 0 }}><Toggle title={`启用${a.name}`} on={a.enabled} onChange={v => { void perform(a.id, 'codex.toggleAsset', { id: a.id, enabled: v }); }} /></fieldset> : <span className="chip">已发现</span>}
               {a.path && <Btn size="sm" variant="ghost" title="打开本地位置" disabled={!!busy} onClick={() => { void perform(a.id, 'app.openPath', { path: a.path }, false); }}><Ico name="ext" size={12} /></Btn>}
             </div>)}</div>}
-            <div className="row wrap" style={{ marginTop: 15 }}><Btn size="sm" variant="ghost" disabled={!!busy} onClick={() => { void perform('docs', 'app.openExternal', { url: meta.docs }, false); }}><Ico name="ext" size={12} /> {kind === 'skill' ? '发现官方技能' : '官方使用文档'}</Btn>{kind === 'plugin' && <><Btn size="sm" disabled={!!busy} onClick={() => go('plugins')}>管理云桥插件 →</Btn><span className="hint">其他插件请在原客户端启停</span></>}</div>
+            <div className="row wrap" style={{ marginTop: 15 }}><Btn size="sm" variant="ghost" disabled={!!busy} onClick={() => { void perform('docs', 'app.openExternal', { url: meta.docs }, false); }}><Ico name="ext" size={12} /> {kind === 'skill' ? '发现官方技能' : '官方使用文档'}</Btn>{kind === 'plugin' && <><Btn size="sm" disabled={!!busy} onClick={() => go('plugins')}>管理云汇插件 →</Btn><span className="hint">其他插件请在原客户端启停</span></>}</div>
           </div>;
         })}</div>
       </>}

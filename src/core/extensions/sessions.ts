@@ -12,7 +12,7 @@ export function augmentSessionRenderer(source:string):string{
   return source.replace(marker,marker+'\n'+nativeSessionBootstrap)
     // The compatible row action archives through the native server and never deletes session files.
     .replaceAll('删除会话','归档会话').replaceAll('删除“${escapeHtml(title)}”？','归档“${escapeHtml(title)}”？')
-    .replaceAll('这将永久删除远端任务及其子任务，无法撤销。','云桥仅支持本地会话归档。')
+    .replaceAll('这将永久删除远端任务及其子任务，无法撤销。','云汇仅支持本地会话归档。')
     .replaceAll('data-codex-delete-confirm="true">删除','data-codex-delete-confirm="true">归档')
     .replace('label: "删除",','label: "归档",');
 }
@@ -21,7 +21,7 @@ export async function sessionRoute(store:AuroraStore,cdp:DesktopCdp|undefined,ro
   if(!['/delete','/undo','/export-markdown','/archived-thread','/extensions/history'].includes(route))return null;
   if(payload.host_id&&payload.host_id!=='local')throw new Error('仅支持本地会话操作');
   const native=async(method:string,params:any)=>{if(!cdp?.connected)throw new Error('请先连接桌面客户端');return cdp.evaluate(`window.__auroraNativeSessionRequest(${JSON.stringify(method)},${JSON.stringify(params)})`);};
-  if(route==='/archived-thread'){const title=String(payload.title||'');const matches=scanSessions().filter(s=>s.agent==='Codex'&&s.title===title);if(matches.length!==1)throw new Error('无法唯一识别此归档会话，请从云桥历史会话中按 ID 导出');return{status:'ok',session_id:matches[0].id,host_id:'local',title:matches[0].title};}
+  if(route==='/archived-thread'){const title=String(payload.title||'');const matches=scanSessions().filter(s=>s.agent==='Codex'&&s.title===title);if(matches.length!==1)throw new Error('无法唯一识别此归档会话，请从云汇历史会话中按 ID 导出');return{status:'ok',session_id:matches[0].id,host_id:'local',title:matches[0].title};}
   if(route==='/export-markdown'){const id=sessionId(payload.session_id),item=scanSessions().find(s=>s.agent==='Codex'&&s.id===id);if(!item)throw new Error('未找到此本地会话');return{status:'exported',filename:`${id}.md`,markdown:exportSessionMarkdown(item),message:'已导出本地会话'};}
   if(route==='/extensions/history'){
     return{status:'ok',result:await queryExtensionHistory(String(payload.method||''),payload.params)};

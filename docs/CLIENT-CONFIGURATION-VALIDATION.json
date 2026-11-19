@@ -44,7 +44,7 @@
         "Read-only views leave isolated client configurations unchanged",
         "Native wizard previews, backs up, applies and restores shared Codex configuration without a desktop executable; auth bytes stay intact and CLI state stays synchronized"
       ],
-      "executable": "release\\client-config-debug-0.6.0\\win-unpacked\\YunQiaoAI.exe",
+      "executable": "release\\client-config-debug-0.6.0\\win-unpacked\\YunHuiAI.exe",
       "exeSha256": "e4d167aa57973ff6f357bfd4baade0a39a3b0a7a4d46503c8aab06ab932c0d23",
       "asarSha256": "805f3fd65c6c92777f25b825e823242e83a2210ff9f311ab418c03d9142243fe",
       "build": {

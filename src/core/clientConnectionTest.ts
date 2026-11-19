@@ -151,7 +151,7 @@ async function performTest(base: ClientConnectionTestResult, request: ClientConn
       ...(request.target === 'upstream' ? { extraHeaders: provider.headers, thinkingField: selected?.thinkingField } : {}),
     }, base.protocol as ProtocolName);
     // Only this marker is added to local requests; stored supplier headers never reach the gateway.
-    if (request.target === 'local') http.headers['x-aurora-agent'] = 'yunqiao-connection-test';
+    if (request.target === 'local') http.headers['x-aurora-agent'] = 'yunhui-connection-test';
     const response = await openUpstream(http.url, { method: 'POST', headers: http.headers, body: http.body, proxy: connection.proxy,
       timeoutMs: TEST_TIMEOUT_MS, signal: entry.controller.signal });
     if (entry.controller.signal.aborted) { response.raw.destroy(); throw new Error(); }

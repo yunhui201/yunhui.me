@@ -79,7 +79,7 @@ export function buildUpstreamHttp(
   const headers: Record<string, string> = {
     'content-type': 'application/json',
     accept: ir.stream ? 'text/event-stream' : 'application/json',
-    'user-agent': 'yunqiao-gateway/0.1',
+    'user-agent': 'yunhui-gateway/0.1',
   };
 
   let url = base;

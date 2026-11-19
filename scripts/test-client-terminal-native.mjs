@@ -11,7 +11,7 @@ import { build } from 'esbuild';
 // fixture clients. No installed CLI, credentials or existing terminal is touched.
 if (process.platform !== 'win32') { console.log('SKIP native client terminal: Windows only'); process.exit(0); }
 const run = promisify(execFile);
-const temporary = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-terminal-native-')));
+const temporary = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-terminal-native-')));
 const shell = path.join(process.env.SystemRoot || 'C:\\Windows', 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe');
 const priorHome = process.env.AURORA_CLIENT_HOME;
 const fixtures = [];
@@ -118,6 +118,6 @@ class TerminalFixture {
   await delay(350);
   await cleanupTerminals();
   if (priorHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = priorHome;
-  if (path.dirname(temporary) === fs.realpathSync.native(os.tmpdir()) && path.basename(temporary).startsWith('yunqiao-terminal-native-')) fs.rmSync(temporary, { recursive: true, force: true, maxRetries: 10, retryDelay: 150 });
+  if (path.dirname(temporary) === fs.realpathSync.native(os.tmpdir()) && path.basename(temporary).startsWith('yunhui-terminal-native-')) fs.rmSync(temporary, { recursive: true, force: true, maxRetries: 10, retryDelay: 150 });
 }
 console.log(`Native Windows terminal: ${checks} checks passed`);

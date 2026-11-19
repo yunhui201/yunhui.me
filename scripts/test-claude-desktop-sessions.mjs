@@ -5,7 +5,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const temporary = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-claude-desktop-sessions-')));
+const temporary = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-claude-desktop-sessions-')));
 const previous = process.env.AURORA_CLIENT_HOME;
 process.env.AURORA_CLIENT_HOME = temporary;
 let checks = 0, sequence = 0;
@@ -128,5 +128,5 @@ try {
   console.log(`Claude Desktop metadata: ${checks} checks passed`);
 } finally {
   if (previous === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = previous;
-  if (path.dirname(temporary) === fs.realpathSync.native(os.tmpdir()) && path.basename(temporary).startsWith('yunqiao-claude-desktop-sessions-')) fs.rmSync(temporary, { recursive: true, force: true });
+  if (path.dirname(temporary) === fs.realpathSync.native(os.tmpdir()) && path.basename(temporary).startsWith('yunhui-claude-desktop-sessions-')) fs.rmSync(temporary, { recursive: true, force: true });
 }

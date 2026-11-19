@@ -241,7 +241,7 @@ class CatalogHandler(BaseHTTPRequestHandler):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--exe', type=Path, default=ROOT / 'release/win-unpacked/YunQiaoAI.exe')
+    parser.add_argument('--exe', type=Path, default=ROOT / 'release/win-unpacked/YunHuiAI.exe')
     parser.add_argument('--launcher', type=Path, help='Launch a portable wrapper and verify its extracted runtime against --exe')
     parser.add_argument('--version', default=json.loads((ROOT / 'package.json').read_text(encoding='utf-8'))['version'])
     parser.add_argument('--expect-history-deferred', '--expect-client-busy', dest='expect_history_deferred', action='store_true', help='Require successful isolated configuration apply/restore while a real running client defers history without history writes')
@@ -264,7 +264,7 @@ def main():
     bundled = resources / 'codexplusplus'
     manifest = verify_packaged_resources(bundled)
 
-    profile = Path(tempfile.mkdtemp(prefix='yunqiao-packaged-')).resolve()
+    profile = Path(tempfile.mkdtemp(prefix='yunhui-packaged-')).resolve()
     data, clients, chromium = profile / 'data', profile / 'clients', profile / 'chromium'
     for folder in [data, clients / '.claude', clients / '.codex', chromium, profile / 'appdata', profile / 'localappdata']:
         folder.mkdir(parents=True, exist_ok=True)
@@ -284,10 +284,10 @@ def main():
     (data / 'settings.json').write_text(json.dumps({
         'theme': 'light', 'gatewayHost': '127.0.0.1', 'gatewayPort': port,
         'autoStartGateway': True, 'autoCheckUpdate': False, 'closeToTray': False,
-        'autoSyncModels': False, 'updateUrl': 'https://ai.haowucm.cn/pub.php?action=update',
+        'autoSyncModels': False, 'updateUrl': 'https://yunhui.me/pub.php?action=update',
         'catalogUrl': f'http://127.0.0.1:{catalog.server_port}/catalog',
     }), encoding='utf-8')
-    environment = dict(os.environ, YUNQIAO_TEST_ISOLATED='1', AURORA_HOME=str(data), YUNQIAO_HOME=str(data), AURORA_CLIENT_HOME=str(clients),
+    environment = dict(os.environ, YUNHUI_TEST_ISOLATED='1', AURORA_HOME=str(data), YUNHUI_HOME=str(data), AURORA_CLIENT_HOME=str(clients),
                        APPDATA=str(profile / 'appdata'), LOCALAPPDATA=str(profile / 'localappdata'))
     for key in ['ELECTRON_RUN_AS_NODE', 'AURORA_EXTENSION_ASSETS', 'AURORA_DEV', 'AURORA_UI_URL', 'AURORA_SHOT', 'AURORA_PAGE']:
         environment.pop(key, None)
@@ -369,7 +369,7 @@ def main():
             expect(page.get_by_text('更新接口地址', exact=True)).to_have_count(0)
             settings = page.evaluate("async () => (await window.aurora.invoke('state.get')).settings")
             assert settings['autoSyncModels'] is True
-            assert settings['updateUrl'] == 'https://api.github.com/repos/jxb412/yunqiao.me/releases/latest'
+            assert settings['updateUrl'] == 'https://api.github.com/repos/yunhui201/yunhui.me/releases/latest'
             page.screenshot(path=str(images / 'settings-v0.6.png'), animations='disabled', style='.toast-wrap{visibility:hidden!important}')
             checks.append('Packaged settings hide catalog controls and migrate legacy preferences to automatic sync and GitHub releases')
             build = page.evaluate("async () => (await window.aurora.invoke('state.get')).build")
@@ -377,7 +377,7 @@ def main():
             if build['channel'] == 'local':
                 expect(page.get_by_text('本地调试版', exact=False)).to_be_visible()
             page.get_by_role('button', name='数据与关于', exact=True).click()
-            expect(page.get_by_role('link', name='项目源码 ↗', exact=True)).to_have_attribute('href', 'https://github.com/jxb412/yunqiao.me')
+            expect(page.get_by_role('link', name='项目源码 ↗', exact=True)).to_have_attribute('href', 'https://github.com/yunhui201/yunhui.me')
             checks.append('The packaged build is identifiable and source links do not depend on an unpublished release tag')
             page.locator('nav').get_by_role('button', name='历史会话', exact=True).click()
             page.get_by_role('button', name='批量修复历史 / 区域迁移', exact=True).click()
@@ -392,7 +392,7 @@ def main():
             page.get_by_role('heading', name='ChatGPT 桌面版插件', exact=True).wait_for(timeout=15000)
             page.get_by_role('button', name='官方拓展包 5', exact=True).click()
             expect(page.locator('.extension-card')).to_have_count(5)
-            expect(page.get_by_text('云桥桌面扩展', exact=True)).to_be_visible()
+            expect(page.get_by_text('云汇桌面扩展', exact=True)).to_be_visible()
             assert 'CODEX++' not in page.locator('main').inner_text().upper()
             extension_state = page.evaluate("() => window.aurora.invoke('extension.list')")
             assert extension_state['client']['installed'] is False, 'Isolated acceptance must not discover a real desktop client'
@@ -405,8 +405,8 @@ def main():
             page.screenshot(path=str(images / 'plugins-v0.6.png'), animations='disabled', style='.toast-wrap{visibility:hidden!important}')
             checks.append('Packaged plugin page renders all five packages and offers three recovery actions for the isolated missing client without unrelated errors')
 
-            page.locator('nav').get_by_role('button', name='云桥会员', exact=True).click()
-            page.get_by_role('heading', name='云桥会员', exact=True).wait_for()
+            page.locator('nav').get_by_role('button', name='云汇会员', exact=True).click()
+            page.get_by_role('heading', name='云汇会员', exact=True).wait_for()
             expect(page.get_by_label('平台会员邮箱', exact=True)).to_be_visible()
             expect(page.get_by_label('平台会员密码', exact=True)).to_have_value('')
             expect(page.get_by_label('会员访问令牌', exact=True)).to_have_value('')
@@ -499,12 +499,12 @@ def main():
                 first_backup = first_backups['backups'][0]
                 history_fixture['assert_backup'](first_backup['path'], history_original, 1)
             configured = (clients / '.codex/config.toml').read_text(encoding='utf-8')
-            assert 'model_provider = "yunqiao"' in configured and supplier['id'] + '/gpt-6.1-sol' in configured
+            assert 'model_provider = "yunhui"' in configured and supplier['id'] + '/gpt-6.1-sol' in configured
             limits = tomllib.loads(configured)
-            target_blocks = re.findall(r'^# yunqiao-history-provider:v1:([A-Za-z0-9_-]+):([a-f0-9]{64})\n(.*?)^# yunqiao-history-provider:end:\1$', configured, re.MULTILINE | re.DOTALL)
+            target_blocks = re.findall(r'^# yunhui-history-provider:v1:([A-Za-z0-9_-]+):([a-f0-9]{64})\n(.*?)^# yunhui-history-provider:end:\1$', configured, re.MULTILINE | re.DOTALL)
             owned_targets = []
             for encoded_id, digest, body in target_blocks:
-                if body.startswith('# yunqiao-history-target:v1\n'):
+                if body.startswith('# yunhui-history-target:v1\n'):
                     assert hashlib.sha256(body.encode('utf-8')).hexdigest() == digest
                     owned_targets.append(base64.urlsafe_b64decode(encoded_id + '=' * (-len(encoded_id) % 4)).decode('utf-8'))
             assert len(owned_targets) == 1, 'Automatic history needs one verified owned provider for the selected route'

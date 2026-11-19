@@ -10,7 +10,7 @@
     "nativePackage": {
       "passed": true,
       "count": 14,
-      "executable": "release\\context-debug-0.6.0\\win-unpacked\\YunQiaoAI.exe",
+      "executable": "release\\context-debug-0.6.0\\win-unpacked\\YunHuiAI.exe",
       "exeSha256": "832898e68ffee8f0c0ef0fde3ad00b9bbaa5b2ff85e78b087662f6a99e532376",
       "asarSha256": "60ee35b19900cdb1fde9314724808c270d6fb47a3b5c1723c35f9fb850f51125",
       "build": {

@@ -29,12 +29,12 @@ def bundle(source, output, platform, loader):
 
 def main():
     checks, errors = [], []
-    with tempfile.TemporaryDirectory(prefix='yunqiao-history-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-history-ui-') as temporary:
         scratch = Path(temporary).resolve()
         clients, home = scratch / 'clients', scratch / 'clients/.codex'
         home.mkdir(parents=True)
         config_file = home / 'config.toml'
-        config = 'model_provider = "openai"\n[model_providers."国内.中转"]\nname = "国内备用"\n[model_providers.aurora]\nname = "云桥"\n'
+        config = 'model_provider = "openai"\n[model_providers."国内.中转"]\nname = "国内备用"\n[model_providers.aurora]\nname = "云汇"\n'
         config_file.write_text(config, encoding='utf-8', newline='\n')
         original_config = config_file.read_bytes()
         db_file = home / 'state_5.sqlite'

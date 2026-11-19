@@ -72,7 +72,7 @@ function getJson<T = any>(urlStr: string, timeoutMs = 12000, headers: Record<str
         hostname: u.hostname,
         port: u.port || (u.protocol === 'https:' ? 443 : 80),
         path: u.pathname + u.search,
-        headers: { accept: 'application/json', 'user-agent': 'yunqiao/0.1', ...headers },
+        headers: { accept: 'application/json', 'user-agent': 'yunhui/0.1', ...headers },
         timeout: remaining,
       },
       (res) => {
@@ -306,14 +306,14 @@ function secureUpdateUrl(value: unknown): URL {
 
 function githubReleasePage(value: unknown, tag: string): string {
   const url = secureUpdateUrl(value);
-  if (url.hostname !== 'github.com' || url.search || decodeURIComponent(url.pathname) !== `/${RELEASE_REPOSITORY}/releases/tag/${tag}`) throw new Error('GitHub 发布页面不属于云桥仓库');
+  if (url.hostname !== 'github.com' || url.search || decodeURIComponent(url.pathname) !== `/${RELEASE_REPOSITORY}/releases/tag/${tag}`) throw new Error('GitHub 发布页面不属于云汇仓库');
   return url.href;
 }
 
 /** Match only actual builder output; source archives, blockmaps and unsigned iOS ZIPs are not installers. */
 function clientAssetRank(name: string, version: string, target: Required<UpdateTarget>): number {
   const escaped = version.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const prefix = `(?:YunQiaoAI|Aurora)-${escaped}-`;
+  const prefix = `(?:YunHuiAI|Aurora)-${escaped}-`;
   if (target.platform === 'win') {
     const m = new RegExp(`^${prefix}win-${target.arch}-(setup|portable)\\.exe$`, 'i').exec(name);
     return m ? (m[1].toLowerCase() === 'setup' ? 0 : 1) : -1;

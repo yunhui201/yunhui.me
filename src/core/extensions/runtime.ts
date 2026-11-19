@@ -39,7 +39,7 @@ const FLOATING_FILES=['runtime/state.js','core/appearance-runtime.js','runtime/d
 export function buildRuntimeSource(store:AuroraStore,state:ExtensionState,bridge:string,nativeModules=''):string{
   const enabled=(id:string)=>!BUILTINS.find(b=>b.id===id)?.unsupported&&effectiveEntry(state,`builtin:${id}`).enabled;
   const disabled=BUILTINS.filter(b=>!enabled(b.id)).map(b=>b.id),settings=backendSettings(store,state);
-  const flags=`window.__codexPlusBuiltinExtensionState=${JSON.stringify({disabled,replacedBy:{}})};globalThis.__codexPlusBuiltinInactive=new Set(${JSON.stringify(disabled)});window.__CODEX_PLUS_VERSION__='2.6.9 / yunqiao.me';window.__CODEX_PLUS_BUILD__='yunqiao.me-0.6';window.__CODEX_PLUS_INSTANCE_LABEL__=${JSON.stringify(effectiveEntry(state,'builtin:instance-identity').config.label||'云桥 AI')};window.__CODEX_PLUS_PASTE_FIX__={enabled:${enabled('paste-fix')}};window.__CODEX_PLUS_FORCE_CHINESE_LOCALE__={enabled:${enabled('force-chinese-locale')},locale:'zh-CN'};window.__CODEX_PLUS_STATSIG_OVERRIDES__={enabled:${enabled('statsig-overrides')}};window.__CODEX_PLUS_HIDE_OFFICIAL_USAGE_ALERT__={enabled:false};window.__CODEX_PLUS_EXTERNAL_DREAM_SKIN_RUNTIME__=true;`;
+  const flags=`window.__codexPlusBuiltinExtensionState=${JSON.stringify({disabled,replacedBy:{}})};globalThis.__codexPlusBuiltinInactive=new Set(${JSON.stringify(disabled)});window.__CODEX_PLUS_VERSION__='2.6.9 / yunhui.me';window.__CODEX_PLUS_BUILD__='yunhui.me-0.6';window.__CODEX_PLUS_INSTANCE_LABEL__=${JSON.stringify(effectiveEntry(state,'builtin:instance-identity').config.label||'云汇 AI')};window.__CODEX_PLUS_PASTE_FIX__={enabled:${enabled('paste-fix')}};window.__CODEX_PLUS_FORCE_CHINESE_LOCALE__={enabled:${enabled('force-chinese-locale')},locale:'zh-CN'};window.__CODEX_PLUS_STATSIG_OVERRIDES__={enabled:${enabled('statsig-overrides')}};window.__CODEX_PLUS_HIDE_OFFICIAL_USAGE_ALERT__={enabled:false};window.__CODEX_PLUS_EXTERNAL_DREAM_SKIN_RUNTIME__=true;`;
   const prelude=script('composer-readiness.js')+'\n'+script('native-fast-unlock.js')+'\n'+script('native-fast-rspack.js')+`\nwindow.__codexPlusNativeFastUnlock?.runtime.update(${JSON.stringify(settings)});\n`+script('native-predictions.js')+`\nwindow.__codexPlusNativePredictions?.runtime.update(${JSON.stringify(settings)});\n`;
   const bundled=BUNDLED.filter(id=>{const e=effectiveEntry(state,`bundled:${id}`);return e.installed&&e.enabled;}).map(id=>packageScript(id,state)).join('\n');
   const theme=enabled('dream-skin')?dreamThemeSource(effectiveEntry(state,'builtin:dream-skin').config):'';
@@ -97,7 +97,7 @@ export class ExtensionRuntime{
   private startCursor(port:number):void{
     const generation=++this.cursorGeneration;
     const tick=async()=>{if(generation!==this.cursorGeneration||this.cursorBusy||!this.cdp?.connected)return;this.cursorBusy=true;try{
-      const electron=await import('electron');if(generation!==this.cursorGeneration)return;const screen=electron.screen;if(!screen?.getCursorScreenPoint)throw new Error('系统光标同步需要云桥 Windows/macOS 桌面进程');
+      const electron=await import('electron');if(generation!==this.cursorGeneration)return;const screen=electron.screen;if(!screen?.getCursorScreenPoint)throw new Error('系统光标同步需要云汇 Windows/macOS 桌面进程');
       if(!this.petCdp?.connected){const connected=await DesktopCdp.connect(port,'avatar');if(generation!==this.cursorGeneration){connected.close();return;}this.petCdp=connected;await this.petCdp.replaceScripts(`(()=>{const start=()=>{${script('pet-real-mouse-inject.js')}};if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();})();`,false);}
       if(generation!==this.cursorGeneration)return;const point=screen.getCursorScreenPoint();const accepted=await this.petCdp.evaluate(`window.__codexPlusPetRealMouseLook?.updateScreenPoint(${JSON.stringify(point)})===true`);if(!accepted)throw new Error('原生桌宠尚未准备好');if(generation===this.cursorGeneration)this.cursorError='';
     }catch(e){if(generation===this.cursorGeneration)this.cursorError=`等待原生桌宠窗口：${(e as Error).message}`;}finally{if(generation===this.cursorGeneration)this.cursorBusy=false;}};
@@ -113,12 +113,12 @@ export class ExtensionRuntime{
     if(route==='/codex-model-catalog'||route==='/model-catalog/public')return desktopModelCatalog(this.store);
     if(route==='/settings/set')return extensionOperation(this.store,async()=>{
       const allowed=Object.fromEntries(Object.entries(SETTING_IDS).map(([id,key])=>[`codexApp${key}`,id]));
-      for(const[key,value]of Object.entries(payload)){const id=allowed[key];if(id){const def=BUILTINS.find(b=>b.id===id)!;if(def.unsupported&&value)throw new Error(def.unsupported);if(typeof value!=='boolean')throw new Error('设置值必须是开关');state.entries[`builtin:${id}`]={...effectiveEntry(state,`builtin:${id}`),enabled:value};}else if(['codexAppConversationViewMaxWidth','codexAppCapacityAutoRetryMaxAttempts','codexAppCapacityAutoRetryIntervalSeconds'].includes(key)&&typeof value==='number'&&value>=0&&value<=4000)state.settings[key]=value;else throw new Error(`云桥尚未开放此上游设置：${key}`);}
+      for(const[key,value]of Object.entries(payload)){const id=allowed[key];if(id){const def=BUILTINS.find(b=>b.id===id)!;if(def.unsupported&&value)throw new Error(def.unsupported);if(typeof value!=='boolean')throw new Error('设置值必须是开关');state.entries[`builtin:${id}`]={...effectiveEntry(state,`builtin:${id}`),enabled:value};}else if(['codexAppConversationViewMaxWidth','codexAppCapacityAutoRetryMaxAttempts','codexAppCapacityAutoRetryIntervalSeconds'].includes(key)&&typeof value==='number'&&value>=0&&value<=4000)state.settings[key]=value;else throw new Error(`云汇尚未开放此上游设置：${key}`);}
       if(payload.codexAppModelWhitelistUnlock===true&&desktopModelCatalog(this.store).status!=='ok')throw new Error('请先在客户端页为 ChatGPT 桌面版应用供应商配置');
       saveState(this.store,state);this.scheduleApply();return backendSettings(this.store,state);
     });
     if(route==='/settings/catalog')return {status:'ok',groups:[],items:[]};
-    if(route==='/backend/status')return {status:'ok',version:'2.6.9 / yunqiao.me',build:'yunqiao.me-0.6',available:true};
+    if(route==='/backend/status')return {status:'ok',version:'2.6.9 / yunhui.me',build:'yunhui.me-0.6',available:true};
     if(route==='/stepwise/settings'){const info=stepwiseSettings(this.store);return{status:info.status,settings:info.settings};}
     if(route==='/stepwise/generate')return generateSuggestions(this.store,payload);
     if(route==='/stepwise/test'){const info=stepwiseSettings(this.store);return{status:info.settings.apiKeyConfigured?'ok':'failed',message:info.settings.apiKeyConfigured?'已配置供应商；点击生成建议将实际调用模型':'请先配置供应商 API Key'};}
@@ -126,19 +126,19 @@ export class ExtensionRuntime{
     if(route==='/thread-usage-live'){
       const id=String(payload.session_id||'').replace(/^local:/,'');const result=threadUsage(id);
       if(!result.events.length){
-        result.events=this.store.recentRequests(300).filter(r=>r.threadId===id).reverse().map(r=>({t:r.ts,turn_id:null,input_tokens:r.estimated?null:r.inputTokens,output_tokens:r.estimated?null:r.outputTokens,cached_input_tokens:r.cacheReadKnown?r.cacheRead:null,cache_write_tokens:r.cacheWriteKnown?r.cacheWrite:null,total_tokens:r.estimated?null:r.inputTokens+r.outputTokens,context_window:null,turn_output_tokens:null,source:'yunqiao.me-gateway'}));
+        result.events=this.store.recentRequests(300).filter(r=>r.threadId===id).reverse().map(r=>({t:r.ts,turn_id:null,input_tokens:r.estimated?null:r.inputTokens,output_tokens:r.estimated?null:r.outputTokens,cached_input_tokens:r.cacheReadKnown?r.cacheRead:null,cache_write_tokens:r.cacheWriteKnown?r.cacheWrite:null,total_tokens:r.estimated?null:r.inputTokens+r.outputTokens,context_window:null,turn_output_tokens:null,source:'yunhui.me-gateway'}));
         if(result.events.length)result.status='ok';
       }
       const live=activeRequests(this.store).filter(r=>r.threadId===id).at(-1);
       if(live&&[live.inputTokens,live.outputTokens,live.cacheRead,live.cacheWrite].some(v=>v!==undefined)){
-        result.events.push({t:new Date().toISOString(),turn_id:`gateway:${live.id}`,input_tokens:live.inputTokens??null,output_tokens:live.outputTokens??null,cached_input_tokens:live.cacheRead??null,cache_write_tokens:live.cacheWrite??null,total_tokens:live.inputTokens!==undefined&&live.outputTokens!==undefined?live.inputTokens+live.outputTokens:null,context_window:result.events.at(-1)?.context_window??null,turn_output_tokens:null,source:'yunqiao.me-gateway-live'});result.status='ok';
+        result.events.push({t:new Date().toISOString(),turn_id:`gateway:${live.id}`,input_tokens:live.inputTokens??null,output_tokens:live.outputTokens??null,cached_input_tokens:live.cacheRead??null,cache_write_tokens:live.cacheWrite??null,total_tokens:live.inputTokens!==undefined&&live.outputTokens!==undefined?live.inputTokens+live.outputTokens:null,context_window:result.events.at(-1)?.context_window??null,turn_output_tokens:null,source:'yunhui.me-gateway-live'});result.status='ok';
       }
       return result;
     }
     if(route==='/proxy-status')return {status:'ok',requests:activeRequests(this.store).filter(r=>r.threadId).map(r=>({...r,phase:r.phase==='streaming'?'generating':r.phase==='connecting'?'requesting':'retrying',attemptDetails:[]}))};
     const sessionResult=await sessionRoute(this.store,this.cdp,route,payload);if(sessionResult!==null)return sessionResult;
     if(route==='/image-overlay/image'){
-      const file=effectiveEntry(state,'bundled:image-overlay').config.imagePath;if(!file)throw new Error('请先在云桥扩展设置选择背景图片');return{status:'ok',dataUrl:dataUrl(path.resolve(file))};
+      const file=effectiveEntry(state,'bundled:image-overlay').config.imagePath;if(!file)throw new Error('请先在云汇扩展设置选择背景图片');return{status:'ok',dataUrl:dataUrl(path.resolve(file))};
     }
     if(route==='/agent-pet/image'){
       const config=effectiveEntry(state,'bundled:agent-pet').config;
@@ -179,6 +179,6 @@ export class ExtensionRuntime{
       return{status:'ok',scripts:BUNDLED.filter(id=>effectiveEntry(state,`bundled:${id}`).installed).map(id=>{const key=`bundled:${id}`,m=manifest(id),entry=effectiveEntry(state,key);return{key,name:m.name,source:'bundled',enabled:entry.enabled,status:errors.has(key)?'failed':applied.has(key)?'loaded':entry.enabled?'pending':'disabled',error:errors.get(key)||'',package:{...m,configSchema:m.config,config:entry.config}};}),builtins:BUILTINS.map(b=>({...b,key:`builtin:${b.id}`,...effectiveEntry(state,`builtin:${b.id}`)}))};
     }
     if(route==='/extensions/request-capture'){if(this.cdp?.connected&&!this.stopCapture)this.stopCapture=captureNativeClient(this.cdp);return{status:'ok',message:'已启动原生客户端能力识别'};}
-    throw new Error(`云桥尚未适配此后台能力：${route}`);
+    throw new Error(`云汇尚未适配此后台能力：${route}`);
   }
 }

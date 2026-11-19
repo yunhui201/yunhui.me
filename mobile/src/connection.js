@@ -14,7 +14,7 @@ export function decodeRpc(status, data) {
   if (status === 401 || status === 403) throw new Error('连接被拒绝，请检查网关访问令牌及远程访问设置');
   if (status < 200 || status >= 300) throw new Error(`网关请求失败（HTTP ${status}）`);
   let body;
-  try { body = typeof data === 'string' ? JSON.parse(data) : data; } catch { throw new Error('地址返回的不是云桥 AI 网关数据'); }
+  try { body = typeof data === 'string' ? JSON.parse(data) : data; } catch { throw new Error('地址返回的不是云汇 AI 网关数据'); }
   if (!body || typeof body !== 'object') throw new Error('网关返回了无效数据');
   if (body.error) throw new Error(typeof body.error === 'string' ? body.error : body.error.message || '网关请求失败');
   if (!Object.hasOwn(body, 'result')) throw new Error('网关响应缺少结果，请检查地址和版本');

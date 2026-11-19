@@ -91,7 +91,7 @@ try {
   const apiPreview = adapter.preview(apiContext); assert.equal(apiPreview.ok, true, apiPreview.message);
   const apiApplied = adapter.connect({ ...apiContext, expectedRevision: apiPreview.revision }); assert.equal(apiApplied.ok, true, apiApplied.message);
   const apiConfig = parseToml(fs.readFileSync(path.join(codexHome, 'config.toml'), 'utf8'));
-  assert.equal(apiConfig.model_provider, 'yunqiao'); assert.ok(apiConfig.model_providers.yunqiao); assert.equal(apiConfig.model_providers.aurora, undefined);
+  assert.equal(apiConfig.model_provider, 'yunhui'); assert.ok(apiConfig.model_providers.yunhui); assert.equal(apiConfig.model_providers.aurora, undefined);
   const gatewayResult = await runCli();
   assert.equal(gatewayResult.answer, 'RELAY_NATIVE_OK'); assert.equal(supplierCalls.length, 1); assert.equal(officialCalls.length, 0);
   assert.equal(supplierCalls[0].path, '/v1/responses'); assert.equal(supplierCalls[0].body.model, 'gpt-fixture');
@@ -106,7 +106,7 @@ try {
   const directPreview = adapter.preview(directContext); assert.equal(directPreview.ok, true, directPreview.message);
   const directApplied = adapter.connect({ ...directContext, expectedRevision: directPreview.revision }); assert.equal(directApplied.ok, true, directApplied.message);
   const directConfig = parseToml(fs.readFileSync(path.join(codexHome, 'config.toml'), 'utf8'));
-  assert.equal(directConfig.model_provider, 'yunqiao'); assert.equal(directConfig.model_providers.yunqiao.base_url, directContext.provider.baseUrl + '/v1');
+  assert.equal(directConfig.model_provider, 'yunhui'); assert.equal(directConfig.model_providers.yunhui.base_url, directContext.provider.baseUrl + '/v1');
   const gatewayPort = gateway.getStatus().port;
   await gateway.stop();
   const directResult = await runCli();

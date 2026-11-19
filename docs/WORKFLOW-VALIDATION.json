@@ -28,7 +28,7 @@
     "package": {
       "passed": true,
       "count": 13,
-      "executable": "release\\community-debug-0.6.0\\win-unpacked\\YunQiaoAI.exe",
+      "executable": "release\\community-debug-0.6.0\\win-unpacked\\YunHuiAI.exe",
       "exeSha256": "a630ec776c38ea7f09e1c0055aab506ca1d03630e2dae4cb4fca424cf0ba0d5c",
       "asarSha256": "18656f36b8b722b149f2630df0de25361873b6050ede71f8047ef3741367e9c1",
       "build": {

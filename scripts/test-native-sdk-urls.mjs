@@ -18,7 +18,7 @@ if (!process.env.AURORA_NATIVE_SDKS) throw new Error('Set AURORA_NATIVE_SDKS to 
 const sdkRoot = path.resolve(process.env.AURORA_NATIVE_SDKS);
 const sdkRequire = createRequire(path.join(sdkRoot, '__native_sdk_fixture__.cjs'));
 const workspace = path.resolve(import.meta.dirname, '..');
-const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-native-sdk-check-'));
+const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-native-sdk-check-'));
 const origin = 'http://127.0.0.1:43217'; // Never contacted: fetch is replaced with an in-memory response.
 const key = 'native-sdk-fake-key', model = 'fixture-model';
 const calls = [];
@@ -98,6 +98,6 @@ try {
 } finally {
   globalThis.fetch = originalFetch; http.request = originalHttp; https.request = originalHttps;
   assert.equal(fs.realpathSync(path.dirname(scratch)), fs.realpathSync(os.tmpdir()));
-  assert.ok(path.basename(scratch).startsWith('yunqiao-native-sdk-check-'));
+  assert.ok(path.basename(scratch).startsWith('yunhui-native-sdk-check-'));
   fs.rmSync(scratch, { recursive: true, force: true });
 }

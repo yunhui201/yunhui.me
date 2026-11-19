@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 import { spawn } from 'node:child_process';
 
 const root = path.resolve(import.meta.dirname, '..');
-const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-shell-')));
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-shell-')));
 const data = path.join(scratch, 'data'), clients = path.join(scratch, 'clients'), report = path.join(scratch, 'result.json');
 for (const dir of [data, clients]) fs.mkdirSync(dir);
 const catalog = fs.readFileSync(path.join(root, 'server/seed-catalog.json'));
@@ -64,7 +64,7 @@ require(${JSON.stringify(path.join(root, 'dist/main/main.cjs'))});
 `);
 let child;
 try {
-  const env = { ...process.env, AURORA_HOME: data, YUNQIAO_HOME: data, AURORA_CLIENT_HOME: clients, YUNQIAO_TEST_ISOLATED: '1', AURORA_UI_TEST: '0', APPDATA: path.join(scratch, 'appdata'), LOCALAPPDATA: path.join(scratch, 'localappdata') };
+  const env = { ...process.env, AURORA_HOME: data, YUNHUI_HOME: data, AURORA_CLIENT_HOME: clients, YUNHUI_TEST_ISOLATED: '1', AURORA_UI_TEST: '0', APPDATA: path.join(scratch, 'appdata'), LOCALAPPDATA: path.join(scratch, 'localappdata') };
   for (const key of ['ELECTRON_RUN_AS_NODE', 'AURORA_DEV', 'AURORA_UI_URL', 'AURORA_SHOT', 'AURORA_PAGE', 'AURORA_EXTENSION_ASSETS']) delete env[key];
   child = spawn(createRequire(import.meta.url)('electron'), [runner], { cwd: root, env, stdio: 'inherit', windowsHide: true });
   const exit = await new Promise((resolve, reject) => { child.once('error', reject); child.once('exit', resolve); });

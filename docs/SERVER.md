@@ -1,6 +1,6 @@
 # 远端目录与版本服务
 
-现有站点：`https://ai.haowucm.cn`，服务器网站目录 `/www/wwwroot/ai.haowucm.cn`。2026-11-16 已将官网备用更新发布为 **0.6.3**，Windows x64、macOS Apple Silicon arm64 和 Intel x64 均提供对应安装包与 SHA256。
+现有站点：`https://yunhui.me`，服务器网站目录 `/www/wwwroot/yunhui.me`。2026-11-16 已将官网备用更新发布为 **0.6.3**，Windows x64、macOS Apple Silicon arm64 和 Intel x64 均提供对应安装包与 SHA256。
 
 ## 客户端读取
 
@@ -11,17 +11,17 @@
 
 客户端启动时自动读取官方目录并缓存，设置页不再显示目录地址、验证按钮和自动模型同步开关。保存有启用密钥的供应商后自动同步模型；升级和导入旧备份时会统一开启。目录拉取校验协议、地址、字段与数量；失败时使用本地最后成功的缓存并提示来源。目录不包含用户 API Key，也不自动应用可执行脚本。
 
-桌面「系统设置 → 版本更新」默认查询 `https://api.github.com/repos/jxb412/yunqiao.me/releases/latest`，匹配当前操作系统与处理器的安装包，跳过草稿、预发布、源码和未签名 iOS ZIP。GitHub 不可用或缺少匹配安装包时自动查询官网。客户也可点击「官网备用」，此时必须取得同版本或更新版本的官网安装包，旧版或未同步的包不会提供下载。检查更新不会自动打开浏览器，网站管理首页不作为下载入口。
+桌面「系统设置 → 版本更新」默认查询 `https://api.github.com/repos/yunhui201/yunhui.me/releases/latest`，匹配当前操作系统与处理器的安装包，跳过草稿、预发布、源码和未签名 iOS ZIP。GitHub 不可用或缺少匹配安装包时自动查询官网。客户也可点击「官网备用」，此时必须取得同版本或更新版本的官网安装包，旧版或未同步的包不会提供下载。检查更新不会自动打开浏览器，网站管理首页不作为下载入口。
 
-官网仍使用现有更新接口，客户端传入 `platform`、`arch`、`current`。Windows 包名遵循 `YunQiaoAI-版本-win-架构-setup.exe`（或 `portable.exe`）；macOS 为 `YunQiaoAI-版本-mac-架构.dmg`，Linux 为 `YunQiaoAI-版本-linux-架构.AppImage`。备用文件应放在官网 HTTPS `/releases/` 下，并与后台版本一致。
+官网仍使用现有更新接口，客户端传入 `platform`、`arch`、`current`。Windows 包名遵循 `YunHuiAI-版本-win-架构-setup.exe`（或 `portable.exe`）；macOS 为 `YunHuiAI-版本-mac-架构.dmg`，Linux 为 `YunHuiAI-版本-linux-架构.AppImage`。备用文件应放在官网 HTTPS `/releases/` 下，并与后台版本一致。
 
-当前 GitHub [v0.6.3](https://github.com/jxb412/yunqiao.me/releases/tag/v0.6.3) 为公开正式版，官网备用元数据与之同步。本版修复 Windows 命令行客户端新终端启动，并支持 Claude 与 Claude-3p 桌面历史目录识别及会话来源展示；同时保留紧凑连接卡片、强制重启和默认深夜主题。旧版安装包继续保留。Windows 安装包、免安装版及 ZIP 与两种 Mac 架构的 DMG、ZIP 均按发布清单校验后同步。
+当前 GitHub [v0.6.3](https://github.com/yunhui201/yunhui.me/releases/tag/v0.6.3) 为公开正式版，官网备用元数据与之同步。本版修复 Windows 命令行客户端新终端启动，并支持 Claude 与 Claude-3p 桌面历史目录识别及会话来源展示；同时保留紧凑连接卡片、强制重启和默认深夜主题。旧版安装包继续保留。Windows 安装包、免安装版及 ZIP 与两种 Mac 架构的 DMG、ZIP 均按发布清单校验后同步。
 
 | 平台 | 官网更新安装包 |
 | --- | --- |
-| Windows x64 | [安装版 EXE](https://ai.haowucm.cn/releases/YunQiaoAI-0.6.3-win-x64-setup.exe) |
-| macOS Apple Silicon arm64 | [ARM DMG](https://ai.haowucm.cn/releases/YunQiaoAI-0.6.3-mac-arm64.dmg) |
-| macOS Intel x64 | [Intel DMG](https://ai.haowucm.cn/releases/YunQiaoAI-0.6.3-mac-x64.dmg) |
+| Windows x64 | [安装版 EXE](https://yunhui.me/releases/YunHuiAI-0.6.3-win-x64-setup.exe) |
+| macOS Apple Silicon arm64 | [ARM DMG](https://yunhui.me/releases/YunHuiAI-0.6.3-mac-arm64.dmg) |
+| macOS Intel x64 | [Intel DMG](https://yunhui.me/releases/YunHuiAI-0.6.3-mac-x64.dmg) |
 
 已在线验证三平台：当前版本 0.6.2 返回 `hasUpdate:true`，当前版本 0.6.3 返回最新版本 0.6.3、`hasUpdate:false`。没有安装包的平台/架构返回空地址，不套用其他平台文件。后台版本页分别维护两种 Mac 架构；仅修改更新说明不会删除 Intel Mac 或未显示平台的链接。
 
@@ -72,16 +72,16 @@ python scripts/deploy_php.py
 python scripts/deploy_php.py --apply
 
 # 指向已验证的完整交付目录，先核实全部文件与发布清单
-python scripts/deploy_release.py --release-dir release/yunqiao.me-0.6.3
+python scripts/deploy_release.py --release-dir release/yunhui.me-0.6.3
 
 # 上传安装包；默认拒绝覆盖不同内容的同名文件
-python scripts/deploy_release.py --release-dir release/yunqiao.me-0.6.3 --apply
+python scripts/deploy_release.py --release-dir release/yunhui.me-0.6.3 --apply
 
 # 校验三平台安装包并预览官网元数据
-python scripts/publish_update.py --release-dir release/yunqiao.me-0.6.3
+python scripts/publish_update.py --release-dir release/yunhui.me-0.6.3
 
 # 官网文件校验通过后发布；更新说明可另用 --notes-file 指定 UTF-8 文件
-python scripts/publish_update.py --release-dir release/yunqiao.me-0.6.3 --apply
+python scripts/publish_update.py --release-dir release/yunhui.me-0.6.3 --apply
 ```
 
 PHP 脚本先暂存到网站目录之外并逐个运行 `php -l`，检查通过后保留旧文件至 `/www/aurora-backups/<时间>/`，再逐文件原子替换。不重新初始化供应商目录、账号密码或版本信息；也不递归修改网站所有权。若服务器 PHP CLI 路径不同，先调整脚本使用的 CLI 路径。

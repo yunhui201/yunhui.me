@@ -21,7 +21,7 @@ def bundle(source, output, platform, loader):
 
 def main():
     checks, errors = [], []
-    with tempfile.TemporaryDirectory(prefix='yunqiao-session-relations-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-session-relations-ui-') as temporary:
         scratch = Path(temporary).resolve()
         clients = scratch / 'clients'
         originals = {}

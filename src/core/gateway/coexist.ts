@@ -103,7 +103,7 @@ export function readOfficialCodexIdentity(): OfficialCodexIdentity {
     const expired = value.expiresAt !== undefined && value.expiresAt <= Date.now();
     return { available: !expired, status: expired ? 'expired' : 'signed-in', accountKnown: !!value.accountId,
       ...(value.expiresAt ? { expiresAt: new Date(value.expiresAt).toISOString() } : {}),
-      message: expired ? '官方登录已过期，请让官方客户端刷新或重新登录；云桥不会轮换其登录凭据' : '使用本机官方登录，凭据由官方客户端维护' };
+      message: expired ? '官方登录已过期，请让官方客户端刷新或重新登录；云汇不会轮换其登录凭据' : '使用本机官方登录，凭据由官方客户端维护' };
   } catch (error) {
     const missing = (error as NodeJS.ErrnoException).code === 'ENOENT';
     return { available: false, status: missing ? 'missing' : 'invalid', accountKnown: false,

@@ -4,7 +4,7 @@
 
 实测 5 项通过：
 
-1. 由项目 `codex-cli` adapter 实际预览并应用配置，真实 CLI 使用 `--strict-config` 接受根级 `model_provider = "openai"`、`openai_base_url` 和 `model_catalog_json`。第三方模型通过云桥 AI 网关到达本地模拟供应商，模型前缀正确还原，CLI 接收完整 Responses SSE 并输出 `RELAY_NATIVE_OK`。
+1. 由项目 `codex-cli` adapter 实际预览并应用配置，真实 CLI 使用 `--strict-config` 接受根级 `model_provider = "openai"`、`openai_base_url` 和 `model_catalog_json`。第三方模型通过云汇 AI 网关到达本地模拟供应商，模型前缀正确还原，CLI 接收完整 Responses SSE 并输出 `RELAY_NATIVE_OK`。
 2. 同一配置切换 `official/gpt-fixture` 后进入官方分支，官方请求经测试注入的传输到达本地模拟服务，CLI 输出 `OFFICIAL_NATIVE_OK`，不会转到第三方供应商。
 3. 假 OAuth 仅进入官方模拟传输；第三方仅收到测试供应商 Key，不含 OAuth 或 account ID。临时 auth.json 和生成的模型目录字节保持不变。
 4. 此 alpha 版本的独立 `work.config.toml` 配合 `--profile work` 能继承根级共存端点和目录，真实会话成功。
@@ -12,7 +12,7 @@
 
 兼容边界也已实测，不能把这些失败算成功：
 
-- 此 alpha 版本已经完全移除旧的 `profile = "work.v2"` + `[profiles."work.v2"]` 激活方式，会明确报错要求 `--profile` 和独立文件。它还拒绝 `--profile work.v2` 中的点号，要求普通名称。原本采用旧 schema 的配置已经不被该二进制接受；这不代表云桥默认生成的根级配置失败。
+- 此 alpha 版本已经完全移除旧的 `profile = "work.v2"` + `[profiles."work.v2"]` 激活方式，会明确报错要求 `--profile` 和独立文件。它还拒绝 `--profile work.v2` 中的点号，要求普通名称。原本采用旧 schema 的配置已经不被该二进制接受；这不代表云汇默认生成的根级配置失败。
 - 根级 `model_catalog_json` / `openai_base_url` 真实可用。旧 profile 表嵌套这些字段会被严格配置检查拒绝。adapter 已改为只在根级写入，在选中的旧 profile 中移除这两项，让仍支持旧 schema 的客户端继承根级配置；不改其他 profile，不自动迁移旧配置。
 - 此修改的现有配置、恢复与客户端测试分别为 20 项及 35 项通过。旧 profile schema 的真实旧版本二进制未另行下载安装验证。
 

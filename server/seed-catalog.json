@@ -3,16 +3,16 @@
   "updatedAt": "2026-11-15T04:57:53.836Z",
   "providers": [
     {
-      "key": "yunqiao",
-      "name": "云桥AI 官方中转",
-      "vendor": "云桥AI",
+      "key": "yunhui",
+      "name": "云汇AI 官方中转",
+      "vendor": "云汇AI",
       "region": "relay",
       "format": "openai-responses",
-      "baseUrl": "https://api.yunqiao.me",
+      "baseUrl": "https://api.yunhui.me",
       "color": "#6d8cff",
       "icon": "🌉",
-      "docs": "https://api.yunqiao.me",
-      "note": "云桥AI 官方中转 · 登录后查看会员活动与账号实际可用模型。",
+      "docs": "https://api.yunhui.me",
+      "note": "云汇AI 官方中转 · 登录后查看会员活动与账号实际可用模型。",
       "models": [
         {
           "id": "gpt-6.1-sol"

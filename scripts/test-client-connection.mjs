@@ -9,7 +9,7 @@ import { randomUUID } from 'node:crypto';
 import { build } from 'esbuild';
 
 const workspace = path.resolve(import.meta.dirname, '..');
-const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-connection-'));
+const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-connection-'));
 const oldClientHome = process.env.AURORA_CLIENT_HOME;
 process.env.AURORA_CLIENT_HOME = path.join(scratch, 'client');
 const servers = [], gateways = [], requests = [], proxyRequests = [], aborted = new Set();

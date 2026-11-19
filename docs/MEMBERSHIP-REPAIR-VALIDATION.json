@@ -39,7 +39,7 @@
   },
   "scope": "One existing user-initiated welcome request was resumed. Offline tests issued no production credits. No new member keys or model inference requests were created.",
   "windowsDebug": {
-    "executable": "release\\membership-fix-debug-0.6.0\\win-unpacked\\YunQiaoAI.exe",
+    "executable": "release\\membership-fix-debug-0.6.0\\win-unpacked\\YunHuiAI.exe",
     "exeSha256": "b77b653f0f924fce9dcd348616b300acbca7949f79af59c2c7ed7ae989d3ede5",
     "asarSha256": "5d4d76575351619b648836d77d0c7c98266c0e2e2c4081e9fbc15af935ada7bc",
     "build": {

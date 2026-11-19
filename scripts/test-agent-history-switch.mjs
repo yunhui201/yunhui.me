@@ -9,7 +9,7 @@ import { parse as parseToml } from 'smol-toml';
 import { build } from 'esbuild';
 
 const workspace = path.resolve(import.meta.dirname, '..');
-const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-agent-history-switch-')));
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-agent-history-switch-')));
 const priorClientHome = process.env.AURORA_CLIENT_HOME;
 const aliases = ['codex-cli', 'chatgpt-desktop', 'codex-desktop'];
 const read = file => fs.readFileSync(file, 'utf8');
@@ -248,11 +248,11 @@ try {
     assert(result.rolledBack); assert.equal(read(f.config), config); assert.equal(read(safe.file), safe.content); assert.equal(read(broken.file), broken.content + '{partiallater external work'); assert.deepEqual(f.rows(), rows);
   });
 
-  await check('Reapplying an older yunqiao configuration repairs original and newly created provider regions without losing its first restore point', async () => {
-    const f = fixture('legacy'); f.add(20, { provider: '国内.中转' }); f.add(21, { provider: 'yunqiao' });
-    let legacy = api.patchToml(originalConfig, '', { model_provider: 'yunqiao', model: `${f.provider.id}/model-one` });
-    legacy = api.patchToml(legacy, 'profiles."工作.默认"', { model_provider: 'yunqiao', model: `${f.provider.id}/model-one` });
-    legacy = api.patchToml(legacy, 'model_providers.yunqiao', { name: '云桥 AI', base_url: 'http://127.0.0.1:3425/v1', wire_api: 'responses', experimental_bearer_token: 'fixture-private-gateway-token', requires_openai_auth: false });
+  await check('Reapplying an older yunhui configuration repairs original and newly created provider regions without losing its first restore point', async () => {
+    const f = fixture('legacy'); f.add(20, { provider: '国内.中转' }); f.add(21, { provider: 'yunhui' });
+    let legacy = api.patchToml(originalConfig, '', { model_provider: 'yunhui', model: `${f.provider.id}/model-one` });
+    legacy = api.patchToml(legacy, 'profiles."工作.默认"', { model_provider: 'yunhui', model: `${f.provider.id}/model-one` });
+    legacy = api.patchToml(legacy, 'model_providers.yunhui', { name: '云汇 AI', base_url: 'http://127.0.0.1:3425/v1', wire_api: 'responses', experimental_bearer_token: 'fixture-private-gateway-token', requires_openai_auth: false });
     const backupPath = api.applyPlan('codex-cli', [api.planned(f.config, legacy)]);
     f.store.saveAgents(aliases.map(id => ({ id, connected: true, providerId: f.provider.id, model: 'model-one', mode: 'gateway', authMode: 'api', permissionMode: 'preserve', configPath: f.config, backupPath })));
     const result = await f.connect(); assert(result.ok, result.message); aligned(f);
@@ -297,7 +297,7 @@ try {
       else if (kind === 'legacy-interrupted') write(path.join(f.store.dir, 'client-history-switches', 'legacy', 'switch-1-aaaaaaaaaaaaaaaa.json'), JSON.stringify({ status: 'committing', privateLegacySnapshot: true }));
       else { const unavailable = path.join(f.root, 'not-a-directory'); write(unavailable, 'fixture'); f.deps.historyContext.sqliteHome = unavailable; }
       let first;
-      try { const preview = await f.preview(); first = await f.call('agent.connect', { revision: preview.revision }); assert(first.ok, first.message); assert(['deferred', 'failed'].includes(first.history.status), kind); assert.equal(first.history.backedUp, 0); assert.equal(effective(read(f.config)), 'yunqiao'); }
+      try { const preview = await f.preview(); first = await f.call('agent.connect', { revision: preview.revision }); assert(first.ok, first.message); assert(['deferred', 'failed'].includes(first.history.status), kind); assert.equal(first.history.backedUp, 0); assert.equal(effective(read(f.config)), 'yunhui'); }
       finally { DatabaseSync.prototype.prepare = prepare; }
       assert.equal(read(session.file), session.content); assert.deepEqual(f.rows(), before); assert.equal(read(f.auth), f.authBytes); assert.equal(read(json(first.backup).files[0].backup), originalConfig);
       if (kind === 'legacy-interrupted') { const saved = read(f.config), preview = await f.preview(); assert.equal(read(f.config), saved); assert(preview.ok); assert.equal(json(path.join(f.store.dir, 'client-history-switches', 'legacy', 'switch-1-aaaaaaaaaaaaaaaa.json')).status, 'committing'); }
@@ -307,7 +307,7 @@ try {
     const f = fixture('optional-history-race'), session = f.add(3020), originalCopy = fs.promises.copyFile; let changed = false;
     fs.promises.copyFile = async function(from, to, ...args) { const copied = await originalCopy.call(this, from, to, ...args); if (!changed && String(from) === session.file) { changed = true; fs.appendFileSync(session.file, '{"type":"event_msg","payload":{"message":"new external work"}}\n'); } return copied; };
     let result; try { result = await f.connect(); } finally { fs.promises.copyFile = originalCopy; }
-    assert(changed); assert(result.ok, result.message); assert.equal(result.history.status, 'failed'); assert.equal(effective(read(f.config)), 'yunqiao'); assert(read(session.file).includes('new external work')); assert.equal(read(f.auth), f.authBytes);
+    assert(changed); assert(result.ok, result.message); assert.equal(result.history.status, 'failed'); assert.equal(effective(read(f.config)), 'yunhui'); assert(read(session.file).includes('new external work')); assert.equal(read(f.auth), f.authBytes);
   });
   await check('Actual configuration backup or write failure still reports failure without touching history or official auth', async () => {
     for (const kind of ['backup', 'write']) {
@@ -338,7 +338,7 @@ try {
     if (change === 'append') write(session.file, session.content + '{"type":"event_msg","payload":{"message":"new local work"}}\n');
     else if (change === 'new-session') f.add(61, { provider: 'arrived-after-preview' });
     else f.withDb(db => db.prepare('UPDATE threads SET model_provider=? WHERE id=?').run('external-index-region', session.id));
-    const result = await f.call('agent.connect', { revision: preview.revision }); assert(result.ok, result.message); assert.equal(result.history.status, 'completed'); assert.equal(effective(read(f.config)), 'yunqiao'); if (change === 'append') assert(read(session.file).includes('new local work'));
+    const result = await f.call('agent.connect', { revision: preview.revision }); assert(result.ok, result.message); assert.equal(result.history.status, 'completed'); assert.equal(effective(read(f.config)), 'yunhui'); if (change === 'append') assert(read(session.file).includes('new local work'));
   });
 
   await check('A changed shared-client connection record invalidates preview without overwriting the newer selection', async () => {
@@ -369,7 +369,7 @@ try {
     let result;
     try { result = await f.call('agent.connect', { revision: preview.revision }); }
     finally { fs.promises.copyFile = originalCopy; }
-    assert(changed, 'Mutation must occur inside full history backup'); assert(result.ok, result.message); assert.equal(effective(read(f.config)), 'yunqiao'); assert.equal(read(changedFile), changedBytes);
+    assert(changed, 'Mutation must occur inside full history backup'); assert(result.ok, result.message); assert.equal(effective(read(f.config)), 'yunhui'); assert.equal(read(changedFile), changedBytes);
     assert(!JSON.stringify(result).includes('fixture-new-private-key')); assert(!JSON.stringify(result).includes('fixture-new-gateway-token'));
     assert.equal(f.rows().threads.find(row => row.id === session.id).model_provider, historyTarget(read(f.config)));
   });
@@ -446,7 +446,7 @@ try {
     const f = fixture('brand-new-home', null, { freshHome: true }); assert.equal(fs.existsSync(f.home), false);
     const preview = await f.preview(); assert.equal(preview.history.backupRequired, false); assert.equal(fs.existsSync(f.home), false);
     const connected = await f.call('agent.connect', { revision: preview.revision }); assert(connected.ok, connected.message);
-    assert.equal(effective(read(f.config)), 'yunqiao'); assert.equal(connected.history?.backedUp, 0); assert.equal(connected.history?.backupId, undefined);
+    assert.equal(effective(read(f.config)), 'yunhui'); assert.equal(connected.history?.backedUp, 0); assert.equal(connected.history?.backupId, undefined);
     const backup = json(connected.backup); assert.equal(backup.files[0].backup, null); assert.equal(backup.files[0].originalAbsent, true);
     assert.equal(fs.existsSync(f.database), false); assert.equal(fs.existsSync(f.auth), false);
     const disconnected = await f.call('agent.disconnect'); assert(disconnected.ok, disconnected.message);
@@ -459,7 +459,7 @@ try {
     assert.equal(preview.history.backupRequired, false); f.initializeDatabase();
     if (arrival === 'session') f.add(120, { provider: 'arrived-after-empty-preview' });
     const before = snapshot(f), result = await f.call('agent.connect', { revision: preview.revision });
-    assert(result.ok, result.message); assert.equal(result.history.status, 'completed'); assert.equal(effective(read(f.config)), 'yunqiao'); assert.equal(result.history.indexBackedUp, 1);
+    assert(result.ok, result.message); assert.equal(result.history.status, 'completed'); assert.equal(effective(read(f.config)), 'yunhui'); assert.equal(result.history.indexBackedUp, 1);
   });
 
   for (const setting of ['provider', 'settings']) await check(`Stale cached ${setting} data is rejected after an external disk edit, and refreshed preview applies the new credentials`, async () => {
@@ -484,7 +484,7 @@ try {
     assert.equal(rejected.ok, false); assert.match(rejected.message, /变化|刷新|核验/); assertSnapshot(f, before); assert.equal(read(file), external);
     const refreshed = await f.preview(patch); assert.notEqual(refreshed.revision, preview.revision);
     const connected = await f.call('agent.connect', { ...patch, revision: refreshed.revision }); assert(connected.ok, connected.message);
-    const config = parseToml(read(f.config)), transport = config.model_providers.yunqiao;
+    const config = parseToml(read(f.config)), transport = config.model_providers.yunhui;
     if (setting === 'provider') {
       assert.equal(transport.base_url, 'https://externally-updated.invalid/v1'); assert.equal(transport.experimental_bearer_token, 'fixture-disk-new-provider-secret');
     } else assert.equal(transport.experimental_bearer_token, 'fixture-disk-new-gateway-secret');
@@ -497,6 +497,6 @@ try {
   console.log(`Agent history switches: ${passed} isolated checks passed`);
 } finally {
   if (priorClientHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = priorClientHome;
-  assert.equal(path.dirname(scratch), fs.realpathSync(os.tmpdir())); assert(path.basename(scratch).startsWith('yunqiao-agent-history-switch-'));
+  assert.equal(path.dirname(scratch), fs.realpathSync(os.tmpdir())); assert(path.basename(scratch).startsWith('yunhui-agent-history-switch-'));
   fs.rmSync(scratch, { recursive: true, force: true });
 }

@@ -8,7 +8,7 @@ import { build } from 'esbuild';
 import { parse } from 'smol-toml';
 
 const workspace = path.resolve(import.meta.dirname, '..');
-const temporary = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-session-resume-')));
+const temporary = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-session-resume-')));
 const clients = path.join(temporary, 'clients'), previous = process.env.AURORA_CLIENT_HOME;
 process.env.AURORA_CLIENT_HOME = clients;
 const id = '10000000-0000-4000-8000-000000000001';
@@ -18,8 +18,8 @@ const test = (name, run) => { run(); passed++; console.log(`PASS ${name}`); };
 const posixQuote = value => `'${value.replace(/'/g, `'"'"'`)}'`;
 const powershellQuote = value => `'${value.replace(/'/g, "''")}'`;
 const resultFile = path.join(temporary, 'argv.json'), recorder = path.join(temporary, 'record-argv.cjs');
-fs.writeFileSync(recorder, "require('node:fs').writeFileSync(process.env.YUNQIAO_ARGV_REPORT, JSON.stringify(process.argv.slice(2)));\n");
-const shellEnv = { ...process.env, YUNQIAO_ARGV_REPORT: resultFile, MSYS2_ARG_CONV_EXCL: '*' };
+fs.writeFileSync(recorder, "require('node:fs').writeFileSync(process.env.YUNHUI_ARGV_REPORT, JSON.stringify(process.argv.slice(2)));\n");
+const shellEnv = { ...process.env, YUNHUI_ARGV_REPORT: resultFile, MSYS2_ARG_CONV_EXCL: '*' };
 
 function nativeArguments(shell, command, platform) {
   fs.rmSync(resultFile, { force: true });
@@ -61,7 +61,7 @@ try {
   });
   test('desktop, disabled, subagent and invalid identity guards remain intact', () => {
     for (const fields of [{ canResume: false }, { isSubagent: true }, { sourceKind: 'desktop' }, { id: 'x; exit' }, { id: '--last' }, { id: '' }, { agent: 'unknown' }]) {
-      for (const platform of ['win32', 'darwin']) assert.equal(api.resumeCommand({ ...summary, modelProvider: 'yunqiao-history-route', ...fields }, platform), '');
+      for (const platform of ['win32', 'darwin']) assert.equal(api.resumeCommand({ ...summary, modelProvider: 'yunhui-history-route', ...fields }, platform), '');
     }
     assert.equal(api.resumeCommand(null), '');
   });
@@ -72,7 +72,7 @@ try {
     for (const provider of ['x"y', "x'''y", 'x\u2018y', 'x\u2019y', 'x\u201cy']) assert.equal(api.resumeCommand({ ...summary, modelProvider: provider }, 'win32'), '');
   });
 
-  const common = ['yunqiao-history-route-abc123', 'openai', 'OpenAI', 'azure', 'true', '123', '供應商 / 分组:α😀',
+  const common = ['yunhui-history-route-abc123', 'openai', 'OpenAI', 'azure', 'true', '123', '供應商 / 分组:α😀',
     'path\\provider', "single'quote", "'leading", "trailing'", "''leading", "trailing''", "x'; exit 99; #", 'x$(exit 99)`exit 99`;&|<>%TEMP%'];
   const shells = [];
   if (process.platform === 'win32') {
@@ -81,7 +81,7 @@ try {
     shells.push({ name: 'Windows PowerShell 5', shell: powershell, platform: 'win32', providers: common });
     if (!spawnSync('pwsh.exe', ['-NoProfile', '-Command', 'exit 0'], { windowsHide: true, timeout: 10000 }).error)
       shells.push({ name: 'PowerShell 7', shell: 'pwsh.exe', platform: 'win32', providers: common });
-    const bash = process.env.YUNQIAO_TEST_BASH || path.join(process.env.ProgramFiles || 'C:\\Program Files', 'Git', 'bin', 'bash.exe');
+    const bash = process.env.YUNHUI_TEST_BASH || path.join(process.env.ProgramFiles || 'C:\\Program Files', 'Git', 'bin', 'bash.exe');
     if (fs.existsSync(bash)) shells.push({ name: 'Git Bash POSIX', shell: bash, platform: 'darwin', providers: [...common, 'x"y', "x'''y", 'x\u2019y'] });
     else console.log('SKIP POSIX shell execution: Git Bash is not installed on this Windows host');
   } else shells.push({ name: 'POSIX sh', shell: '/bin/sh', platform: process.platform, providers: [...common, 'x"y', "x'''y", 'x\u2019y'] });
@@ -100,7 +100,7 @@ try {
     const home = path.join(clients, '.codex'), sessions = path.join(home, 'sessions');
     fs.mkdirSync(sessions, { recursive: true });
     const file = path.join(sessions, 'persisted.jsonl'), config = path.join(home, 'config.toml');
-    const provider = 'yunqiao-history-route-fixture';
+    const provider = 'yunhui-history-route-fixture';
     fs.writeFileSync(config, 'model_provider="openai"\nmodel="unrelated-current-model"\n');
     fs.writeFileSync(file, [{ type: 'session_meta', payload: { id, model_provider: provider, source: 'cli', cwd: temporary } },
       { type: 'event_msg', payload: { type: 'user_message', message: 'Persisted fixture' } }].map(JSON.stringify).join('\n') + '\n');
@@ -114,6 +114,6 @@ try {
 } finally {
   if (previous === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = previous;
   const relative = path.relative(fs.realpathSync(os.tmpdir()), temporary);
-  assert.ok(relative.startsWith('yunqiao-session-resume-') && !relative.includes(path.sep));
+  assert.ok(relative.startsWith('yunhui-session-resume-') && !relative.includes(path.sep));
   fs.rmSync(temporary, { recursive: true, force: true });
 }

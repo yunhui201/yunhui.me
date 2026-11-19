@@ -7,7 +7,7 @@ import { PassThrough } from 'node:stream';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const root = fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-balance-test-'));
+const root = fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-balance-test-'));
 let checks = 0, sequence = 0, server;
 const check = async (name, fn) => { await fn(); checks++; console.log(`PASS ${name}`); };
 try {
@@ -35,7 +35,7 @@ try {
       const p = provider(store, changes); await m.providerBalance(store, { providerId: p.id }, async () => { calls++; return response(deepseek(0)); });
     }
     assert.equal(calls, 0);
-    assert.equal(m.detectBalanceAdapter({ baseUrl: 'https://api.moonshot.ai/v1' }), 'moonshot'); assert.equal(m.detectBalanceAdapter({ baseUrl: 'https://api.yunqiao.me' }), 'sub2api');
+    assert.equal(m.detectBalanceAdapter({ baseUrl: 'https://api.moonshot.ai/v1' }), 'moonshot'); assert.equal(m.detectBalanceAdapter({ baseUrl: 'https://api.yunhui.me' }), 'sub2api');
   });
   await check('Official balances preserve actual zero, debt and multiple currencies without inferring validity from funds', () => {
     const p = { baseUrl: 'https://api.deepseek.com' }, entries = m.parseProviderBalance('deepseek', { is_available: false, balance_infos: [{ currency: 'CNY', total_balance: '0' }, { currency: 'USD', total_balance: '-2.5' }] }, p);
@@ -217,5 +217,5 @@ try {
   console.log(`Provider balance: ${checks} checks passed`);
 } finally {
   if (server) { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }
-  if (path.dirname(path.resolve(root)) === path.resolve(os.tmpdir()) && path.basename(root).startsWith('yunqiao-balance-test-')) fs.rmSync(root, { recursive: true, force: true });
+  if (path.dirname(path.resolve(root)) === path.resolve(os.tmpdir()) && path.basename(root).startsWith('yunhui-balance-test-')) fs.rmSync(root, { recursive: true, force: true });
 }

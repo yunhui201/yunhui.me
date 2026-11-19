@@ -45,7 +45,7 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.Win32.SafeHandles;
-namespace YunqiaoPackagedDesktop {
+namespace YunhuiPackagedDesktop {
   [ComImport, Guid("2E941141-7F97-4756-BA1D-9DECDE894A3D"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
   interface IApplicationActivationManager {
     [PreserveSig] int ActivateApplication([MarshalAs(UnmanagedType.LPWStr)] string appUserModelId, [MarshalAs(UnmanagedType.LPWStr)] string arguments, uint options, out uint processId);
@@ -188,15 +188,15 @@ namespace YunqiaoPackagedDesktop {
   }
 }
 '@
-  function Get-LaunchPortState { [YunqiaoPackagedDesktop.Native]::PortState([int]$inputData.port) }
+  function Get-LaunchPortState { [YunhuiPackagedDesktop.Native]::PortState([int]$inputData.port) }
   function Assert-CurrentRegistration {
     $current = @(Get-AppxPackage -Name $match.package.Name -ErrorAction Stop | Where-Object { $_.PackageFullName -ceq $match.package.PackageFullName })
-    if ($current.Count -ne 1 -or $current[0].Name -cne $match.package.Name -or $current[0].PackageFamilyName -cne $match.package.PackageFamilyName -or [YunqiaoPackagedDesktop.Native]::Canonical([string]$current[0].InstallLocation).TrimEnd('\') -ine $match.root -or [YunqiaoPackagedDesktop.Native]::Canonical($executable) -ine $executable) { Block 'target-changed' }
+    if ($current.Count -ne 1 -or $current[0].Name -cne $match.package.Name -or $current[0].PackageFamilyName -cne $match.package.PackageFamilyName -or [YunhuiPackagedDesktop.Native]::Canonical([string]$current[0].InstallLocation).TrimEnd('\') -ine $match.root -or [YunhuiPackagedDesktop.Native]::Canonical($executable) -ine $executable) { Block 'target-changed' }
     $currentManifest = Get-AppxPackageManifest -Package $current[0].PackageFullName -ErrorAction Stop
     $currentApps = @($currentManifest.Package.Applications.Application)
     if ($currentApps.Count -gt 64) { Block 'target-changed' }
     $currentApp = @($currentApps | Where-Object { [string]$_.Id -ceq $match.appId })
-    if ($currentApp.Count -ne 1 -or [string]$currentApp[0].Executable -ine $match.relative -or [YunqiaoPackagedDesktop.Native]::Canonical((Join-Path $match.root ([string]$currentApp[0].Executable))) -ine $executable) { Block 'target-changed' }
+    if ($currentApp.Count -ne 1 -or [string]$currentApp[0].Executable -ine $match.relative -or [YunhuiPackagedDesktop.Native]::Canonical((Join-Path $match.root ([string]$currentApp[0].Executable))) -ine $executable) { Block 'target-changed' }
   }
   function Assert-EmptyPort {
     $state = Get-LaunchPortState
@@ -204,11 +204,11 @@ namespace YunqiaoPackagedDesktop {
     if ($state -ne 'empty') { Block 'port-occupied' }
   }
   function Assert-NoExistingInstance {
-    $instance = [YunqiaoPackagedDesktop.Native]::ExistingInstance($executable)
+    $instance = [YunhuiPackagedDesktop.Native]::ExistingInstance($executable)
     if ($instance -eq 'running') { Block 'instance-running' }
     if ($instance -ne 'none') { Block 'process-uncertain' }
   }
-  $executable = [YunqiaoPackagedDesktop.Native]::Canonical([string]$inputData.executable)
+  $executable = [YunhuiPackagedDesktop.Native]::Canonical([string]$inputData.executable)
   if ($executable -ine [string]$inputData.executable) { Block 'target-changed' }
   if ([IO.Path]::GetFileName($executable) -notmatch '^(ChatGPT( Beta)?|Codex)\.exe$') { Block 'invalid-target' }
   if ([int]$inputData.port -lt 1024 -or [int]$inputData.port -gt 65535) { Block 'invalid-port' }
@@ -220,7 +220,7 @@ namespace YunqiaoPackagedDesktop {
     if (![IO.Path]::IsPathRooted([string]$package.InstallLocation)) { continue }
     $registeredRoot = [IO.Path]::GetFullPath([string]$package.InstallLocation).TrimEnd('\')
     $lexicallyRelated = $executable.StartsWith($registeredRoot + '\', [StringComparison]::OrdinalIgnoreCase)
-    try { $root = [YunqiaoPackagedDesktop.Native]::Canonical($registeredRoot).TrimEnd('\') }
+    try { $root = [YunhuiPackagedDesktop.Native]::Canonical($registeredRoot).TrimEnd('\') }
     catch {
       # A stale/unreadable unrelated package must not disable ordinary desktop
       # apps. A selected package still fails closed; aliases that cannot resolve
@@ -241,7 +241,7 @@ namespace YunqiaoPackagedDesktop {
       if ($invalid.Count -or $parts[-1] -notmatch '^(ChatGPT( Beta)?|Codex)\.exe$') { continue }
       $file = [IO.Path]::GetFullPath((Join-Path $root $relative))
       if (!$file.StartsWith($root + '\', [StringComparison]::OrdinalIgnoreCase) -or !(Test-Path -LiteralPath $file -PathType Leaf)) { continue }
-      $actual = [YunqiaoPackagedDesktop.Native]::Canonical($file)
+      $actual = [YunhuiPackagedDesktop.Native]::Canonical($file)
       if (!$actual.StartsWith($root + '\', [StringComparison]::OrdinalIgnoreCase) -or $actual -ine $executable) { continue }
       $appId = [string]$application.Id; $family = [string]$package.PackageFamilyName
       if ($appId -notmatch '^[A-Za-z0-9][A-Za-z0-9_.-]{0,255}$' -or $family -notmatch '^[A-Za-z0-9][A-Za-z0-9_.-]{0,255}$') { Block 'invalid-identity' }
@@ -264,10 +264,10 @@ namespace YunqiaoPackagedDesktop {
   $arguments = '--remote-debugging-port=' + [int]$inputData.port + ' --remote-debugging-address=127.0.0.1'
   $started = [DateTime]::UtcNow.ToFileTimeUtc()
   try {
-    $activatedPid = [YunqiaoPackagedDesktop.Native]::Activate($match.aumid, $arguments)
+    $activatedPid = [YunhuiPackagedDesktop.Native]::Activate($match.aumid, $arguments)
   } catch { Block 'activation-failed' }
   $returned = [DateTime]::UtcNow.ToFileTimeUtc()
-  $watch = [YunqiaoPackagedDesktop.Native]::Watch($activatedPid, $executable, $started, $returned)
+  $watch = [YunhuiPackagedDesktop.Native]::Watch($activatedPid, $executable, $started, $returned)
   try {
     $observation = [Diagnostics.Stopwatch]::StartNew()
     $exitSeenAt = $null
@@ -328,11 +328,11 @@ const messages: Record<string, string> = {
   'target-changed': '桌面客户端或商店包在启动前已更新，请重新检测并选择当前安装的程序。',
   'invalid-target': '所选程序不是受支持的 ChatGPT / Codex 桌面主程序，请重新选择。',
   'invalid-port': '调试端口必须是 1024–65535 的整数。',
-  'registry-unavailable': '无法核对当前用户的 Windows 商店应用注册信息，未直接运行包内程序。请以安装客户端的 Windows 账号运行云桥后重试。',
+  'registry-unavailable': '无法核对当前用户的 Windows 商店应用注册信息，未直接运行包内程序。请以安装客户端的 Windows 账号运行云汇后重试。',
   'ambiguous': '所选程序对应多个商店应用入口，无法安全确定启动目标，请重新选择已安装的客户端。',
   'unregistered': '所选程序位于商店应用包中，但没有找到当前用户已注册的对应启动入口。请从开始菜单确认客户端可用，重新安装或重新选择程序后再连接。',
   'invalid-identity': '商店应用清单没有有效的启动标识，请重新安装客户端后再连接。',
-  'elevated': '商店版客户端需要普通用户权限启动。请关闭云桥的“以管理员身份运行”，重新打开后再连接。',
+  'elevated': '商店版客户端需要普通用户权限启动。请关闭云汇的“以管理员身份运行”，重新打开后再连接。',
   'activation-failed': 'Windows 未能以商店包身份启动客户端。请完全退出客户端，确认开始菜单可以打开，并以普通权限重新连接。',
   'process-uncertain': '无法确认客户端进程或端口状态，已停止重复启动。请完全退出客户端后，以普通用户权限重新连接。',
   'port-occupied': '调试端口已被占用，已停止重复启动。请退出此前的客户端或更换调试端口后重新连接。',
@@ -346,7 +346,7 @@ async function nativeRun(request: WindowsPackagedLaunchRequest): Promise<Windows
   const systemRoot = process.env.SystemRoot || 'C:\\Windows';
   if (!path.win32.isAbsolute(systemRoot) || /[\x00-\x1f\x7f]/.test(systemRoot)) throw new Error('Windows 系统目录无效，无法启动商店客户端。');
   const executable = path.win32.join(systemRoot, 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe');
-  const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-packaged-host-'));
+  const temporaryRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-packaged-host-'));
   const resultFile = path.join(temporaryRoot, 'result.json');
   const scriptFile = path.join(temporaryRoot, 'launch.ps1');
   const data = Buffer.from(JSON.stringify({ ...request, resultFile }), 'utf8').toString('base64');

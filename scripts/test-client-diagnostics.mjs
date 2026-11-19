@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
 const workspace = path.resolve(import.meta.dirname, '..');
-const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-diagnostics-')));
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-diagnostics-')));
 const originalHome = process.env.AURORA_CLIENT_HOME, originalOverride = process.env.ANTHROPIC_AUTH_TOKEN;
 const secrets = ['PRIVATE-KEY-SENTINEL', 'PRIVATE-GATEWAY-SENTINEL', 'PRIVATE-ACCOUNT-SENTINEL', 'PRIVATE-FAULT-SENTINEL'];
 const write = (file, body) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, body); };
@@ -134,7 +134,7 @@ try {
 } finally {
   if (originalHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = originalHome;
   if (originalOverride === undefined) delete process.env.ANTHROPIC_AUTH_TOKEN; else process.env.ANTHROPIC_AUTH_TOKEN = originalOverride;
-  assert(path.basename(scratch).startsWith('yunqiao-diagnostics-'));
+  assert(path.basename(scratch).startsWith('yunhui-diagnostics-'));
   assert.equal(fs.realpathSync(path.dirname(scratch)), fs.realpathSync(os.tmpdir()));
   fs.rmSync(scratch, { recursive: true, force: true });
 }

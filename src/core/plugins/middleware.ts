@@ -259,7 +259,7 @@ function pluginScript(p: PluginRecord): Script {
        throw new Error('中间件必须为同步函数');
      }
      JSON.stringify(result === undefined ? ir : result);`,
-    { filename: 'yunqiao-middleware.js' },
+    { filename: 'yunhui-middleware.js' },
   );
 }
 function compilePlugin(p: PluginRecord): Hook {
@@ -299,7 +299,7 @@ function compilePlugin(p: PluginRecord): Hook {
   return hook;
 }
 
-export const SAMPLE_PLUGIN = `// 云桥AI中间件示例：把 <think>...</think> 从请求里剥掉
+export const SAMPLE_PLUGIN = `// 云汇AI中间件示例：把 <think>...</think> 从请求里剥掉
 function onRequest(ir, ctx) {
   for (const m of ir.messages) {
     for (const b of m.blocks) {

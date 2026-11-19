@@ -41,7 +41,7 @@ function fixture(string $directory, string $mode = '', ?callable $intercept = nu
         }
         if ($path === '/keys') {
             if (!$userId || array_filter($headers, static fn(string $h): bool => str_starts_with($h, 'x-api-key:'))) throw new RuntimeException('Wrong key authorization');
-            if ($body['name'] !== 'yunqiao.me 客户端') throw new RuntimeException('Wrong key name');
+            if ($body['name'] !== 'yunhui.me 客户端') throw new RuntimeException('Wrong key name');
             $q = $upstream->prepare('INSERT OR IGNORE INTO keys(key,user_id,group_id) VALUES(?,?,?)'); $q->execute([$body['custom_key'], $userId, $body['group_id']]);
             return $okay(['id' => 1, 'key' => $body['custom_key'], 'user_id' => $userId, 'group_id' => $body['group_id'], 'status' => 'active']);
         }
@@ -307,7 +307,7 @@ $test('user-scoped API key, allowed group and stable retries', static function (
     $again = $service->handle('create-client-key', ['groupId' => 7], $credentials);
     check($first['apiKey'] === $again['apiKey'] && $first['format'] === 'openai-responses', 'stable key');
     check((int)upstreamDb($dir)->query('SELECT COUNT(*) FROM keys')->fetchColumn() === 1, 'one user key');
-    check(!str_contains(json_encode($service->handle('status', [], $credentials)), 'sk-yunqiao-'), 'status does not reveal key');
+    check(!str_contains(json_encode($service->handle('status', [], $credentials)), 'sk-yunhui-'), 'status does not reveal key');
 });
 $test('key creation business denials do not masquerade as an expired member login', static function ($dir): void {
     $credentials = signedIn(fixture($dir), 1, 1);

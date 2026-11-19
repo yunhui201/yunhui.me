@@ -40,7 +40,7 @@ export interface ClientHistorySwitchResult<T = unknown> {
 export interface ClientHistorySwitchRecoveryResult extends ClientHistorySwitchResult { recovered: number; pending: number }
 type Status = 'prepared' | 'history-prepared' | 'history-applied' | 'committing' | 'complete' | 'rolling-back' | 'rolled-back' | 'needs-recovery';
 interface Journal {
-  format: 'yunqiao-client-history-switch-v1'; id: string; home: string; sqliteHome: string; dataDir: string;
+  format: 'yunhui-client-history-switch-v1'; id: string; home: string; sqliteHome: string; dataDir: string;
   createdAt: string; updatedAt: string; status: Status; snapshot: ClientHistorySwitchSnapshot; snapshotHash: string;
   historyRevision: string; history?: ClientHistoryBackup; historyReserved?: ClientHistoryBackup; historyAbsent?: boolean; historyRestored?: boolean; historyUntracked?: boolean;
 }
@@ -175,7 +175,7 @@ function load(c: Context): OwnedJournal[] {
     if (!/^switch-\d+-[a-f0-9]{16}\.json$/.test(entry.name) || !entry.isFile() || entry.isSymbolicLink()) throw conflict();
     const file = path.join(c.root, entry.name), text = ordinary(file).toString('utf8');
     const value = JSON.parse(text) as Journal;
-    if (value.format !== 'yunqiao-client-history-switch-v1' || value.id + '.json' !== entry.name || !statuses.includes(value.status)
+    if (value.format !== 'yunhui-client-history-switch-v1' || value.id + '.json' !== entry.name || !statuses.includes(value.status)
       || key(value.home) !== key(c.ctx.home) || key(value.sqliteHome) !== key(c.ctx.sqliteHome) || key(value.dataDir) !== key(c.dataDir)
       || hash(value.snapshot) !== value.snapshotHash || typeof value.historyRevision !== 'string') throw conflict();
     if (c.configurationOnly && (value.history || value.historyReserved || value.historyUntracked || value.historyAbsent !== true)) throw conflict();
@@ -300,7 +300,7 @@ export async function runClientHistorySwitch<T extends { ok: boolean }>(options:
     const historyId = `provider-${Date.now()}-${randomBytes(6).toString('hex')}`;
     const reservation = { backupId: historyId, backup: path.join(repairRoot(c.ctx), 'provider-backups', historyId) };
     if (!c.configurationOnly) { validateBackupPath(c, reservation); if (fs.existsSync(reservation.backup)) throw conflict(); }
-    owned = { file: path.join(c.root, id + '.json'), text: '', value: { format: 'yunqiao-client-history-switch-v1', id,
+    owned = { file: path.join(c.root, id + '.json'), text: '', value: { format: 'yunhui-client-history-switch-v1', id,
       home: c.ctx.home, sqliteHome: c.ctx.sqliteHome, dataDir: c.dataDir, createdAt: at, updatedAt: at,
       status: 'prepared', snapshot, snapshotHash: hash(snapshot), historyRevision: options.historyRevision, ...(c.configurationOnly ? { historyAbsent: true } : { historyReserved: reservation }) } };
     save(c, owned);

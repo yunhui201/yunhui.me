@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix='yunqiao-management-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-management-ui-') as temporary:
         bundle = Path(temporary) / 'ui.js'
         source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import Settings from './ui/src/pages/Settings.tsx';import Groups from './ui/src/pages/Groups.tsx';import Providers from './ui/src/pages/Providers.tsx';import Models from './ui/src/pages/Models.tsx';import Membership from './ui/src/pages/Membership.tsx';import Usage from './ui/src/pages/Usage.tsx';import {ToastHost} from './ui/src/components/ui.tsx';
@@ -148,11 +148,11 @@ window.renderPage=()=>{const Page=pages[window.page];root.render(<ToastHost key=
 
             page.evaluate("window.reset('Membership');window.responses['member.groups']={ok:false,message:'平台分组读取失败'}")
             expect(page.get_by_role('alert')).to_contain_text('平台分组读取失败')
-            expect(page.get_by_role('button', name='添加云桥供应商 →', exact=True)).to_be_disabled()
+            expect(page.get_by_role('button', name='添加云汇供应商 →', exact=True)).to_be_disabled()
             page.evaluate("delete window.responses['member.groups'];window.fail['provider.models']='模型同步连接中断'")
             page.get_by_role('button', name='重试', exact=True).click()
-            expect(page.get_by_role('button', name='添加云桥供应商 →', exact=True)).to_be_enabled()
-            page.get_by_role('button', name='添加云桥供应商 →', exact=True).click()
+            expect(page.get_by_role('button', name='添加云汇供应商 →', exact=True)).to_be_enabled()
+            page.get_by_role('button', name='添加云汇供应商 →', exact=True).click()
             page.wait_for_function("window.navigation==='agents'")
             expect(page.locator('.toast.bad')).to_contain_text('供应商已添加，模型同步暂未成功')
             assert page.evaluate("window.calls.filter(x=>x.action==='member.addProvider').length") == 1

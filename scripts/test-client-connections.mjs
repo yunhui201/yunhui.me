@@ -6,7 +6,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const root = path.resolve(import.meta.dirname, '..'), scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-connection-view-'));
+const root = path.resolve(import.meta.dirname, '..'), scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-connection-view-'));
 let count = 0;
 const check = (name, task) => { task(); count++; console.log('PASS ' + name); };
 try {
@@ -22,7 +22,7 @@ try {
     const item = rows(fixture(), [record({})], now)[0]; assert.equal(item.label, '近期请求成功'); assert.equal(item.lastSuccessAt, stamp(-5000));
   });
   check('Toolbox tests, unknown clients, other suppliers/models, old and future traffic cannot validate a connection', () => {
-    for (const change of [{ agent: '云桥AI 工具箱' }, { agent: 'yunqiao-connection-test' }, { agent: '未知客户端' }, { agent: 'Claude Code' }, { providerId: 'other' }, { model: 'old' }, { ts: stamp(-30000) }, { ts: stamp(1000) }]) {
+    for (const change of [{ agent: '云汇AI 工具箱' }, { agent: 'yunhui-connection-test' }, { agent: '未知客户端' }, { agent: 'Claude Code' }, { providerId: 'other' }, { model: 'old' }, { ts: stamp(-30000) }, { ts: stamp(1000) }]) {
       const item = rows(fixture(), [record(change)], now)[0]; assert.equal(item.status, 'pending', JSON.stringify(change)); assert.equal(item.lastSuccessAt, undefined);
     }
   });
@@ -73,6 +73,6 @@ try {
   });
   console.log(`Client connection overview: ${count} checks passed.`);
 } finally {
-  assert.equal(path.dirname(scratch), os.tmpdir()); assert(path.basename(scratch).startsWith('yunqiao-connection-view-'));
+  assert.equal(path.dirname(scratch), os.tmpdir()); assert(path.basename(scratch).startsWith('yunhui-connection-view-'));
   fs.rmSync(scratch, { recursive: true, force: true });
 }

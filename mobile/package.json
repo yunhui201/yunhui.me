@@ -1,10 +1,10 @@
 {
-  "name": "yunqiao-ai-companion",
+  "name": "yunhui-ai-companion",
   "version": "0.6.0",
   "private": true,
   "license": "AGPL-3.0-only",
   "type": "module",
-  "description": "yunqiao.me 手机伴侣：实时请求、缓存用量、远程客户端与会话管理",
+  "description": "yunhui.me 手机伴侣：实时请求、缓存用量、远程客户端与会话管理",
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node --test tests/*.test.mjs",

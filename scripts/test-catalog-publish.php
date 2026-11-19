@@ -12,11 +12,11 @@ copy(__DIR__ . '/../server/member_service.php', $root . '/member_service.php');
 require $root . '/catalog_sync.php';
 ini_set('error_log', $root . '/error.log');
 $catalog = ['version' => 5, 'providers' => [['key' => 'fixture', 'format' => 'openai-responses',
-    'baseUrl' => 'https://api.yunqiao.me/v1', 'models' => [['id' => 'original']]]]];
+    'baseUrl' => 'https://api.yunhui.me/v1', 'models' => [['id' => 'original']]]]];
 file_put_contents($root . '/catalog.json', json_encode($catalog));
 $bundle = ['status' => ['lastResult' => 'success'], 'catalog' => ['models' => [['id' => 'new-model', 'platform' => 'openai']]]];
 file_put_contents($root . '/catalog-sync-state.json', json_encode($bundle));
-$service = new CatalogSyncService(['origin' => 'https://api.yunqiao.me', 'adminKey' => 'fixture-only-key'], $root);
+$service = new CatalogSyncService(['origin' => 'https://api.yunhui.me', 'adminKey' => 'fixture-only-key'], $root);
 $read = static fn(string $name): array => json_decode((string)file_get_contents($root . '/' . $name), true, 64, JSON_THROW_ON_ERROR);
 $check = static function (bool $condition, string $message): void { if (!$condition) throw new RuntimeException($message); echo 'PASS ' . $message . PHP_EOL; };
 $GLOBALS['catalogPublishFailure'] = 'catalog.json';

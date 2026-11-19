@@ -1,4 +1,4 @@
-/* yunqiao.me workspace. Shared surfaces keep the existing feature pages consistent. */
+/* yunhui.me workspace. Shared surfaces keep the existing feature pages consistent. */
 :root { --sidebar-w: 224px; --titlebar-h: 56px; --radius: 12px; --radius-sm: 8px; --accent: #4f66e8; --accent-2: #6b7fea; --shadow: 0 2px 8px #0c1d3b04; }
 [data-theme='light'] { --bg: #f7f8fc; --bg-2: #f1f3f8; --panel: #fff; --panel-solid: #fff; --panel-hi: #f7f8fc; --stroke: #e9ecf3; --stroke-strong: #dce1eb; --text: #25304a; --text-2: #59647b; --muted: #7f899d; --ok: #1a9b77; --warn: #b9801e; --danger: #d85963; --shadow: 0 2px 8px #0c1d3b04; }
 [data-theme='dark'] { --bg: #131720; --bg-2: #191f2b; --panel: #1c2230; --panel-solid: #1c2230; --panel-hi: #232b3b; --stroke: #2b3343; --stroke-strong: #3d4960; --text: #e5eaf5; --text-2: #adb9ce; --muted: #8592aa; --ok: #56caa3; --warn: #e6b562; --danger: #ee8189; }

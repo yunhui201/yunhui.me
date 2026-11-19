@@ -40,7 +40,7 @@ try {
     echo json_encode(['ok' => false, 'code' => 'INVALID_JSON', 'error' => '请求格式无效'], JSON_UNESCAPED_UNICODE);
 } catch (Throwable $error) {
     // Never include raw upstream errors, request bodies, credentials or PDO paths in public output/logs.
-    error_log('yunqiao.me member service failure: ' . get_class($error));
+    error_log('yunhui.me member service failure: ' . get_class($error));
     http_response_code(503);
     echo json_encode(['ok' => false, 'code' => 'SERVICE_UNAVAILABLE', 'error' => '会员服务暂不可用，请稍后重试'], JSON_UNESCAPED_UNICODE);
 }

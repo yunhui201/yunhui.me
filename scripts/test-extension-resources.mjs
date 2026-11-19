@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 import { prepareExtensionResources, releaseResourceManifest, resourcePolicy } from './prepare-extension-resources.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-resource-policy-')));
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-resource-policy-')));
 const project = path.join(scratch, 'project'), source = path.join(project, 'third_party/codexplusplus');
 const target = path.join(project, 'dist/extensions'), manifestPath = path.join(source, 'FILES.sha256.json');
 const hash = data => createHash('sha256').update(data).digest('hex');

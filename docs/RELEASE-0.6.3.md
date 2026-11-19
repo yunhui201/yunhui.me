@@ -1,8 +1,8 @@
-# 云桥 AI · yunqiao.me 0.6.3
+# 云汇 AI · yunhui.me 0.6.3
 
 发布于 **2026 年 11 月 16 日**。
 
-本版完善 Claude 历史会话的来源识别，并修复 Windows 命令行客户端的 **新终端打开**。Windows 与 macOS Apple Silicon / Intel 安装包已发布，可从 [GitHub Releases](https://github.com/jxb412/yunqiao.me/releases/tag/v0.6.3) 下载，或在 **系统设置 → 版本更新** 检查更新；GitHub 不可用时使用官网备用源。
+本版完善 Claude 历史会话的来源识别，并修复 Windows 命令行客户端的 **新终端打开**。Windows 与 macOS Apple Silicon / Intel 安装包已发布，可从 [GitHub Releases](https://github.com/yunhui201/yunhui.me/releases/tag/v0.6.3) 下载，或在 **系统设置 → 版本更新** 检查更新；GitHub 不可用时使用官网备用源。
 
 ## Claude 历史会话
 
@@ -25,16 +25,16 @@
 
 | 平台 | 安装文件 |
 | --- | --- |
-| Windows x64 | [安装版](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.3/YunQiaoAI-0.6.3-win-x64-setup.exe) · [免安装版](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.3/YunQiaoAI-0.6.3-win-x64-portable.exe) · [完整解压版](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.3/YunQiaoAI-0.6.3-win-x64.zip) |
-| macOS Apple Silicon | [DMG](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.3/YunQiaoAI-0.6.3-mac-arm64.dmg) · [ZIP](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.3/YunQiaoAI-0.6.3-mac-arm64.zip) |
-| macOS Intel | [DMG](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.3/YunQiaoAI-0.6.3-mac-x64.dmg) · [ZIP](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.3/YunQiaoAI-0.6.3-mac-x64.zip) |
+| Windows x64 | [安装版](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.3/YunHuiAI-0.6.3-win-x64-setup.exe) · [免安装版](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.3/YunHuiAI-0.6.3-win-x64-portable.exe) · [完整解压版](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.3/YunHuiAI-0.6.3-win-x64.zip) |
+| macOS Apple Silicon | [DMG](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.3/YunHuiAI-0.6.3-mac-arm64.dmg) · [ZIP](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.3/YunHuiAI-0.6.3-mac-arm64.zip) |
+| macOS Intel | [DMG](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.3/YunHuiAI-0.6.3-mac-x64.dmg) · [ZIP](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.3/YunHuiAI-0.6.3-mac-x64.zip) |
 
-发布页附带 [SHA256 校验清单](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.3/SHA256SUMS.txt)。升级前退出云桥；Windows 运行新版安装包，ZIP 版完整解压到新文件夹后运行 `YunQiaoAI.exe`，macOS 将 `YunQiaoAI.app` 拖入“应用程序”并替换旧应用。npm 用户可按[源码安装说明](../INSTALLATION.md#npm-从源码安装运行)获取本版标签并安装依赖后启动。
+发布页附带 [SHA256 校验清单](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.3/SHA256SUMS.txt)。升级前退出云汇；Windows 运行新版安装包，ZIP 版完整解压到新文件夹后运行 `YunHuiAI.exe`，macOS 将 `YunHuiAI.app` 拖入“应用程序”并替换旧应用。npm 用户可按[源码安装说明](../INSTALLATION.md#npm-从源码安装运行)获取本版标签并安装依赖后启动。
 
 macOS 构建尚未签名与公证。确认应用来自项目发布页后，若首次打开提示“已损坏”，在终端运行：
 
 ```bash
-xattr -cr "/Applications/YunQiaoAI.app"
+xattr -cr "/Applications/YunHuiAI.app"
 ```
 
 安装与首次打开方法见[安装说明](../INSTALLATION.md)，完整功能说明见[使用指南](../USER-GUIDE.md)。此前的当前连接卡片改动见 [0.6.2 版本说明](RELEASE-0.6.2.md)。

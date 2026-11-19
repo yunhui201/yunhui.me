@@ -168,7 +168,7 @@ export function createMacClientLifecycle(host: MacLifecycleHost = nativeMacLifec
       try {
         const executable = ownRealpath(detected.command);
         fs.accessSync(executable, fs.constants.X_OK);
-        if (executable === ownExecutable()) throw new MacLifecycleError('不能把云桥自身作为命令行客户端启动');
+        if (executable === ownExecutable()) throw new MacLifecycleError('不能把云汇自身作为命令行客户端启动');
         const target = { agentId, kind: definition.kind, executable, identity: '' };
         target.identity = identity(target); return target;
       } catch (error) { throw error instanceof MacLifecycleError ? error : new MacLifecycleError('命令行客户端不存在或没有执行权限，请重新安装'); }
@@ -184,7 +184,7 @@ export function createMacClientLifecycle(host: MacLifecycleHost = nativeMacLifec
       const bundleName = path.basename(application.bundlePath).replace(/\.app$/i, '');
       if (!definition.binaries.some(name => name.toLowerCase() === bundleName.toLowerCase())) throw new MacLifecycleError('检测到的应用包与此客户端不匹配，请选择正确的客户端');
       if (!application.bundleId || !/^[A-Za-z0-9][A-Za-z0-9.-]{2,254}$/.test(application.bundleId)) throw new MacLifecycleError('应用包缺少有效的 CFBundleIdentifier，不能安全重启');
-      if (application.executable === ownExecutable()) throw new MacLifecycleError('此应用包是云桥自身，不能作为外部客户端重新启动');
+      if (application.executable === ownExecutable()) throw new MacLifecycleError('此应用包是云汇自身，不能作为外部客户端重新启动');
       if (isolated && !inside(ownRealpath(isolated), application.bundlePath)) throw new MacLifecycleError('客户端应用包指向隔离目录之外，已停止操作');
       const target: ClientTarget = { agentId, kind: definition.kind, executable: application.executable, bundlePath: application.bundlePath, bundleId: application.bundleId, identity: '' };
       target.identity = identity(target); return target;

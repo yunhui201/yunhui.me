@@ -33,7 +33,7 @@ export default function ClientDiagnostics({ agent }: { agent: AgentCatalogItem }
       if (!response?.ok || !Array.isArray(response.checks) || typeof response.report !== 'string') throw new Error();
       setResult(response);
     } catch {
-      if (request === generation.current) setError('本机诊断未完成，请重新检查。若仍失败，请重新打开云桥后重试。');
+      if (request === generation.current) setError('本机诊断未完成，请重新检查。若仍失败，请重新打开云汇后重试。');
     } finally {
       if (request === generation.current) { setBusy(false); working.current = false; }
     }

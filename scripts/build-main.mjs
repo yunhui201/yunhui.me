@@ -9,7 +9,7 @@ const builtAt = new Date().toISOString();
 let revision = '';
 try { revision = execFileSync('git', ['rev-parse', '--short=8', 'HEAD'], { cwd: base, encoding: 'utf8', windowsHide: true }).trim(); } catch { /* Source archives do not require Git. */ }
 const buildInfo = { id: builtAt.replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z') + (revision ? `-${revision}` : ''),
-  builtAt, revision, channel: process.env.YUNQIAO_BUILD_CHANNEL === 'local' ? 'local' : 'release' };
+  builtAt, revision, channel: process.env.YUNHUI_BUILD_CHANNEL === 'local' ? 'local' : 'release' };
 
 const common = {
   bundle: true,
@@ -18,7 +18,7 @@ const common = {
   format: 'cjs',
   sourcemap: false,
   logLevel: 'info',
-  define: { 'process.env.AURORA_BUILD': '"production"', __YUNQIAO_BUILD_INFO__: JSON.stringify(buildInfo) },
+  define: { 'process.env.AURORA_BUILD': '"production"', __YUNHUI_BUILD_INFO__: JSON.stringify(buildInfo) },
 };
 
 const entries = [
@@ -38,5 +38,5 @@ for (const e of entries) {
   });
 }
 
-console.log('[yunqiao] main bundles built');
+console.log('[yunhui] main bundles built');
 

@@ -7,7 +7,7 @@ import http from 'node:http';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-model-sync-')));
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-model-sync-')));
 const bundle = path.join(scratch, 'core.cjs');
 await build({ stdin: { contents: "export { fetchProviderModels } from './src/core/actions.ts'; export { AuroraStore } from './src/core/store/index.ts';", resolveDir: process.cwd(), loader: 'ts' }, bundle: true, platform: 'node', format: 'cjs', outfile: bundle, logLevel: 'silent' });
 const { fetchProviderModels, AuroraStore } = createRequire(import.meta.url)(bundle);
@@ -55,6 +55,6 @@ try {
   console.log(`Model synchronization: ${passed} checks passed.`);
 } finally {
   server.closeAllConnections(); await new Promise(resolve => server.close(resolve));
-  assert(path.basename(scratch).startsWith('yunqiao-model-sync-') && fs.realpathSync(path.dirname(scratch)) === fs.realpathSync(os.tmpdir()));
+  assert(path.basename(scratch).startsWith('yunhui-model-sync-') && fs.realpathSync(path.dirname(scratch)) === fs.realpathSync(os.tmpdir()));
   fs.rmSync(scratch, { recursive: true, force: true });
 }

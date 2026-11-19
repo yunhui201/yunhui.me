@@ -1,6 +1,6 @@
 {
-  "appId": "io.yunqiao.ai.companion",
-  "appName": "yunqiao.me",
+  "appId": "io.yunhui.ai.companion",
+  "appName": "yunhui.me",
   "webDir": "www",
   "server": {
     "androidScheme": "https"

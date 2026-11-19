@@ -46,7 +46,7 @@
         "Packaged client cards expose restart and terminal actions; native IPC rejects API services and process overrides without launching any client",
         "No page exceptions or changes to isolated client configuration"
       ],
-      "executable": "release\\platform-final-debug-0.6.0\\win-unpacked\\YunQiaoAI.exe",
+      "executable": "release\\platform-final-debug-0.6.0\\win-unpacked\\YunHuiAI.exe",
       "exeSha256": "312b91b2abfccb0fbdcd34085745fdaaf13d0d9d203b0cbe6948d453996ae8ad",
       "asarSha256": "87cdeb941409f8dc798a032d7ed802ce1b71790b745a02a5942136926dbe6ddc",
       "build": {
@@ -94,7 +94,7 @@
           "Packaged client cards expose restart and terminal actions; native IPC rejects API services and process overrides without launching any client",
           "No page exceptions or changes to isolated client configuration"
         ],
-        "executable": "release/mac-arm64/YunQiaoAI.app/Contents/MacOS/YunQiaoAI",
+        "executable": "release/mac-arm64/YunHuiAI.app/Contents/MacOS/YunHuiAI",
         "exeSha256": "6c79cc7a0ee3a36276867f1751e7b688005900b06c7c1006c7876e010d1fecfe",
         "asarSha256": "bffafb68576a2c458111e22a4d61d0b231e6ee91fe026bbf73adb2902de136dc",
         "build": {
@@ -141,7 +141,7 @@
           "Packaged client cards expose restart and terminal actions; native IPC rejects API services and process overrides without launching any client",
           "No page exceptions or changes to isolated client configuration"
         ],
-        "executable": "release/mac/YunQiaoAI.app/Contents/MacOS/YunQiaoAI",
+        "executable": "release/mac/YunHuiAI.app/Contents/MacOS/YunHuiAI",
         "exeSha256": "97253ff5f2b8cbec1d90345fc68d096aacc65290c58d7f1c399bc2a3f79b0e15",
         "asarSha256": "8906c7c778d314d18dfe7d745b155981485f8041672788c70da0aac891bcc9ee",
         "build": {

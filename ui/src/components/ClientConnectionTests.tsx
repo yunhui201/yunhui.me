@@ -61,11 +61,11 @@ export default function ClientConnectionTests(props: Props) {
   return <section className="client-connection-tests" aria-label="连接测试">
     <div className="client-test-options">{(['upstream', 'local'] as const).map(target => <div className="client-test-item" key={target}>
       <Btn size="sm" disabled={disabled || !!pending || !model || !providerId || !window.aurora} onClick={() => { void run(target); }}><Ico name={target === 'upstream' ? 'cloud' : 'route'} size={14} />{pending === target ? '测试中…' : target === 'upstream' ? '上游网关测试' : '本地网关测试'}</Btn>
-      <p className="hint">{target === 'upstream' ? '验证供应商地址、密钥和模型是否可用。' : '验证云桥转发到所选模型的完整通路。'}</p>
+      <p className="hint">{target === 'upstream' ? '验证供应商地址、密钥和模型是否可用。' : '验证云汇转发到所选模型的完整通路。'}</p>
       {results[target] && <div className={`notice ${results[target]!.ok ? '' : results[target]!.canceled ? '' : 'warning'}`} role="status">{results[target]!.ok ? '✓ ' : ''}{results[target]!.message}{results[target]!.ok && Number.isFinite(results[target]!.latencyMs) ? ` · ${results[target]!.latencyMs} ms` : ''}</div>}
     </div>)}</div>
-    <div className="row wrap"><span className="hint">点击测试会发送简短模型请求，可能产生少量费用。{mode === 'direct' ? '直连只需上游测试，本地网关测试可选。' : '使用本地网关时，请保持云桥运行。'}</span>{pending && <Btn size="sm" onClick={() => { void cancel(); }}>取消测试</Btn>}</div>
+    <div className="row wrap"><span className="hint">点击测试会发送简短模型请求，可能产生少量费用。{mode === 'direct' ? '直连只需上游测试，本地网关测试可选。' : '使用本地网关时，请保持云汇运行。'}</span>{pending && <Btn size="sm" onClick={() => { void cancel(); }}>取消测试</Btn>}</div>
     {authMode === 'coexist' && <p className="hint">本地测试验证第三方模型通路；官方账号分支请在原客户端验证。</p>}
-    {!window.aurora && <p className="hint">请在电脑上的云桥客户端执行连接测试。</p>}
+    {!window.aurora && <p className="hint">请在电脑上的云汇客户端执行连接测试。</p>}
   </section>;
 }

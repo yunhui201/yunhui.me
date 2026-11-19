@@ -410,9 +410,9 @@
       "evidence": "Z.ai | GLM-5.3 | zai-org/GLM-5.3 | 1048575 | $1.40 | $0.26 | $4.40 | FP4 | Yes | Yes"
     },
     {
-      "provider": "yunqiao",
+      "provider": "yunhui",
       "id": "gpt-6.1-sol",
-      "source": "https://api.yunqiao.me",
+      "source": "https://api.yunhui.me",
       "checkedAt": "2026-11-15",
       "sourceSha256": "a8c3b7eb868306755fdca0fb5e658a71d8454421fd8d01d00cd2c187649ce026",
       "evidence": "{\"models_contains\": \"gpt-6.1-sol\"}",
@@ -420,9 +420,9 @@
       "officialIdReference": "https://developers.openai.com/api/docs/models"
     },
     {
-      "provider": "yunqiao",
+      "provider": "yunhui",
       "id": "gpt-6-astra",
-      "source": "https://api.yunqiao.me",
+      "source": "https://api.yunhui.me",
       "checkedAt": "2026-11-15",
       "sourceSha256": "a8c3b7eb868306755fdca0fb5e658a71d8454421fd8d01d00cd2c187649ce026",
       "evidence": "{\"models_contains\": \"gpt-6-astra\"}",
@@ -430,9 +430,9 @@
       "officialIdReference": "https://developers.openai.com/api/docs/models"
     },
     {
-      "provider": "yunqiao",
+      "provider": "yunhui",
       "id": "gpt-6-luna",
-      "source": "https://api.yunqiao.me",
+      "source": "https://api.yunhui.me",
       "checkedAt": "2026-11-15",
       "sourceSha256": "a8c3b7eb868306755fdca0fb5e658a71d8454421fd8d01d00cd2c187649ce026",
       "evidence": "{\"models_contains\": \"gpt-6-luna\"}",
@@ -440,9 +440,9 @@
       "officialIdReference": "https://developers.openai.com/api/docs/models"
     },
     {
-      "provider": "yunqiao",
+      "provider": "yunhui",
       "id": "claude-sonnet-5-5",
-      "source": "https://api.yunqiao.me",
+      "source": "https://api.yunhui.me",
       "checkedAt": "2026-11-15",
       "sourceSha256": "a8c3b7eb868306755fdca0fb5e658a71d8454421fd8d01d00cd2c187649ce026",
       "evidence": "{\"models_contains\": \"claude-sonnet-5-5\"}",
@@ -450,9 +450,9 @@
       "officialIdReference": "https://platform.claude.com/docs/en/models/overview.md"
     },
     {
-      "provider": "yunqiao",
+      "provider": "yunhui",
       "id": "claude-opus-5-5",
-      "source": "https://api.yunqiao.me",
+      "source": "https://api.yunhui.me",
       "checkedAt": "2026-11-15",
       "sourceSha256": "a8c3b7eb868306755fdca0fb5e658a71d8454421fd8d01d00cd2c187649ce026",
       "evidence": "{\"models_contains\": \"claude-opus-5-5\"}",
@@ -460,9 +460,9 @@
       "officialIdReference": "https://platform.claude.com/docs/en/models/overview.md"
     },
     {
-      "provider": "yunqiao",
+      "provider": "yunhui",
       "id": "claude-haiku-5-5",
-      "source": "https://api.yunqiao.me",
+      "source": "https://api.yunhui.me",
       "checkedAt": "2026-11-15",
       "sourceSha256": "a8c3b7eb868306755fdca0fb5e658a71d8454421fd8d01d00cd2c187649ce026",
       "evidence": "{\"models_contains\": \"claude-haiku-5-5\"}",
@@ -470,9 +470,9 @@
       "officialIdReference": "https://platform.claude.com/docs/en/models/overview.md"
     },
     {
-      "provider": "yunqiao",
+      "provider": "yunhui",
       "id": "claude-fable-5-2",
-      "source": "https://api.yunqiao.me",
+      "source": "https://api.yunhui.me",
       "checkedAt": "2026-11-15",
       "sourceSha256": "a8c3b7eb868306755fdca0fb5e658a71d8454421fd8d01d00cd2c187649ce026",
       "evidence": "{\"models_contains\": \"claude-fable-5-2\"}",
@@ -480,9 +480,9 @@
       "officialIdReference": "https://platform.claude.com/docs/en/models/overview.md"
     },
     {
-      "provider": "yunqiao",
+      "provider": "yunhui",
       "id": "deepseek-flash",
-      "source": "https://api.yunqiao.me",
+      "source": "https://api.yunhui.me",
       "checkedAt": "2026-11-15",
       "sourceSha256": "a8c3b7eb868306755fdca0fb5e658a71d8454421fd8d01d00cd2c187649ce026",
       "evidence": "{\"models_contains\": \"deepseek-flash\"}",

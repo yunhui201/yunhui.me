@@ -7,7 +7,7 @@ import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 import { parse } from 'smol-toml';
 
-const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-permission-restore-')));
+const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-permission-restore-')));
 const priorHome = process.env.AURORA_CLIENT_HOME, read = file => fs.readFileSync(file, 'utf8');
 const write = (file, value) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, value); };
 const aliases = ['codex-cli', 'chatgpt-desktop', 'codex-desktop'];
@@ -219,6 +219,6 @@ try {
   console.log(`\n${passed} selective permission recovery checks passed.`);
 } finally {
   if (priorHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = priorHome;
-  assert.equal(fs.realpathSync(path.dirname(root)), fs.realpathSync(os.tmpdir())); assert(path.basename(root).startsWith('yunqiao-permission-restore-'));
+  assert.equal(fs.realpathSync(path.dirname(root)), fs.realpathSync(os.tmpdir())); assert(path.basename(root).startsWith('yunhui-permission-restore-'));
   fs.rmSync(root, { recursive: true, force: true });
 }

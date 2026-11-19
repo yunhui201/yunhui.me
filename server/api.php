@@ -96,7 +96,7 @@ switch ($action) {
             'catalog' => $c,
             'update' => $cfg['update'],
             'stats' => $cfg['stats'] ?? [],
-            'siteName' => $cfg['siteName'] ?? '云桥AI 工具箱 云端目录',
+            'siteName' => $cfg['siteName'] ?? '云汇AI 工具箱 云端目录',
             'publicUrl' => (isset($_SERVER['HTTPS']) ? 'https://' : 'http://') . ($_SERVER['HTTP_HOST'] ?? ''),
         ]);
     }

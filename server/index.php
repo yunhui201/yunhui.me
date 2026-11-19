@@ -11,7 +11,7 @@ $cfg = config();
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title><?= htmlspecialchars($cfg['siteName'] ?? '云桥AI 工具箱 云端目录') ?></title>
+<title><?= htmlspecialchars($cfg['siteName'] ?? '云汇AI 工具箱 云端目录') ?></title>
 <style>
 :root{
   --bg:#080a10;--panel:rgba(23,27,38,.72);--panel-solid:#141925;--stroke:rgba(255,255,255,.075);
@@ -134,7 +134,7 @@ tbody tr:hover{background:rgba(255,255,255,.03)}
 <?php if (!$logged): ?>
 <div class="login-wrap">
   <div class="login">
-    <h1><span class="logo"></span>云桥AI · 云端目录</h1>
+    <h1><span class="logo"></span>云汇AI · 云端目录</h1>
     <p class="sub">管理供应商目录，客户端从远端一键拉取。</p>
     <div class="field"><label>管理密码</label><input id="pwd" type="password" placeholder="请输入密码" autofocus></div>
     <button class="btn primary" style="width:100%;height:40px" id="loginBtn">登录</button>
@@ -164,7 +164,7 @@ document.getElementById('pwd').addEventListener('keydown', e=>{ if(e.key==='Ente
 
 <div class="shell">
   <div class="side">
-    <div class="brand"><span class="logo"></span>云桥AI 云端</div>
+    <div class="brand"><span class="logo"></span>云汇AI 云端</div>
     <div class="nav on" data-tab="catalog">供应商目录</div>
     <div class="nav" data-tab="stats">访问统计</div>
     <div class="nav" data-tab="update">版本更新</div>
@@ -285,7 +285,7 @@ document.getElementById('pwd').addEventListener('keydown', e=>{ if(e.key==='Ente
           <div class="field"><label>Linux x64 下载地址</label><input id="uLinux" placeholder="填写已上传的 Linux x64 安装包完整地址"></div>
         </div>
         <div class="foot" style="position:static;background:none"><button class="btn primary" id="btnSaveUpdate">保存</button></div>
-        <p class="sub" style="margin-top:10px">把安装包上传到 <code>/www/wwwroot/ai.haowucm.cn/releases/</code>，再用上面的地址引用即可。</p>
+        <p class="sub" style="margin-top:10px">把安装包上传到 <code>/www/wwwroot/yunhui.me/releases/</code>，再用上面的地址引用即可。</p>
       </div>
     </section>
 
@@ -485,7 +485,7 @@ document.getElementById('btnExport').onclick = ()=>{
   const blob = new Blob([JSON.stringify(state.catalog, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'yunqiao-catalog-' + Date.now() + '.json';
+  a.download = 'yunhui-catalog-' + Date.now() + '.json';
   a.click();
 };
 document.getElementById('btnImport').onclick = async ()=>{
@@ -698,7 +698,7 @@ document.querySelector('[data-tab="stats"]').addEventListener('click', loadStats
 reload();
 </script>
 <?php endif; ?>
-<footer style="text-align:center;padding:20px;color:#7b8595;font-size:12px"><a href="https://github.com/jxb412/yunqiao.me/tree/main" target="_blank" rel="noopener noreferrer">yunqiao.me · 项目源码</a> · <a href="https://github.com/jxb412/yunqiao.me/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">AGPL-3.0 许可</a></footer>
+<footer style="text-align:center;padding:20px;color:#7b8595;font-size:12px"><a href="https://github.com/yunhui201/yunhui.me/tree/main" target="_blank" rel="noopener noreferrer">yunhui.me · 项目源码</a> · <a href="https://github.com/yunhui201/yunhui.me/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">AGPL-3.0 许可</a></footer>
 </body>
 </html>
 

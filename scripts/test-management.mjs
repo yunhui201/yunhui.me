@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
-const scratch=fs.mkdtempSync(path.join(os.tmpdir(),'yunqiao-management-'));
+const scratch=fs.mkdtempSync(path.join(os.tmpdir(),'yunhui-management-'));
 const bundle=path.join(scratch,'core.cjs');
 await build({stdin:{contents:['store/index','catalog','cloud','modelManagement','gateway/server','gateway/liveUsage','actions','protocol/index'].map(p=>`export * from './src/core/${p}.ts';`).join('\n'),resolveDir:process.cwd(),loader:'ts'},bundle:true,platform:'node',format:'cjs',outfile:bundle});
 const {AuroraStore,ensureCatalog,refreshCatalog,catalogPresets,validateCloudProvider,fetchProviderModels,manageModels,GatewayServer,activeRequests,summarizeUsage}=createRequire(import.meta.url)(bundle);

@@ -11,7 +11,7 @@
     "environment": "Chromium with isolated mock RPC"
   },
   "source_package": {
-    "file": "mobile/build/YunQiaoAI-0.6.0-iOS-source.zip",
+    "file": "mobile/build/YunHuiAI-0.6.0-iOS-source.zip",
     "files": 51,
     "sha256": "df2ee0794a64c96a2adc05016bec23d32f118f6e7001cd3312c71b145c88f6ad",
     "license_and_notices_verified": true,

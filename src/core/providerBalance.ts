@@ -30,7 +30,7 @@ export function detectBalanceAdapter(provider: Pick<Provider, 'baseUrl' | 'balan
   const selected = provider.balanceQuery?.adapter || 'auto';
   if (selected !== 'auto') return selected;
   let hostname: string; try { hostname = new URL(provider.baseUrl).hostname; } catch { return 'auto'; }
-  return ({ 'api.deepseek.com': 'deepseek', 'api.moonshot.cn': 'moonshot', 'api.moonshot.ai': 'moonshot', 'openrouter.ai': 'openrouter', 'api.stepfun.com': 'stepfun', 'api.novita.ai': 'novita', 'api.yunqiao.me': 'sub2api' } as Record<string, BalanceAdapter>)[hostname] || 'auto';
+  return ({ 'api.deepseek.com': 'deepseek', 'api.moonshot.cn': 'moonshot', 'api.moonshot.ai': 'moonshot', 'openrouter.ai': 'openrouter', 'api.stepfun.com': 'stepfun', 'api.novita.ai': 'novita', 'api.yunhui.me': 'sub2api' } as Record<string, BalanceAdapter>)[hostname] || 'auto';
 }
 
 export function parseProviderBalance(adapter: BalanceAdapter, data: any, provider: Pick<Provider, 'baseUrl' | 'balanceQuery'>, status?: any): ProviderBalanceEntry[] {

@@ -113,7 +113,7 @@ export function applyLegacyUsageCleanup(plan, { backupDir } = {}) {
   if (!selected.length) return { status: 'unchanged', files: 0, removed: 0 };
   if (selected.some(file => file.name.slice(0, 10) >= localDay(new Date()))) throw new Error('Refusing cleanup of today or future usage files');
   const destination = backupDir ? path.resolve(backupDir) : path.join(path.dirname(plan.dataDir), `${path.basename(plan.dataDir)}-legacy-usage-backup-${new Date().toISOString().replace(/[:.]/g, '-')}-${randomBytes(4).toString('hex')}`);
-  const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-usage-cleanup-'));
+  const scratch = fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-usage-cleanup-'));
   try {
     const file = path.join(scratch, 'plan.json');
     fs.writeFileSync(file, JSON.stringify({ ...plan, files: selected, backupDir: destination }), { flag: 'wx', mode: 0o600 });
@@ -129,6 +129,6 @@ export function applyLegacyUsageCleanup(plan, { backupDir } = {}) {
     return report;
   } finally {
     const resolved = path.resolve(scratch);
-    if (path.dirname(resolved) === path.resolve(os.tmpdir()) && path.basename(resolved).startsWith('yunqiao-usage-cleanup-')) fs.rmSync(resolved, { recursive: true, force: true });
+    if (path.dirname(resolved) === path.resolve(os.tmpdir()) && path.basename(resolved).startsWith('yunhui-usage-cleanup-')) fs.rmSync(resolved, { recursive: true, force: true });
   }
 }

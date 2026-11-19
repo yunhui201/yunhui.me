@@ -6,7 +6,7 @@ import tempfile
 from playwright.sync_api import sync_playwright, expect
 
 ROOT = Path(__file__).resolve().parents[1]
-with tempfile.TemporaryDirectory(prefix='yunqiao-routing-ui-') as temporary:
+with tempfile.TemporaryDirectory(prefix='yunhui-routing-ui-') as temporary:
     bundle = Path(temporary) / 'ui.js'
     source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import Groups from './ui/src/pages/Groups.tsx';import {ToastHost} from './ui/src/components/ui.tsx';

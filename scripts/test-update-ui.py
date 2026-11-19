@@ -25,9 +25,9 @@ window.mount();
 FIXTURE = """()=>{
   window.calls=[];window.opened=[];window.windowOpens=[];window.pending=[];
   window.hold={};window.manualError='';window.websiteError='';
-  window.latest={ok:true,current:'0.6.0',version:'0.7.0',hasUpdate:true,mandatory:false,source:'github',url:'https://github.com/jxb412/yunqiao.me/releases/download/v0.7.0/YunQiaoAI-0.7.0-win-x64-setup.exe',releaseUrl:'https://github.com/jxb412/yunqiao.me/releases/tag/v0.7.0',assetName:'YunQiaoAI-0.7.0-win-x64-setup.exe',notes:'改进客户端配置与更新体验。'};
+  window.latest={ok:true,current:'0.6.0',version:'0.7.0',hasUpdate:true,mandatory:false,source:'github',url:'https://github.com/yunhui201/yunhui.me/releases/download/v0.7.0/YunHuiAI-0.7.0-win-x64-setup.exe',releaseUrl:'https://github.com/yunhui201/yunhui.me/releases/tag/v0.7.0',assetName:'YunHuiAI-0.7.0-win-x64-setup.exe',notes:'改进客户端配置与更新体验。'};
   window.manual=structuredClone(window.latest);
-  window.website={...window.latest,source:'website',url:'https://yunqiao.me/downloads/YunQiaoAI-0.7.0-win-x64-setup.exe'};
+  window.website={...window.latest,source:'website',url:'https://yunhui.me/downloads/YunHuiAI-0.7.0-win-x64-setup.exe'};
   window.openResult={ok:true};
   window.appState={settings:{language:'zh-CN',theme:'light',accent:'#4f66e8',gatewayHost:'127.0.0.1',gatewayPort:3425,autoStartGateway:true,launchAtLogin:false,closeToTray:true,proxy:'',maskSecrets:false,autoTrimContext:false,maxRetries:2,requestTimeoutMs:60000,usageRetentionDays:30,lanShare:false,gatewayToken:'isolated-test-token',webdavUrl:'',webdavUser:'',webdavPass:'',firstByteTimeoutMs:30000,logRequests:true,catalogUrl:'https://catalog.fixture.test/private',updateUrl:'https://legacy.fixture.test/update',autoCheckUpdate:true,adminUrl:'',autoSyncModels:true,updatedAt:''},providers:[],plugins:[],groups:[],presets:[],agents:{},agentCatalog:[],detected:{},gateway:{running:true,host:'127.0.0.1',port:3425},gatewayUrl:'http://127.0.0.1:3425',version:'0.6.0',platform:'win32',dataDir:'C:/isolated-fixture',mode:'desktop'};
   const gate=async label=>{if(window.hold[label])await new Promise(resolve=>window.pending.push({label,resolve}));};
@@ -58,7 +58,7 @@ FIXTURE = """()=>{
 
 def main():
     checks, failures, errors, blocked_network = [], [], [], []
-    with tempfile.TemporaryDirectory(prefix='yunqiao-update-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-update-ui-') as temporary:
         bundle = Path(temporary) / 'update-ui.js'
         build = 'require("esbuild").buildSync(' + json.dumps({
             'stdin': {'contents': HARNESS, 'resolveDir': str(ROOT), 'loader': 'tsx'},
@@ -93,7 +93,7 @@ def main():
                   for(const pending of window.pending)pending.resolve();window.pending=[];
                   window.hold={};window.calls=[];window.opened=[];window.windowOpens=[];
                   window.manual=structuredClone(window.latest);window.manualError='';window.websiteError='';window.openResult={ok:true};
-                  window.website={...window.latest,source:'website',url:'https://yunqiao.me/downloads/YunQiaoAI-0.7.0-win-x64-setup.exe'};
+                  window.website={...window.latest,source:'website',url:'https://yunhui.me/downloads/YunHuiAI-0.7.0-win-x64-setup.exe'};
                   window.appState.settings.theme=theme;window.appState.settings.autoCheckUpdate=true;
                   window.aurora=remote?undefined:window.desktop;window.appState.mode=remote?'web':'desktop';
                   document.documentElement.dataset.theme=theme;
@@ -147,7 +147,7 @@ def main():
                 page.get_by_role('button', name='官网备用', exact=True).click()
                 page.wait_for_function('window.opened.length===1')
                 assert page.evaluate("window.calls.filter(x=>x.action==='update.check').at(-1).payload") == {'source': 'website', 'minimumVersion': '0.7.0'}
-                assert page.evaluate('window.opened') == ['https://yunqiao.me/downloads/YunQiaoAI-0.7.0-win-x64-setup.exe']
+                assert page.evaluate('window.opened') == ['https://yunhui.me/downloads/YunHuiAI-0.7.0-win-x64-setup.exe']
             run('Website fallback passes source and minimumVersion and opens only the validated returned URL', fallback_payload)
 
             def bad_website(kind):
@@ -164,11 +164,11 @@ def main():
                 page.get_by_role('button', name='官网备用', exact=True).click()
                 expect(page.get_by_role('alert')).to_have_text(message)
                 no_navigation()
-                page.evaluate("window.websiteError='';window.website={...window.latest,source:'website',url:'https://yunqiao.me/verified-new-installer.exe'}")
+                page.evaluate("window.websiteError='';window.website={...window.latest,source:'website',url:'https://yunhui.me/verified-new-installer.exe'}")
                 page.get_by_role('button', name='官网备用', exact=True).click()
                 page.wait_for_function('window.opened.length===1')
                 expect(page.get_by_role('alert')).to_have_count(0)
-                assert page.evaluate('window.opened[0]') == 'https://yunqiao.me/verified-new-installer.exe'
+                assert page.evaluate('window.opened[0]') == 'https://yunhui.me/verified-new-installer.exe'
             for kind, label in [('old', 'Older website release'), ('package', 'Missing platform package'), ('network', 'Website network rejection')]:
                 run(label + ' remains visible without navigation and can recover on retry', lambda kind=kind: bad_website(kind))
 
@@ -268,7 +268,7 @@ def main():
 
             def remote_app():
                 reset(mode='app', remote=True)
-                expect(page.get_by_text('当前是远程控制台。系统设置和密钥管理请在电脑上的云桥 AI 桌面端完成。', exact=True)).to_be_visible()
+                expect(page.get_by_text('当前是远程控制台。系统设置和密钥管理请在电脑上的云汇 AI 桌面端完成。', exact=True)).to_be_visible()
                 # Wait through two paint cycles so mount effects have run; no real polling delay needed.
                 page.evaluate('()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)))')
                 assert page.evaluate("window.calls.filter(x=>x.action==='update.check').length") == 0

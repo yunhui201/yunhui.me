@@ -15,7 +15,7 @@ export function desktopModelCatalog(store:AuroraStore):any{
   catch { return{status:'not_configured',models:[],modelMetadata:{},message:'客户端配置无法解析，请检查后重新应用供应商'}; }
   const configured=config.provider;
   const provider=agent?.providerId?store.getProvider(agent.providerId):undefined;
-  if(!agent?.connected||!configured||!['yunqiao','aurora'].includes(configured)||!provider?.enabled)return{status:'not_configured',models:[],modelMetadata:{},message:'请先使用云桥为 ChatGPT 桌面版配置并应用供应商'};
+  if(!agent?.connected||!configured||!['yunhui','aurora'].includes(configured)||!provider?.enabled)return{status:'not_configured',models:[],modelMetadata:{},message:'请先使用云汇为 ChatGPT 桌面版配置并应用供应商'};
   const nativeModel=(typeof config.root.profile==='string'?config.root.profiles?.[config.root.profile]?.model:undefined)??config.root.model;
   const models=provider.models.map(m=>m.id);const model=(typeof nativeModel==='string'?nativeModel:undefined)||agent.model||models[0]||'';
   const modelMetadata=Object.fromEntries(provider.models.map(m=>[m.id,{displayName:m.displayName||m.id,description:provider.name,...(m.contextWindow?{contextWindow:m.contextWindow,maxContextWindow:m.contextWindow}:{}),...(m.capabilities?.thinking===false?{defaultReasoningEffort:'none',supportedReasoningEfforts:[{reasoningEffort:'none',description:'此模型未启用额外思考'}]}:{})}]));

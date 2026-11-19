@@ -8,7 +8,7 @@ import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
 const root = path.resolve(import.meta.dirname, '..');
-const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-engineering-')));
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-engineering-')));
 process.env.AURORA_CLIENT_HOME = path.join(scratch, 'clients');
 const bundle = path.join(scratch, 'core.cjs');
 await build({ stdin: { contents: ['store/index', 'gateway/router', 'gateway/server', 'actions', 'util'].map(file => `export * from './src/core/${file}.ts';`).join('\n'), resolveDir: root, loader: 'ts' }, bundle: true, platform: 'node', format: 'cjs', outfile: bundle, logLevel: 'silent' });
@@ -192,7 +192,7 @@ try {
 } finally {
   if (gateway) await gateway.stop();
   mock.closeAllConnections(); if (mock.listening) await new Promise(resolve => mock.close(resolve));
-  assert(path.basename(scratch).startsWith('yunqiao-engineering-'));
+  assert(path.basename(scratch).startsWith('yunhui-engineering-'));
   assert.equal(fs.realpathSync(path.dirname(scratch)), fs.realpathSync(os.tmpdir()));
   fs.rmSync(scratch, { recursive: true, force: true });
 }

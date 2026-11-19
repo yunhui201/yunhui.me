@@ -19,7 +19,7 @@ const write = file => { fs.mkdirSync(path.dirname(file), { recursive: true }); f
 try {
   for (const platform of ['win32', 'darwin']) {
     const windows = platform === 'win32', p = windows ? path.win32 : path.posix;
-    const home = windows ? 'C:\\Users\\云桥 用户' : '/Users/云桥 用户';
+    const home = windows ? 'C:\\Users\\云汇 用户' : '/Users/云汇 用户';
     const custom = windows ? 'D:\\工具目录' : '/custom tools/bin';
     const ctx = { platform, home, environment: { PATH: custom } };
     check(`${platform}: explicit PATH keeps priority and uses native extensions`, () => {

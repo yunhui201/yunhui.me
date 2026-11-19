@@ -12,7 +12,7 @@ import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
 const root = path.resolve(import.meta.dirname, '..');
-const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-connection-launch-')));
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-connection-launch-')));
 const require = createRequire(import.meta.url);
 const delay = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 const selected = path.join(scratch, "WindowsApps", "OpenAI.ChatGPT_fixture", "client 'quoted'", 'ChatGPT.exe');
@@ -202,7 +202,7 @@ try {
     const port = await freePort(), folder = path.join(scratch, 'renderer'); fs.mkdirSync(folder);
     const main = path.join(folder, 'main.cjs'), preload = path.join(folder, 'preload.cjs'), stop = path.join(folder, 'stop');
     const browserData = path.join(folder, 'user-data');
-    fs.writeFileSync(preload, 'window.electronBridge={fixture:true};window.__yunqiaoPrivateLaunchFixture="private-launch";');
+    fs.writeFileSync(preload, 'window.electronBridge={fixture:true};window.__yunhuiPrivateLaunchFixture="private-launch";');
     fs.writeFileSync(main, `const {app,BrowserWindow,protocol}=require('electron');const fs=require('node:fs');
 app.setPath('userData',${JSON.stringify(browserData)});app.disableHardwareAcceleration();
 if(app.commandLine.getSwitchValue('remote-debugging-port')!==${JSON.stringify(String(port))}||app.commandLine.getSwitchValue('remote-debugging-address')!=='127.0.0.1')app.exit(3);
@@ -211,8 +211,8 @@ app.whenReady().then(async()=>{protocol.handle('app',()=>new Response('<html><ti
 const win=new BrowserWindow({show:false,webPreferences:{preload:${JSON.stringify(preload)},contextIsolation:false,nodeIntegration:false,sandbox:false}});await win.loadURL('app://-/index.html');});
 setInterval(()=>{if(fs.existsSync(${JSON.stringify(stop)}))app.quit();},100);setTimeout(()=>app.exit(4),45000);`);
     const environment = { ...process.env, AURORA_CLIENT_HOME: path.join(scratch, 'clients'),
-      AURORA_HOME: path.join(folder, 'data'), YUNQIAO_HOME: path.join(folder, 'data'),
-      APPDATA: path.join(folder, 'appdata'), LOCALAPPDATA: path.join(folder, 'localappdata'), YUNQIAO_TEST_ISOLATED: '1' };
+      AURORA_HOME: path.join(folder, 'data'), YUNHUI_HOME: path.join(folder, 'data'),
+      APPDATA: path.join(folder, 'appdata'), LOCALAPPDATA: path.join(folder, 'localappdata'), YUNHUI_TEST_ISOLATED: '1' };
     for (const key of ['ELECTRON_RUN_AS_NODE', 'AURORA_DEV', 'AURORA_UI_URL', 'AURORA_SHOT', 'AURORA_PAGE']) delete environment[key];
     let child, cdp, childExit, output = '', activations = 0;
     const executable = require('electron');
@@ -266,9 +266,9 @@ setInterval(()=>{if(fs.existsSync(${JSON.stringify(stop)}))app.quit();},100);set
       const opened = await api.openDesktopConnection({ ...options, port }, f.runtime); cdp = opened.cdp;
       assert.equal(opened.launched, true); assert.equal(activations, 1); assert.equal(cdp.connected, true);
       assert.equal(cdp.target.url, 'app://-/index.html');
-      assert.equal(await cdp.evaluate('window.__yunqiaoPrivateLaunchFixture'), 'private-launch');
-      await cdp.evaluate('window.__yunqiaoLaunchVerified=true');
-      assert.equal(await cdp.evaluate('window.__yunqiaoLaunchVerified'), true);
+      assert.equal(await cdp.evaluate('window.__yunhuiPrivateLaunchFixture'), 'private-launch');
+      await cdp.evaluate('window.__yunhuiLaunchVerified=true');
+      assert.equal(await cdp.evaluate('window.__yunhuiLaunchVerified'), true);
       assert(failedPeers.some(peer => peer.kind === 'socket-error') && failedPeers.some(peer => peer.kind === 'protocol-error'));
       assert(failedPeers.every(peer => peer.closed), 'Failed candidates must be closed before advancing');
     } catch (error) {
@@ -289,6 +289,6 @@ setInterval(()=>{if(fs.existsSync(${JSON.stringify(stop)}))app.quit();},100);set
 } finally {
   const resolved = fs.realpathSync(scratch);
   assert.equal(path.dirname(resolved), fs.realpathSync(os.tmpdir()));
-  assert(path.basename(resolved).startsWith('yunqiao-connection-launch-'));
+  assert(path.basename(resolved).startsWith('yunhui-connection-launch-'));
   fs.rmSync(resolved, { recursive: true, force: true, maxRetries: 5, retryDelay: 200 });
 }

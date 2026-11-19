@@ -5,7 +5,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-session-relations-'));
+const temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-session-relations-'));
 const previous = process.env.AURORA_CLIENT_HOME;
 process.env.AURORA_CLIENT_HOME = path.join(temporary, 'clients');
 const originals = new Map();
@@ -82,6 +82,6 @@ try {
   console.log(`Session relations: ${passed} tests passed`);
 } finally {
   if (previous === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = previous;
-  assert.ok(path.relative(os.tmpdir(), temporary).startsWith('yunqiao-session-relations-'));
+  assert.ok(path.relative(os.tmpdir(), temporary).startsWith('yunhui-session-relations-'));
   fs.rmSync(temporary, { recursive: true, force: true });
 }

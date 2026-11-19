@@ -17,7 +17,7 @@
     "No renderer exceptions, real client profile writes or OAuth mutations"
   ],
   "runtime": "packaged Windows EXE",
-  "executable": "D:\\btc\\aurora\\release\\local-debug-0.6.0\\win-unpacked\\YunQiaoAI.exe",
+  "executable": "D:\\btc\\aurora\\release\\local-debug-0.6.0\\win-unpacked\\YunHuiAI.exe",
   "exeSha256": "811c583b333898c4dbe4dbd919c2c7f5636f6aa292632c814156f6968a8f786b",
   "asarSha256": "12bc2729a777cd7709367e9c2ec1ede8066d73a714c58b3ea5de368e183518ca",
   "profile": "isolated temporary app, Chromium and native client directories",

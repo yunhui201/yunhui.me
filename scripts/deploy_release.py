@@ -11,7 +11,7 @@ import shlex
 from remote_ssh import connect, execute
 
 ROOT = Path(__file__).resolve().parents[1]
-DESTINATION = '/www/wwwroot/ai.haowucm.cn/releases'
+DESTINATION = '/www/wwwroot/yunhui.me/releases'
 
 
 def file_record(path):
@@ -40,7 +40,7 @@ def prepare_files(release_dir, package_file=ROOT / 'package.json'):
             raise ValueError('Invalid build manifest record')
         name, size, digest = entry.get('file'), entry.get('bytes'), entry.get('sha256')
         if (not isinstance(name, str) or not re.fullmatch(r'[A-Za-z0-9._-]+', name)
-                or not name.startswith(f'YunQiaoAI-{version}-') or name in names):
+                or not name.startswith(f'YunHuiAI-{version}-') or name in names):
             raise ValueError('Invalid, duplicate, or wrong-version package filename')
         if type(size) is not int or size <= 0 or not isinstance(digest, str) or not re.fullmatch(r'[a-fA-F0-9]{64}', digest):
             raise ValueError('Invalid package size or SHA256: ' + name)
@@ -52,7 +52,7 @@ def prepare_files(release_dir, package_file=ROOT / 'package.json'):
             raise ValueError('Local package size/SHA256 mismatch: ' + name)
         names.add(name)
         records.append(actual)
-    required = {f'YunQiaoAI-{version}-{suffix}' for suffix in ('win-x64-setup.exe', 'mac-arm64.dmg', 'mac-x64.dmg')}
+    required = {f'YunHuiAI-{version}-{suffix}' for suffix in ('win-x64-setup.exe', 'mac-arm64.dmg', 'mac-x64.dmg')}
     if not required.issubset(names):
         raise ValueError('Build manifest must include the Windows installer and both macOS installers')
     checksums = {}

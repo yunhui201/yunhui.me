@@ -43,7 +43,7 @@ try {
 } catch (Throwable $error) {
     http_response_code(503);
     $errorMessage = '会员存储或配置不可用，请检查 PHP 扩展、配置文件权限与服务器日志。';
-    error_log('yunqiao.me member administration failure: ' . get_class($error));
+    error_log('yunhui.me member administration failure: ' . get_class($error));
 }
 if ($service !== null) {
     try {
@@ -52,7 +52,7 @@ if ($service !== null) {
     } catch (Throwable $error) {
         http_response_code(503);
         $errorMessage = '赠金设置或账本暂不可用，请检查服务器配置与日志后重试。';
-        error_log('yunqiao.me member administration read failure: ' . get_class($error));
+        error_log('yunhui.me member administration read failure: ' . get_class($error));
     }
 }
 function member_h($value): string { return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'); }
@@ -60,7 +60,7 @@ function member_money($value): string { return number_format((float)$value, 2, '
 $labels = ['pending' => '待确认', 'claimed' => '已到账', 'review' => '待核对'];
 ?>
 <!doctype html>
-<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>会员与赠金 · 云桥AI</title>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>会员与赠金 · 云汇AI</title>
 <style>
 :root{font-family:'PingFang SC','Microsoft YaHei',system-ui,sans-serif;color:#233047;background:#f5f7fb;font-size:14px}*{box-sizing:border-box}body{margin:0}.wrap{max-width:1200px;margin:0 auto;padding:36px 28px}a{color:#5265db;text-decoration:none}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px;gap:24px}h1{font-size:28px;margin:10px 0}p{line-height:1.8;color:#69758a;margin:0}.tag{border-radius:30px;padding:7px 13px;background:#e7f6ee;color:#24845b;white-space:nowrap}.tag.off{background:#fff0df;color:#a7641b}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0}.card{border:1px solid #e3e8f1;background:white;border-radius:16px;padding:22px;box-shadow:0 4px 16px #273c5d04}.card strong{display:block;font-size:30px;margin-top:8px}.panel{padding:24px;border:1px solid #e3e8f1;border-radius:18px;background:white;margin-top:18px}h2{font-size:17px;margin:0 0 12px}.scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;min-width:710px;text-align:left;font-size:13px}th{color:#7b8595;font-weight:500;background:#fafbfe}th,td{padding:15px 12px;border-bottom:1px solid #eef1f6}form{display:inline}button{border:1px solid #dce2f0;border-radius:8px;background:white;color:#4858bb;padding:8px 11px;cursor:pointer;margin:2px}.status{font-weight:600}.claimed{color:#268461}.pending{color:#b07821}.review{color:#bd4b4b}.notice{padding:14px 18px;border-radius:12px;background:#e7f6ee;color:#236e50;margin:16px 0}.error{background:#fff0ee;color:#ab4940}.empty{text-align:center;padding:45px;color:#8892a5}.small{font-size:12px;color:#8a93a4}.footer{padding:18px 2px}@media(max-width:720px){.wrap{padding:20px 16px}.cards{grid-template-columns:repeat(2,1fr)}header{align-items:flex-start;flex-direction:column}.card{padding:16px}.panel{padding:15px}h1{font-size:24px}}
 .policy-form{display:block}.policy-grid{display:grid;grid-template-columns:1fr 2fr;gap:18px;margin:18px 0}.policy-form label{display:block;color:#34425b;font-weight:600}.policy-form input[type=number],.policy-form textarea{display:block;width:100%;margin-top:9px;border:1px solid #dce2f0;border-radius:9px;padding:11px 12px;color:#233047;background:#fff;font:inherit}.policy-form textarea{resize:vertical;min-height:88px}.policy-form .toggle{display:flex;align-items:center;gap:9px;font-weight:500}.toggle input{width:17px;height:17px;accent-color:#5265db}.policy-form button{background:#5265db;color:white;border-color:#5265db;padding:10px 18px}.policy-form .small{display:block;line-height:1.7;margin-top:7px}.policy-title{display:flex;align-items:center;gap:15px;margin-bottom:12px}.policy-title h2{margin:0}.policy-title .tag{font-size:12px}.notice[role=alert]{line-height:1.7}@media(max-width:720px){.policy-grid{grid-template-columns:1fr}}
@@ -82,6 +82,6 @@ $labels = ['pending' => '待确认', 'claimed' => '已到账', 'review' => '待�
 <?php if ($grant['status'] !== 'claimed'): ?><form method="post"><input type="hidden" name="_csrf" value="<?= member_h(csrf_token()) ?>"><input type="hidden" name="userId" value="<?= member_h($grant['userId']) ?>"><button name="action" value="reconcile">核对到账</button><?php if ($grant['status'] === 'pending'): ?><button name="action" value="retry">重试原申请</button><?php endif; ?></form><?php else: ?><span class="small"><?= member_h(date('m-d H:i', (int)$grant['claimedAt'])) ?> 已确认</span><?php endif; ?>
 </td></tr><?php endforeach; ?>
 <?php if (!$overview['grants']): ?><tr><td colspan="7" class="empty">暂无赠金申请。会员首次在客户端领取后会显示在这里。</td></tr><?php endif; ?>
-</tbody></table></div></section><p class="footer small">余额和最终核销结果以云桥会员站点为准。此页面不会显示管理员密钥、登录令牌或客户 API Key。</p>
-</main><footer style="text-align:center;padding:20px;color:#7b8595;font-size:12px"><a href="https://github.com/jxb412/yunqiao.me/tree/main" target="_blank" rel="noopener noreferrer">yunqiao.me · 项目源码</a> · <a href="https://github.com/jxb412/yunqiao.me/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">AGPL-3.0 许可</a></footer>
+</tbody></table></div></section><p class="footer small">余额和最终核销结果以云汇会员站点为准。此页面不会显示管理员密钥、登录令牌或客户 API Key。</p>
+</main><footer style="text-align:center;padding:20px;color:#7b8595;font-size:12px"><a href="https://github.com/yunhui201/yunhui.me/tree/main" target="_blank" rel="noopener noreferrer">yunhui.me · 项目源码</a> · <a href="https://github.com/yunhui201/yunhui.me/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">AGPL-3.0 许可</a></footer>
 </body></html>

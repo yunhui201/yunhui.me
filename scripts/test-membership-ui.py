@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix='yunqiao-membership-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-membership-ui-') as temporary:
         bundle = Path(temporary) / 'ui.js'
         source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import Membership from './ui/src/pages/Membership.tsx';import {ToastHost} from './ui/src/components/ui.tsx';
@@ -117,7 +117,7 @@ window.renderMember=()=>root.render(<ToastHost key={window.generation}><Membersh
             expect(page.get_by_role('button', name='新客额度已到账', exact=True)).to_be_disabled()
             expect(page.get_by_text('平台已确认到账', exact=True).first).to_be_visible()
             expect(page.get_by_role('alert')).to_contain_text('分组服务暂不可用')
-            expect(page.get_by_role('button', name='添加云桥供应商 →', exact=True)).to_be_disabled()
+            expect(page.get_by_role('button', name='添加云汇供应商 →', exact=True)).to_be_disabled()
             assert claim_count() == 1
             checks.append('Group discovery failure stays separate from a confirmed claim and its receipt')
 
@@ -189,8 +189,8 @@ window.renderMember=()=>root.render(<ToastHost key={window.generation}><Membersh
             page.get_by_role('button', name='登录并绑定本机', exact=True).click()
             expect(page.get_by_role('button', name='退出会员登录', exact=True)).to_be_enabled()
             expect(page.get_by_role('button', name='新客活动暂未开放', exact=True)).to_be_disabled()
-            expect(page.get_by_role('button', name='添加云桥供应商 →', exact=True)).to_be_enabled()
-            page.get_by_role('button', name='添加云桥供应商 →', exact=True).click()
+            expect(page.get_by_role('button', name='添加云汇供应商 →', exact=True)).to_be_enabled()
+            page.get_by_role('button', name='添加云汇供应商 →', exact=True).click()
             page.wait_for_function("window.destination==='agents' && window.reloads===1")
             assert page.evaluate("window.calls.filter(call=>call.action==='member.login').length") == 1
             assert page.evaluate("window.calls.filter(call=>call.action==='member.addProvider').length") == 1

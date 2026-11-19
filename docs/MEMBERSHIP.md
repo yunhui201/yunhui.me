@@ -1,6 +1,6 @@
 # 会员绑定与首次使用赠金
 
-后端入口为 `server/member.php`，管理页为 `server/member_admin.php`（沿用云端后台管理员登录和 CSRF）。赠金是云桥会员站点的 USD 使用额度，每个经过上游验证的会员账户、每个安装标识各限一次；不以客户端自报的账户 ID 发放。安装 ID 和秘密由客户端随机生成，属于安装绑定，并不是不可伪造的硬件证明。重装或复制安装凭据的风险不能靠客户端标识彻底解决，账户唯一约束始终在服务器执行。
+后端入口为 `server/member.php`，管理页为 `server/member_admin.php`（沿用云端后台管理员登录和 CSRF）。赠金是云汇会员站点的 USD 使用额度，每个经过上游验证的会员账户、每个安装标识各限一次；不以客户端自报的账户 ID 发放。安装 ID 和秘密由客户端随机生成，属于安装绑定，并不是不可伪造的硬件证明。重装或复制安装凭据的风险不能靠客户端标识彻底解决，账户唯一约束始终在服务器执行。
 
 ## 服务器配置
 
@@ -13,7 +13,7 @@
 | 环境变量 | 私密 JSON 字段 | 说明 |
 | --- | --- | --- |
 | `AURORA_MEMBERS_ENABLED` | `enabled` | 环境值 `1` 或 JSON 布尔 `true` 启用，默认关闭 |
-| `AURORA_SUB2API_URL` | `origin` | 默认 `https://api.yunqiao.me`，仅 HTTPS 源地址，不允许路径、用户名、重定向 |
+| `AURORA_SUB2API_URL` | `origin` | 默认 `https://api.yunhui.me`，仅 HTTPS 源地址，不允许路径、用户名、重定向 |
 | `AURORA_SUB2API_ADMIN_KEY` | `adminKey` | sub2api 管理密钥，仅在 PHP 服务端使用 |
 | `AURORA_MEMBER_SECRET` | `secret` | 至少 32 字符的随机秘密，用于令牌加密和稳定凭据生成 |
 | `AURORA_MEMBER_DATA_DIR` | `dataDir` | 默认 `/www/aurora-data/members`，必须在 Web 根目录之外 |
@@ -38,7 +38,7 @@
 
 ## 客户端接口
 
-所有请求均固定访问 `https://ai.haowucm.cn/member.php?a=<action>`。`config`、`status` 支持 GET，其他动作要求 POST JSON。响应禁止缓存。错误为 `{ok:false,code,error}`，不透传上游原始报错。
+所有请求均固定访问 `https://yunhui.me/member.php?a=<action>`。`config`、`status` 支持 GET，其他动作要求 POST JSON。响应禁止缓存。错误为 `{ok:false,code,error}`，不透传上游原始报错。
 
 除 `config` 外，客户端发送：
 
@@ -73,14 +73,14 @@ Authorization: Bearer 本服务 sessionToken（登录后）
   "ok": true,
   "sessionToken": "仅示意，真实值为随机64字符hex",
   "expiresAt": "2026-11-15T12:00:00+00:00",
-  "member": { "id": 123, "email": "user@example.com", "username": "云桥会员", "balance": 10 },
+  "member": { "id": 123, "email": "user@example.com", "username": "云汇会员", "balance": 10 },
   "gift": { "status": "eligible", "amountUsd": 10, "currency": "USD", "campaign": "aurora-first-member-v1" }
 }
 ```
 
 `gift.status` 为 `eligible`、`disabled`、`pending`、`claimed`、`ineligible` 或 `review`。`disabled` 表示活动暂停且该账户尚未预约赠金；已有申请仍返回原状态和金额。仅 `claimed` 返回已核销 `code`、`claimedAt`；兑换码已入账，不能再转赠使用。服务器不接受 `userId/user_id/amount/amountUsd/value/code/origin/adminKey` 等客户端自报的权威字段。
 
-`create-client-key` 用已验证用户自己的 JWT 调用 sub2api `/api/v1/keys`，不是管理员代其他用户生成 Key。先读取用户可用分组，使用固定名称 `yunqiao.me 客户端` 和与账户/安装/分组绑定的稳定 Key，在返回丢失后仍能核对复用。完整 Key 只在用户明确要求添加供应商的操作响应中返回，不进入状态页或管理员列表。桌面按 `memberId + group.id` 分开保存供应商，切换会员不会混合两位会员的密钥轮询池。
+`create-client-key` 用已验证用户自己的 JWT 调用 sub2api `/api/v1/keys`，不是管理员代其他用户生成 Key。先读取用户可用分组，使用固定名称 `yunhui.me 客户端` 和与账户/安装/分组绑定的稳定 Key，在返回丢失后仍能核对复用。完整 Key 只在用户明确要求添加供应商的操作响应中返回，不进入状态页或管理员列表。桌面按 `memberId + group.id` 分开保存供应商，切换会员不会混合两位会员的密钥轮询池。
 
 ## 赠金一致性与恢复
 

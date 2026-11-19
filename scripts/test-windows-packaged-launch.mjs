@@ -13,7 +13,7 @@ import { build } from 'esbuild';
 // with fixture-only stubs. The production C# process inspector is also exercised
 // against this test's own PowerShell processes, never against installed clients.
 // the real registry probe always uses inspectOnly and never activates an app.
-const root = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-packaged-launch-')));
+const root = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-packaged-launch-')));
 const runFile = promisify(execFile);
 let passed = 0;
 const check = async (name, fn) => { await fn(); passed++; console.log('PASS', name); };
@@ -53,15 +53,15 @@ try {
           assert(!productionSource.includes(before), 'Real activation expression must not survive the test replacement');
         };
         replaceOnce('$principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)', '[bool]$fixtureData.elevated');
-        replaceOnce('[YunqiaoPackagedDesktop.Native]::Activate($match.aumid, $arguments)', 'Invoke-FixtureActivation -Aumid $match.aumid -Arguments $arguments');
-        replaceOnce('[YunqiaoPackagedDesktop.Native]::Watch($activatedPid, $executable, $started, $returned)', '(New-FixtureWatch)');
-        replaceOnce('[YunqiaoPackagedDesktop.Native]::ExistingInstance($executable)', '(Get-FixtureInstance)');
-        replaceOnce('[YunqiaoPackagedDesktop.Native]::PortState([int]$inputData.port)', '(Get-FixturePortState)');
+        replaceOnce('[YunhuiPackagedDesktop.Native]::Activate($match.aumid, $arguments)', 'Invoke-FixtureActivation -Aumid $match.aumid -Arguments $arguments');
+        replaceOnce('[YunhuiPackagedDesktop.Native]::Watch($activatedPid, $executable, $started, $returned)', '(New-FixtureWatch)');
+        replaceOnce('[YunhuiPackagedDesktop.Native]::ExistingInstance($executable)', '(Get-FixtureInstance)');
+        replaceOnce('[YunhuiPackagedDesktop.Native]::PortState([int]$inputData.port)', '(Get-FixturePortState)');
         replaceOnce('Get-Command -Name Invoke-CommandInDesktopPackage -CommandType Cmdlet -ErrorAction SilentlyContinue', '(Get-FixturePackageCommand)');
         replaceOnce('-ge 2000', '-ge 40');
         replaceOnce('-ge 8000', '-ge 200');
         replaceOnce('-lt 20000', '-lt 600');
-        assert(!productionSource.includes('[YunqiaoPackagedDesktop.Native]::Activate('));
+        assert(!productionSource.includes('[YunhuiPackagedDesktop.Native]::Activate('));
         assert(!productionSource.includes('& $packageCommand -PackageFamilyName') || productionSource.includes('(Get-FixturePackageCommand)'));
         fixtureData.activationLog = activationLog;
         fixtureData.contextLog = contextLog;
@@ -192,20 +192,20 @@ function Invoke-FixturePackageContext {
       assert.equal((await probe(ordinary, {}, true)).kind, 'unpackaged');
     });
     await check('Native handles distinguish live, exited, absent and mismatched processes, and native TCP probes detect loopback readiness', async () => {
-      const marker = '  $executable = [YunqiaoPackagedDesktop.Native]::Canonical([string]$inputData.executable)';
+      const marker = '  $executable = [YunhuiPackagedDesktop.Native]::Canonical([string]$inputData.executable)';
       const segments = api.windowsPackagedLaunchSource.split(marker);
       assert.equal(segments.length, 2);
       const source = '$inputData = @{}\n' + segments[0] + String.raw`
   $self = [Diagnostics.Process]::GetCurrentProcess()
-  $image = [YunqiaoPackagedDesktop.Native]::Canonical($self.MainModule.FileName)
+  $image = [YunhuiPackagedDesktop.Native]::Canonical($self.MainModule.FileName)
   $created = $self.StartTime.ToUniversalTime().ToFileTimeUtc()
-  $watch = [YunqiaoPackagedDesktop.Native]::Watch([uint32]$PID, $image, ($created - 10000000), [DateTime]::UtcNow.ToFileTimeUtc())
+  $watch = [YunhuiPackagedDesktop.Native]::Watch([uint32]$PID, $image, ($created - 10000000), [DateTime]::UtcNow.ToFileTimeUtc())
   $live = $watch.State(); $watch.Dispose()
-  $watch = [YunqiaoPackagedDesktop.Native]::Watch([uint32]$PID, ($image + '.different'), 0, [DateTime]::UtcNow.ToFileTimeUtc())
+  $watch = [YunhuiPackagedDesktop.Native]::Watch([uint32]$PID, ($image + '.different'), 0, [DateTime]::UtcNow.ToFileTimeUtc())
   $wrongImage = $watch.State(); $watch.Dispose()
-  $watch = [YunqiaoPackagedDesktop.Native]::Watch([uint32]$PID, $image, [DateTime]::UtcNow.ToFileTimeUtc(), [DateTime]::UtcNow.ToFileTimeUtc())
+  $watch = [YunhuiPackagedDesktop.Native]::Watch([uint32]$PID, $image, [DateTime]::UtcNow.ToFileTimeUtc(), [DateTime]::UtcNow.ToFileTimeUtc())
   $oldProcess = $watch.State(); $watch.Dispose()
-  $watch = [YunqiaoPackagedDesktop.Native]::Watch([uint32]::MaxValue, $image, 0, [DateTime]::UtcNow.ToFileTimeUtc())
+  $watch = [YunhuiPackagedDesktop.Native]::Watch([uint32]::MaxValue, $image, 0, [DateTime]::UtcNow.ToFileTimeUtc())
   $absent = $watch.State(); $watch.Dispose()
   $startInfo = New-Object Diagnostics.ProcessStartInfo
   $startInfo.FileName = $self.MainModule.FileName
@@ -213,7 +213,7 @@ function Invoke-FixturePackageContext {
   $startInfo.UseShellExecute = $false; $startInfo.CreateNoWindow = $true
   $began = [DateTime]::UtcNow.ToFileTimeUtc()
   $child = [Diagnostics.Process]::Start($startInfo)
-  $watch = [YunqiaoPackagedDesktop.Native]::Watch([uint32]$child.Id, $image, $began, [DateTime]::UtcNow.ToFileTimeUtc())
+  $watch = [YunhuiPackagedDesktop.Native]::Watch([uint32]$child.Id, $image, $began, [DateTime]::UtcNow.ToFileTimeUtc())
   try {
     $beforeExit = $watch.State()
     if (!$child.WaitForExit(10000)) { throw 'private child did not complete' }
@@ -222,11 +222,11 @@ function Invoke-FixturePackageContext {
   $listener = New-Object Net.Sockets.TcpListener([Net.IPAddress]::Loopback, 0)
   $listener.Start()
   $port = $listener.LocalEndpoint.Port
-  try { $ready = [YunqiaoPackagedDesktop.Native]::PortState($port) }
+  try { $ready = [YunhuiPackagedDesktop.Native]::PortState($port) }
   finally { $listener.Stop() }
-  $empty = [YunqiaoPackagedDesktop.Native]::PortState($port)
-  $running = [YunqiaoPackagedDesktop.Native]::ExistingInstance($image)
-  $none = [YunqiaoPackagedDesktop.Native]::ExistingInstance((Join-Path (Get-Location).ProviderPath 'private-unstarted.exe'))
+  $empty = [YunhuiPackagedDesktop.Native]::PortState($port)
+  $running = [YunhuiPackagedDesktop.Native]::ExistingInstance($image)
+  $none = [YunhuiPackagedDesktop.Native]::ExistingInstance((Join-Path (Get-Location).ProviderPath 'private-unstarted.exe'))
   Complete @{ live=$live; wrongImage=$wrongImage; oldProcess=$oldProcess; absent=$absent; beforeExit=$beforeExit; afterExit=$afterExit; ready=$ready; empty=$empty; running=$running; none=$none }
 } catch { throw }
 `;
@@ -339,5 +339,5 @@ function Invoke-FixturePackageContext {
   }
   console.log(`Windows packaged desktop launch: ${passed} checks passed; no application was activated`);
 } finally {
-  if (path.dirname(root) === fs.realpathSync.native(os.tmpdir()) && path.basename(root).startsWith('yunqiao-packaged-launch-')) fs.rmSync(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
+  if (path.dirname(root) === fs.realpathSync.native(os.tmpdir()) && path.basename(root).startsWith('yunhui-packaged-launch-')) fs.rmSync(root, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
 }

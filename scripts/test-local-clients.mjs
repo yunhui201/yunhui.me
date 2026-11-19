@@ -162,8 +162,8 @@ try {
     write(path.join(f.home, '.claude', 'settings.json'), { env: { ANTHROPIC_BASE_URL: `http://localhost:${settings.gatewayPort}/v1`, ANTHROPIC_API_KEY: 'sk-different-loopback-key' } });
     const result = scan(f); assert.equal(result.added, 0); assert.equal(f.store.listProviders().length, 0); assert(result.sources.every(s => !s.canRestore));
   });
-  test('new yunqiao and legacy aurora providers are both recognized as managed without importing or rewriting them', () => {
-    for (const managed of ['yunqiao', 'aurora']) {
+  test('new yunhui and legacy aurora providers are both recognized as managed without importing or rewriting them', () => {
+    for (const managed of ['yunhui', 'aurora']) {
       const f = fixture(`managed-${managed}`);
       const original = `profile = "工作.默认"\nmodel_provider = "${managed}"\n[profiles."工作.默认"]\nmodel = "fixture-model"\n[profiles."工作.默认".model_providers.${managed}]\nname = "Managed fixture"\nbase_url = "https://managed.test/v1"\nexperimental_bearer_token = "fixture-managed-secret"\n`;
       codex(f, original);

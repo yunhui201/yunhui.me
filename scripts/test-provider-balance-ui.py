@@ -319,7 +319,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--screenshots-dir', type=Path, help='Optional directory for isolated fixture screenshots')
     args = parser.parse_args()
-    with tempfile.TemporaryDirectory(prefix='yunqiao-balance-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-balance-ui-') as temporary:
         bundle = Path(temporary) / 'ui.js'
         source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import Providers from './ui/src/pages/Providers.tsx';import {ToastHost} from './ui/src/components/ui.tsx';

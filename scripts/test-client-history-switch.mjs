@@ -117,7 +117,7 @@ if (process.argv[2] === '--crash-worker') {
 }
 
 const originalTemp = fs.realpathSync.native(os.tmpdir());
-const scratch = fs.realpathSync.native(fs.mkdtempSync(path.join(originalTemp, 'yunqiao-history-switch-test-')));
+const scratch = fs.realpathSync.native(fs.mkdtempSync(path.join(originalTemp, 'yunhui-history-switch-test-')));
 let passed = 0, sequence = 0;
 const check = async (name, fn) => { await fn(); passed++; console.log('PASS ' + name); };
 try {
@@ -240,7 +240,7 @@ try {
   });
 } finally {
   const target = fs.realpathSync.native(scratch);
-  assert.equal(path.dirname(target), originalTemp); assert(path.basename(target).startsWith('yunqiao-history-switch-test-'));
+  assert.equal(path.dirname(target), originalTemp); assert(path.basename(target).startsWith('yunhui-history-switch-test-'));
   fs.rmSync(target, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
 }
 console.log(`Client history switch coordinator: ${passed} checks passed`);

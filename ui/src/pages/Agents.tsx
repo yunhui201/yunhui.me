@@ -48,12 +48,12 @@ export default function Agents({ state, reload, go }: PageProps) {
   return <>
     <div className="page-head"><div><div className="eyebrow">YOUR AI, CONNECTED</div><h1>连接你的 AI 客户端<span className="heading-dot">.</span></h1><p>中转站一键配置：选择客户端、填入 API 地址与密钥，应用后重启即可开始。</p></div><div className="actions"><Btn disabled={busy} onClick={detect}><Ico name="refresh" size={14} />{busy ? '正在检测…' : '检测本地客户端'}</Btn></div></div>
     {detectError && <div className="notice warning" role="alert">{detectError}<Btn size="sm" onClick={() => go('providers')}>查看本机扫描详情</Btn></div>}
-    {!state.providers.length && !!window.aurora && <div className="notice"><Ico name="bolt" /><span className="grow">第一次使用云桥？绑定平台会员，查看新客活动与可领取额度。</span><Btn size="sm" onClick={() => go('membership')}>查看会员活动 →</Btn></div>}
+    {!state.providers.length && !!window.aurora && <div className="notice"><Ico name="bolt" /><span className="grow">第一次使用云汇？绑定平台会员，查看新客活动与可领取额度。</span><Btn size="sm" onClick={() => go('membership')}>查看会员活动 →</Btn></div>}
     {Object.values(state.detected).some(item => item.detecting) && <p className="hint" role="status">正在后台检测已安装的客户端，你可以先选择客户端并预览配置。</p>}
     <ClientConnectionOverview state={state} go={go} onConfigure={setSelected} />
     {connected === 0 && <section className="connect-hero">
       <div className="hero-copy"><span className="hero-label"><span className="dot on" />一个工作空间，连接更多可能</span><h2>喜欢的客户端，<br />配上合适的模型。</h2><p>国内、国际、本地模型，统一管理。<br />从下面选择一个客户端，开始你的第一次连接。</p><div className="hero-facts"><span><Ico name="shield" size={14} />配置自动备份</span><span><Ico name="route" size={14} />多供应商切换</span><span><Ico name="chat" size={14} />本地会话管理</span></div></div>
-      <div className="connection-map" aria-hidden="true"><div className="map-label">你的工具</div><div className="map-clients"><span>✳ Claude</span><span>〉_ Codex</span><span>W WorkBuddy</span></div><div className="map-lines"><i /><i /><i /></div><div className="map-hub"><Ico name="route" size={25} /><b>云桥 AI</b></div><div className="map-lines right"><i /><i /><i /></div><div className="map-providers"><span><i style={{ background: '#566cda' }} />DeepSeek</span><span><i style={{ background: '#21947c' }} />OpenAI</span><span><i style={{ background: '#a77654' }} />Anthropic</span></div><div className="map-caption">客户端 · 供应商 · 模型</div></div>
+      <div className="connection-map" aria-hidden="true"><div className="map-label">你的工具</div><div className="map-clients"><span>✳ Claude</span><span>〉_ Codex</span><span>W WorkBuddy</span></div><div className="map-lines"><i /><i /><i /></div><div className="map-hub"><Ico name="route" size={25} /><b>云汇 AI</b></div><div className="map-lines right"><i /><i /><i /></div><div className="map-providers"><span><i style={{ background: '#566cda' }} />DeepSeek</span><span><i style={{ background: '#21947c' }} />OpenAI</span><span><i style={{ background: '#a77654' }} />Anthropic</span></div><div className="map-caption">客户端 · 供应商 · 模型</div></div>
     </section>}
     <div className="onboarding-path"><div className="current"><span>1</span><div><b>选择客户端</b><small>你想使用什么工具</small></div></div><i>→</i><div><span>2</span><div><b>连接供应商</b><small>选择已有服务或添加新服务</small></div></div><i>→</i><div><span>3</span><div><b>选择模型</b><small>按能力和需求自由选择</small></div></div><i>→</i><div><span>4</span><div><b>应用并重启</b><small>自动备份，加载新配置</small></div></div></div>
     <div className="section-heading"><h2>选择一个客户端 <span>{state.agentCatalog.length}</span></h2><span className="muted">已接入 {connected} 个 · 已启用 {state.providers.filter(p => p.enabled).length} 家供应商</span></div>
@@ -72,7 +72,7 @@ export default function Agents({ state, reload, go }: PageProps) {
     {!clients.length && <Empty icon="⌕" title="没有匹配的客户端" hint="调整筛选条件，或搜索 Claude、Codex、WorkBuddy。" />}
     <div className="page-footnote"><Ico name="cloud" size={15} /><span>还没有模型服务？从厂商目录发现国内外供应商。</span><button className="text-button" onClick={() => go('catalog')}>浏览厂商目录 →</button></div>
     {selected && <ConnectWizard agent={state.agentCatalog.find(agent => agent.id === selected.id) || selected} state={state} reload={reload} onClose={() => setSelected(null)} />}
-    {restoring && <Modal title={`恢复 ${restoring.name} 的原配置`} sub="恢复接入前保存的配置备份。此操作会退出云桥的网关配置。" onClose={() => { if (!busy) setRestoring(null); }} foot={<><Btn disabled={busy} onClick={() => setRestoring(null)}>取消</Btn><Btn variant="primary" disabled={busy} onClick={async () => { setBusy(true); try { const r = await call('agent.disconnect', { agentId: restoring.id }); if (!r.ok) throw new Error(r.message); await reload(); setRestoring(null); toast.push(r.message || '原配置已恢复，重启客户端后生效', 'ok'); } catch (e: any) { toast.push(e.message, 'bad'); } finally { setBusy(false); } }}>{busy ? '正在恢复配置…' : '恢复原配置'}</Btn></>}><div className="notice">{['codex-cli', 'chatgpt-desktop', 'codex-desktop'].includes(restoring.id) ? '先恢复原配置，再尝试整理对应历史。客户端运行中或历史处理暂未完成，都不影响配置恢复；保存工作并重启客户端后生效。' : '恢复后，请重启对应客户端。你的历史会话不受此操作影响。'}</div></Modal>}
+    {restoring && <Modal title={`恢复 ${restoring.name} 的原配置`} sub="恢复接入前保存的配置备份。此操作会退出云汇的网关配置。" onClose={() => { if (!busy) setRestoring(null); }} foot={<><Btn disabled={busy} onClick={() => setRestoring(null)}>取消</Btn><Btn variant="primary" disabled={busy} onClick={async () => { setBusy(true); try { const r = await call('agent.disconnect', { agentId: restoring.id }); if (!r.ok) throw new Error(r.message); await reload(); setRestoring(null); toast.push(r.message || '原配置已恢复，重启客户端后生效', 'ok'); } catch (e: any) { toast.push(e.message, 'bad'); } finally { setBusy(false); } }}>{busy ? '正在恢复配置…' : '恢复原配置'}</Btn></>}><div className="notice">{['codex-cli', 'chatgpt-desktop', 'codex-desktop'].includes(restoring.id) ? '先恢复原配置，再尝试整理对应历史。客户端运行中或历史处理暂未完成，都不影响配置恢复；保存工作并重启客户端后生效。' : '恢复后，请重启对应客户端。你的历史会话不受此操作影响。'}</div></Modal>}
   </>;
 }
 
@@ -124,13 +124,13 @@ function ConnectWizard({ agent, state, reload, onClose }: { agent: AgentCatalogI
     try { nativeDirectParameters(provider.baseUrl, agent.protocol); }
     catch (error: any) { directEndpointIssue = error.message || '此 API 地址暂不支持直连，请使用本地网关。'; }
   }
-  const directIssue = selectedAuthMode === 'coexist' ? '官方账号共存通过本地网关按模型分流，请保持云桥运行。'
+  const directIssue = selectedAuthMode === 'coexist' ? '官方账号共存通过本地网关按模型分流，请保持云汇运行。'
     : support !== 'automatic' ? '此客户端当前提供手动接入参数，请使用网关接入并在客户端填写。'
     : !provider ? '请先选择供应商。'
     : provider.format !== agent.protocol ? '供应商与客户端协议不同，请使用本地网关转换协议。'
     : Object.keys(provider.headers || {}).length ? '此供应商有自定义请求头，当前直连配置不会写入这些请求头，请使用本地网关。'
     : provider.proxy?.trim() ? '此供应商使用独立代理，当前直连配置不会写入代理设置，请使用本地网关。'
-    : state.settings.proxy?.trim() ? '云桥已设置网络代理，当前直连配置不会写入代理设置，请使用本地网关。'
+    : state.settings.proxy?.trim() ? '云汇已设置网络代理，当前直连配置不会写入代理设置，请使用本地网关。'
     : directEndpointIssue
       ? directEndpointIssue
     : agent.id === 'claude-desktop' && !/^(?:anthropic\/)?claude-(?:sonnet|opus|haiku)-/.test(chosenModel) ? 'Claude 桌面直连需要 Claude 角色模型；其他模型请通过本地网关映射。'
@@ -248,7 +248,7 @@ function ConnectWizard({ agent, state, reload, onClose }: { agent: AgentCatalogI
         </>}
         {chosenModel && <div className="model-feature-row">{Object.entries(provider?.models.find(m => m.id === chosenModel)?.capabilities || {}).filter(([, v]) => v).map(([k]) => <span className="chip" key={k}>{({ tools: '工具调用', vision: '视觉理解', thinking: '深度思考' } as any)[k] || k}</span>)}</div>}
         <Field label="接入方式" hint={directIssue || '协议一致时可直连；需要协议转换、多密钥轮换或网关统计时使用本地网关。'}><select className="select" aria-label="接入方式" value={connectionMode} onChange={e => { setMode(e.target.value as 'gateway' | 'direct'); clearSelectionFeedback(); }}><option value="gateway">本地网关（推荐）</option><option value="direct" disabled={!!directIssue}>直连供应商</option></select></Field>
-        <div className="notice"><Ico name="route" size={18} /><div><b>{connectionMode === 'direct' ? '客户端直接请求供应商' : '通过本地网关连接'}</b><p>{connectionMode === 'direct' ? '将供应商 API 地址、首个已启用的 Key 和模型 ID 写入客户端配置。客户端直接请求该供应商，配置加载后无需保持云桥运行。' : selectedAuthMode === 'coexist' ? '配置指向本地共存入口，云桥按模型分别使用官方登录或所选供应商的 Key 发送请求；使用期间保持云桥运行。' : '将本地网关地址和令牌写入客户端配置，云桥再使用所选供应商的 URL 与 Key 转发请求并转换协议；使用期间保持云桥运行。'}</p></div></div>
+        <div className="notice"><Ico name="route" size={18} /><div><b>{connectionMode === 'direct' ? '客户端直接请求供应商' : '通过本地网关连接'}</b><p>{connectionMode === 'direct' ? '将供应商 API 地址、首个已启用的 Key 和模型 ID 写入客户端配置。客户端直接请求该供应商，配置加载后无需保持云汇运行。' : selectedAuthMode === 'coexist' ? '配置指向本地共存入口，云汇按模型分别使用官方登录或所选供应商的 Key 发送请求；使用期间保持云汇运行。' : '将本地网关地址和令牌写入客户端配置，云汇再使用所选供应商的 URL 与 Key 转发请求并转换协议；使用期间保持云汇运行。'}</p></div></div>
         {canSetPermissions && <Field label="客户端执行权限" hint={permissionMode === 'full-access' ? '开启后可执行命令并修改沙箱外的文件，不再逐项请求批准。仅对信任的工作内容使用；预览后应用。' : '保留客户端现有的审批与文件访问设置；不会关闭此前开启的高级权限。'}><select className="select" aria-label="客户端执行权限" value={permissionMode} onChange={e => { setPermissionMode(e.target.value as 'preserve' | 'full-access'); clearSelectionFeedback(); }}><option value="preserve">保留现有权限（推荐）</option><option value="full-access">高级权限 · 免逐次批准</option></select></Field>}
         {canSetPermissions && previous?.connected && <ClientPermissions agent={agent} onActiveChange={setClientActionActive} onRestored={async () => { setPermissionMode('preserve'); setPreview(null); await reload(); }} />}
         {selectedAuthMode === 'api' && (codex || agent.id === 'claude-code') && <p className="hint">使用有效 API Key 接入，无需登录官方账号；上游服务仍需有效密钥和可用额度。</p>}
@@ -273,6 +273,6 @@ function ConnectWizard({ agent, state, reload, onClose }: { agent: AgentCatalogI
     </>}
     {!result && <div hidden={step !== 1}><ClientConnectionTests {...payload} disabled={busy || !chosenModel} selectionRevision={testRevision} prepare={ensureSelectedModel} onActiveChange={setConnectionTestActive} /></div>}
     </fieldset>
-    {result && <div className="client-restart-success"><h3>{agent.category === 'cli' ? '打开新终端，加载新配置' : '最后一步：重新启动客户端'}</h3><p className="hint">{connectionMode === 'gateway' ? '使用期间保持云桥运行。' : '直连供应商，加载配置后无需保持云桥运行。'}{'保存工作后重新启动客户端，即可加载新配置。'}</p><div className="client-tools"><ClientRestart agent={agent} primary onActiveChange={setClientActionActive} /><ClientDiagnostics agent={agent} /><ClientPermissions agent={agent} onActiveChange={setClientActionActive} onRestored={async () => { setPermissionMode('preserve'); await reload(); }} /></div></div>}
+    {result && <div className="client-restart-success"><h3>{agent.category === 'cli' ? '打开新终端，加载新配置' : '最后一步：重新启动客户端'}</h3><p className="hint">{connectionMode === 'gateway' ? '使用期间保持云汇运行。' : '直连供应商，加载配置后无需保持云汇运行。'}{'保存工作后重新启动客户端，即可加载新配置。'}</p><div className="client-tools"><ClientRestart agent={agent} primary onActiveChange={setClientActionActive} /><ClientDiagnostics agent={agent} /><ClientPermissions agent={agent} onActiveChange={setClientActionActive} onRestored={async () => { setPermissionMode('preserve'); await reload(); }} /></div></div>}
   </Modal>;
 }

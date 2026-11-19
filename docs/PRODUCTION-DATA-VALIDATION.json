@@ -3,7 +3,7 @@
   "scope": "Built application, distributed extension resources, provider seed catalog, known generated demo directory and explicitly verified live Windows profile",
   "initialAuditMissedPersistedProfile": true,
   "persistedProfile": {
-    "directory": "%APPDATA%/YunQiaoAI",
+    "directory": "%APPDATA%/YunHuiAI",
     "runningBuild": "20261115T051045Z-f82147b1",
     "historicalUsageFilesCleaned": 14,
     "syntheticUsageRowsRemoved": 170,
@@ -62,7 +62,7 @@
   "catalogModels": 59,
   "sourceTestsPreserved": true,
   "serverDeployed": false,
-  "executable": "release/data-clean-debug-0.6.0/win-unpacked/YunQiaoAI.exe",
+  "executable": "release/data-clean-debug-0.6.0/win-unpacked/YunHuiAI.exe",
   "exeSha256": "d0cf3507614eb9f047c4b141f7c3fc1958c781d1570d3b6a17c8b27a4b6ea96d",
   "asarSha256": "21f2c353d0bc6df4a06ec0d86889c4cd56da8262be295c54587176fc927aed7a"
 }

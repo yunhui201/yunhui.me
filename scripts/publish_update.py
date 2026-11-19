@@ -15,8 +15,8 @@ import urllib.request
 from remote_ssh import connect, execute
 
 ROOT = Path(__file__).resolve().parents[1]
-RELEASE_URL = 'https://ai.haowucm.cn/releases/'
-WEB_ROOT = '/www/wwwroot/ai.haowucm.cn'
+RELEASE_URL = 'https://yunhui.me/releases/'
+WEB_ROOT = '/www/wwwroot/yunhui.me'
 TARGETS = {'win-x64': 'win-x64-setup.exe', 'mac-arm64': 'mac-arm64.dmg', 'mac-x64': 'mac-x64.dmg'}
 
 
@@ -34,11 +34,11 @@ def prepare_release(release_dir, notes=None, package_file=ROOT / 'package.json')
     if any(not isinstance(name, str) for name in names) or len(set(names)) != len(names):
         raise ValueError('Build manifest has invalid or duplicate filenames')
     manifest_files = {item['file']: item for item in records}
-    payload = {'version': version, 'notes': notes if notes is not None else f'云桥 AI {version} 正式版，支持 Windows 和 macOS。',
+    payload = {'version': version, 'notes': notes if notes is not None else f'云汇 AI {version} 正式版，支持 Windows 和 macOS。',
                'mandatory': False, 'files': {}, 'sha256': {}}
     sizes = {}
     for target, suffix in TARGETS.items():
-        filename = f'YunQiaoAI-{version}-{suffix}'
+        filename = f'YunHuiAI-{version}-{suffix}'
         expected = manifest_files.get(filename)
         if expected is None:
             raise ValueError(f'Build manifest is missing {filename}')

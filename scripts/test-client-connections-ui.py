@@ -38,7 +38,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--screenshots', type=Path)
     arguments = parser.parse_args()
-    with tempfile.TemporaryDirectory(prefix='yunqiao-client-connections-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-client-connections-ui-') as temporary:
         bundle = Path(temporary) / 'overview.js'
         source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import ClientConnectionOverview from './ui/src/components/ClientConnectionOverview.tsx';import {ToastHost} from './ui/src/components/ui.tsx';import {fmtTime} from './ui/src/lib/api.ts';
@@ -197,7 +197,7 @@ window.renderOverview();"""
                 assert len(calls(page, 'provider.balance')) == before
             checks.append('Balance timestamp belongs to the visible first item; disabled or empty entries cannot supply it, a missing timestamp is not borrowed, and paused balances hide old amounts and timestamps')
 
-            page = new_page("window.usage=['云桥AI 工具箱','yunqiao-connection-test','aurora','test-client',''].map((agent,index)=>window.record('tool-'+index,agent,-10000));")
+            page = new_page("window.usage=['云汇AI 工具箱','yunhui-connection-test','aurora','test-client',''].map((agent,index)=>window.record('tool-'+index,agent,-10000));")
             ready(page)
             expect(row(page).get_by_text('配置已保存 · 待验证', exact=True)).to_be_visible()
             expect(shared(page).get_by_text('配置已保存 · 待验证', exact=True)).to_be_visible()

@@ -155,7 +155,7 @@ function runGiftWorkers(string $dir, array $tasks): array
     return $results;
 }
 
-$root = sys_get_temp_dir() . '/yunqiao-gift-policy-' . bin2hex(random_bytes(6)); mkdir($root, 0700, true); $tests = 0;
+$root = sys_get_temp_dir() . '/yunhui-gift-policy-' . bin2hex(random_bytes(6)); mkdir($root, 0700, true); $tests = 0;
 $test = static function (string $name, callable $run) use ($root, &$tests): void {
     $dir = $root . '/' . (++$tests); mkdir($dir, 0700); $run($dir); echo 'PASS ' . $name . PHP_EOL;
 };

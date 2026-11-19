@@ -9,7 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix='yunqiao-plugin-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-plugin-ui-') as temporary:
         bundle = Path(temporary) / 'plugin-ui.js'
         source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import Plugins from './ui/src/pages/Plugins.tsx';import CodexEnhance from './ui/src/pages/CodexEnhance.tsx';import {ToastHost} from './ui/src/components/ui.tsx';
@@ -101,7 +101,7 @@ window.renderPage=(page='plugins')=>{if(fixtureGeneration!==window.generation&&w
             page.get_by_role('button', name='官方拓展包 5', exact=True).click()
             expect(page.locator('.extension-card')).to_have_count(5)
             assert 'CODEX++' not in page.locator('main').inner_text().upper()
-            expect(card('请求状态条').locator('.extension-description')).to_contain_text('请求经过云桥网关时')
+            expect(card('请求状态条').locator('.extension-description')).to_contain_text('请求经过云汇网关时')
             card('请求状态条').get_by_role('button', name='详情与来源 ↗', exact=True).click()
             request_detail = page.get_by_role('dialog', name='请求状态条', exact=True)
             expect(request_detail.get_by_text('AGPL-3.0-only', exact=True)).to_be_visible()
@@ -354,7 +354,7 @@ window.renderPage=(page='plugins')=>{if(fixtureGeneration!==window.generation&&w
             expect(page.get_by_role('switch', name='启用Fixture Skill', exact=True)).to_be_checked()
             page.get_by_role('switch', name='启用Fixture Skill', exact=True).click()
             expect(page.get_by_role('switch', name='启用Fixture Skill', exact=True)).not_to_be_checked()
-            page.get_by_role('button', name='管理云桥插件 →', exact=True).click()
+            page.get_by_role('button', name='管理云汇插件 →', exact=True).click()
             assert page.evaluate('window.navigation') == 'plugins'
             page.evaluate('window.badAssetResult=true')
             page.get_by_role('button', name='重新检测', exact=True).click()

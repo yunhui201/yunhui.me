@@ -38,7 +38,7 @@
         "Native model configuration writes 272000/244800, recalculates 200000/180000 on reapply and preserves the original restore point",
         "Native wizard previews, backs up, applies and restores shared Codex configuration without a desktop executable; auth bytes stay intact and CLI state stays synchronized"
       ],
-      "executable": "release\\auto-compact-debug-0.6.0\\win-unpacked\\YunQiaoAI.exe",
+      "executable": "release\\auto-compact-debug-0.6.0\\win-unpacked\\YunHuiAI.exe",
       "exeSha256": "661c0cdc61e9ff691870ada39068e8f7911dcf3d4f669ef26cfaae1011eb50ba",
       "asarSha256": "3087b6f332abfc3c2a5362973c0975233bdc3c7813e080a3dede12e66691b997",
       "build": {

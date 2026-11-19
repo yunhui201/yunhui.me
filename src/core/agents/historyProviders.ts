@@ -6,7 +6,7 @@ import { parse, stringify } from 'smol-toml';
 const MAX_IDS = 128, MAX_DATABASES = 40, MAX_FILES = 2000, MAX_FIRST_LINE = 64 * 1024;
 // Native provider IDs are case-sensitive; OpenAI and azure are valid custom IDs.
 // Keep the retired local Ollama ID and our primary managed provider untouched.
-const BUILTIN_PROVIDERS = new Set(['openai', 'ollama', 'lmstudio', 'amazon-bedrock', 'amazon-bedrock-runtime', 'gcp', 'ollama-chat', 'yunqiao']);
+const BUILTIN_PROVIDERS = new Set(['openai', 'ollama', 'lmstudio', 'amazon-bedrock', 'amazon-bedrock-runtime', 'gcp', 'ollama-chat', 'yunhui']);
 export const validHistoryProviderId = (value: unknown): value is string => typeof value === 'string' && value.length > 0 && value.length <= 200
   && value.trim() === value && !/[\u0000-\u001f\u007f]/.test(value) && !BUILTIN_PROVIDERS.has(value);
 const hash = (text: string) => createHash('sha256').update(text).digest('hex');
@@ -71,7 +71,7 @@ export function discoverHistoryProviderIds(configText: string, home: string, sql
   return [...ids].sort();
 }
 
-const HISTORY_TARGET_MARKER = '# yunqiao-history-target:v1\n';
+const HISTORY_TARGET_MARKER = '# yunhui-history-target:v1\n';
 interface ManagedBlock { id: string; start: number; end: number; text: string; body: string; target: boolean }
 /** Locate real comment lines, excluding marker-looking text inside TOML strings. */
 function commentOffsets(text: string): Set<number> {
@@ -94,7 +94,7 @@ function commentOffsets(text: string): Set<number> {
   return offsets;
 }
 function managedBlocks(text: string, current: any): ManagedBlock[] {
-  const result: ManagedBlock[] = [], comments = commentOffsets(text), pattern = /^# yunqiao-history-provider:v1:([A-Za-z0-9_-]+):([a-f0-9]{64})\r?\n([\s\S]*?)^# yunqiao-history-provider:end:\1\r?\n?/gm;
+  const result: ManagedBlock[] = [], comments = commentOffsets(text), pattern = /^# yunhui-history-provider:v1:([A-Za-z0-9_-]+):([a-f0-9]{64})\r?\n([\s\S]*?)^# yunhui-history-provider:end:\1\r?\n?/gm;
   for (const match of text.matchAll(pattern)) {
     try {
       if (!comments.has(match.index!)) continue;
@@ -120,7 +120,7 @@ export function clearManagedHistoryTarget(text: string): string {
     let result = text;
     for (const block of managedBlocks(text, current).filter(block => block.target).sort((a, b) => b.start - a.start)) {
       const body = block.body.slice(HISTORY_TARGET_MARKER.length), encoded = Buffer.from(block.id, 'utf8').toString('base64url');
-      const replacement = `# yunqiao-history-provider:v1:${encoded}:${hash(body)}\n${body}# yunqiao-history-provider:end:${encoded}\n`;
+      const replacement = `# yunhui-history-provider:v1:${encoded}:${hash(body)}\n${body}# yunhui-history-provider:end:${encoded}\n`;
       result = result.slice(0, block.start) + replacement + result.slice(block.end);
     }
     return result;
@@ -144,7 +144,7 @@ export function withHistoryProviderAliases(text: string, ids: readonly string[],
     if (automaticTarget) {
       targetId = managed.find(block => block.target && !Object.hasOwn(profile.model_providers || {}, block.id))?.id;
       for (let suffix = 1; !targetId && suffix <= 256; suffix++) {
-        const candidate = 'yunqiao-history' + (suffix === 1 ? '' : '-' + suffix);
+        const candidate = 'yunhui-history' + (suffix === 1 ? '' : '-' + suffix);
         if (!Object.hasOwn(profile.model_providers || {}, candidate) && (!Object.hasOwn(current.model_providers || {}, candidate) || managed.some(block => block.id === candidate))) targetId = candidate;
       }
       if (!targetId) return clearManagedHistoryTarget(text);
@@ -155,7 +155,7 @@ export function withHistoryProviderAliases(text: string, ids: readonly string[],
       const block = managed.find(entry => entry.id === id);
       if (!block && Object.hasOwn(current.model_providers || {}, id)) continue;
       const encoded = Buffer.from(id, 'utf8').toString('base64url'), body = (id === targetId ? HISTORY_TARGET_MARKER : '') + stringify({ model_providers: { [id]: transport } }).trimEnd() + '\n';
-      const replacement = `# yunqiao-history-provider:v1:${encoded}:${hash(body)}\n${body}# yunqiao-history-provider:end:${encoded}\n`;
+      const replacement = `# yunhui-history-provider:v1:${encoded}:${hash(body)}\n${body}# yunhui-history-provider:end:${encoded}\n`;
       if (block) changes.push({ ...block, text: replacement }); else additions.push(replacement);
     }
     let result = text;

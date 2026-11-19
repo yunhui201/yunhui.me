@@ -38,7 +38,7 @@ export default function ClientRestart({ agent, onActiveChange, primary = false }
       const info = await call<ClientLifecycleInfo>('agent.lifecycle', { agentId: agent.id });
       if (!alive.current || request !== sequence.current) return;
       if (!info?.ok || info.agentId !== agent.id || info.kind !== agent.category) throw new Error(info?.message || '无法确认此客户端的启动方式，请重新检查');
-      if (!info.supported || !info.installed) throw new Error(info.message || (!info.installed ? '未检测到客户端，请安装后重新检查' : '此客户端暂不支持在云桥中启动'));
+      if (!info.supported || !info.installed) throw new Error(info.message || (!info.installed ? '未检测到客户端，请安装后重新检查' : '此客户端暂不支持在云汇中启动'));
       setConfirmation(true);
     } catch (e: any) { if (alive.current && request === sequence.current) setError(e.message || '检查客户端失败，请重试'); }
     finally { if (alive.current && request === sequence.current) { working.current = false; setChecking(false); } }

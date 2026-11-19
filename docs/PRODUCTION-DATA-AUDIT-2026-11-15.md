@@ -2,7 +2,7 @@
 
 本次检查桌面正式代码、默认供应商目录、PHP 后台、手机伴侣及 Windows 发布资源，区分实际业务配置、未填写状态与仅用于验证的测试样例。
 
-首次检查遗漏了已运行客户端的持久化数据：工作区 `.devdata` 清空，不代表 `%APPDATA%/YunQiaoAI` 内的数据也已清空。用户反馈的 Kimi、某某中转站与 `$7.42 / 153 次` 来自后者，不能把源码和安装包的空数据验证当作真实用户目录验收。
+首次检查遗漏了已运行客户端的持久化数据：工作区 `.devdata` 清空，不代表 `%APPDATA%/YunHuiAI` 内的数据也已清空。用户反馈的 Kimi、某某中转站与 `$7.42 / 153 次` 来自后者，不能把源码和安装包的空数据验证当作真实用户目录验收。
 
 ## 已清理
 
@@ -30,11 +30,11 @@
 
 上表验证使用隔离数据和模拟服务，不修改真实客户端配置、不执行计费请求。PHP 改动未部署到线上。
 
-最新 Windows 调试构建为 `20261115T051045Z-f82147b1`，入口 `release/data-clean-debug-0.6.0/win-unpacked/YunQiaoAI.exe`。详见 [产物扫描](PRODUCTION-DATA-VALIDATION.json) 与 [实包验收](PACKAGED-VALIDATION-0.6.0.json)。
+最新 Windows 调试构建为 `20261115T051045Z-f82147b1`，入口 `release/data-clean-debug-0.6.0/win-unpacked/YunHuiAI.exe`。详见 [产物扫描](PRODUCTION-DATA-VALIDATION.json) 与 [实包验收](PACKAGED-VALIDATION-0.6.0.json)。
 
 ## 已运行客户端的数据修正
 
-确认用户运行的正是上述构建，`app.asar` 哈希一致，问题不在旧安装包。实际数据目录是 `%APPDATA%/YunQiaoAI`，其中 14 个历史日志包含 170 条旧演示脚本生成的记录；最近 14 天的 153 次调用、5,162,841 tokens、11 次错误和 $7.4187664 与反馈一致，近期日志为 72 条。
+确认用户运行的正是上述构建，`app.asar` 哈希一致，问题不在旧安装包。实际数据目录是 `%APPDATA%/YunHuiAI`，其中 14 个历史日志包含 170 条旧演示脚本生成的记录；最近 14 天的 153 次调用、5,162,841 tokens、11 次错误和 $7.4187664 与反馈一致，近期日志为 72 条。
 
 逐条核对旧脚本的完整字段、名称与模型组合、请求 ID 格式、token 范围、精确计价公式和 10 分钟间隔序列后，仅清除全部匹配的 170 条记录。没有按“Kimi”等模型名称批量删除。14 个原文件已在仓库外备份并核验 SHA256，处理后的 14 个文件也逐项核验。二次预检无匹配或疑似记录。
 
@@ -51,15 +51,15 @@
 
 另逐项确认 5 家旧演示供应商的 ID、名称、地址和所有假密钥完整匹配。先在仓库外建立仅当前 Windows 用户可访问的原始配置备份，再通过现有本地网关动作停用其中仍启用的 4 家；原已停用的 GLM 保持原样。最终磁盘与运行中状态均确认 5 家已停用，其余 6 家供应商完整内容（含密钥和更新时间）未变。
 
-演示供应商记录和两个旧路由组仍保留，不计作“全部删除”：其中 3 家供应商已被客户端配置关联，直接删除会破坏关联；现有网关只允许启停，删除需要桌面端动作。没有扩大远程权限、修改客户端配置或调用可能恢复客户端文件的断开操作。用量备份与净化验证记录存放于仓库外的 `D:/btc/yunqiao-cleanup-backups/20261115-persisted-demo`，含密钥的供应商备份仅保存在该目录的私有子目录内，不提交到 Git。
+演示供应商记录和两个旧路由组仍保留，不计作“全部删除”：其中 3 家供应商已被客户端配置关联，直接删除会破坏关联；现有网关只允许启停，删除需要桌面端动作。没有扩大远程权限、修改客户端配置或调用可能恢复客户端文件的断开操作。用量备份与净化验证记录存放于仓库外的 `D:/btc/yunhui-cleanup-backups/20261115-persisted-demo`，含密钥的供应商备份仅保存在该目录的私有子目录内，不提交到 Git。
 
 ## 维护工具与回归
 
 `scripts/clean-legacy-demo-usage.mjs` 必须显式指定数据目录，默认只预览。应用仅支持 Windows 历史文件：拒绝当天和未来日期，锁住全部目标并复核预检哈希，全部备份落盘后才改写，保留非匹配行的原始字节；失败时持锁恢复并报告任何未恢复文件和备份位置。
 
 ```powershell
-node scripts/clean-legacy-demo-usage.mjs --data-dir "$env:APPDATA\YunQiaoAI"
-node scripts/clean-legacy-demo-usage.mjs --data-dir "$env:APPDATA\YunQiaoAI" --apply --backup-dir '<仓库和客户端数据目录外的新备份目录>'
+node scripts/clean-legacy-demo-usage.mjs --data-dir "$env:APPDATA\YunHuiAI"
+node scripts/clean-legacy-demo-usage.mjs --data-dir "$env:APPDATA\YunHuiAI" --apply --backup-dir '<仓库和客户端数据目录外的新备份目录>'
 ```
 
 12 组清理器回归和 8 组用量页面浏览器回归通过。前者已加入 `npm test`；非 Windows 运行识别与预检检查，明确跳过 Windows 文件锁应用检查。测试样例与清理识别常量仅用于测试或维护脚本，不进入正式包，也不自动生成用量。

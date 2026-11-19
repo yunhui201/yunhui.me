@@ -21,7 +21,7 @@
 
 ## 当前调试入口
 
-Windows：`release/auto-compact-debug-0.6.0/win-unpacked/YunQiaoAI.exe`，运行时保留整个 `win-unpacked` 目录。构建标识 `20261115T093152Z-937e6720`，可在系统设置的版本更新页核对。测试使用独立配置，不会替换当前运行的旧版本。
+Windows：`release/auto-compact-debug-0.6.0/win-unpacked/YunHuiAI.exe`，运行时保留整个 `win-unpacked` 目录。构建标识 `20261115T093152Z-937e6720`，可在系统设置的版本更新页核对。测试使用独立配置，不会替换当前运行的旧版本。
 
 此调试包包含共享编程配置识别修复、上下文输入和批量设置，并将自动压缩阈值与上下文的 90% 联动。配置流程见 [配置目录与接入流程](CLIENT-CONFIGURATION.md)，共享配置验证见 [记录](CLIENT-CONFIGURATION-VALIDATION.json)，最新压缩阈值联动见 [验证记录](AUTO-COMPACT-VALIDATION.json)。
 

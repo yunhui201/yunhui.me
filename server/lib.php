@@ -1,6 +1,6 @@
 <?php
 /**
- * 云桥AI 工具箱 · 云端目录后台
+ * 云汇AI 工具箱 · 云端目录后台
  * 公共库：存储、鉴权、响应、CORS
  *
  * 这个目录要放在网站根目录之外，或者配合 nginx 的 deny 规则。
@@ -88,7 +88,7 @@ function config_read_locked(): array
             @chmod($initialFile, 0600);
         }
         $cfg['passwordHash'] = password_hash($initialPassword, PASSWORD_DEFAULT);
-        $cfg['siteName'] = '云桥AI 工具箱 云端目录';
+        $cfg['siteName'] = '云汇AI 工具箱 云端目录';
         $cfg['update'] = [
             'version' => '',
             'notes' => '',
@@ -474,7 +474,7 @@ function track(string $kind, array $extra = []): void
         }
         return $a;
     }, ['days' => [], 'clients' => []]); }
-    catch (Throwable $error) { error_log('yunqiao.me analytics write failed: ' . get_class($error)); }
+    catch (Throwable $error) { error_log('yunhui.me analytics write failed: ' . get_class($error)); }
 }
 
 /** 把按天的原始数据压成前端要的形状 */

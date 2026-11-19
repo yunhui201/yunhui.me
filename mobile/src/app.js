@@ -7,7 +7,7 @@ import packageInfo from '../package.json';
 const app = document.getElementById('app');
 const overlay = document.getElementById('overlay');
 const storage = { get: key => { try { return localStorage.getItem(key); } catch { return null; } }, set: (key, value) => { try { localStorage.setItem(key, value); } catch { /* optional preference */ } } };
-let endpoint = storage.get('yunqiao.gateway') || storage.get('aurora.gateway') || '';
+let endpoint = storage.get('yunhui.gateway') || storage.get('aurora.gateway') || '';
 let rpc = null;
 let state = null;
 let summary = null;
@@ -111,16 +111,16 @@ async function transport(options) {
 }
 function setTheme(theme) {
   document.documentElement.dataset.theme = theme;
-  storage.set('yunqiao.mobile.theme', theme);
+  storage.set('yunhui.mobile.theme', theme);
 }
-setTheme(storage.get('yunqiao.mobile.theme') || 'system');
+setTheme(storage.get('yunhui.mobile.theme') || 'system');
 
 function renderConnect() {
   app.replaceChildren();
   overlay.replaceChildren();
   const wrap = el('div', 'connect-screen');
   const brand = el('div', 'brand');
-  brand.append(el('div', 'brand-mark', '云'), el('span', '', 'yunqiao.me'), badge('手机伴侣'));
+  brand.append(el('div', 'brand-mark', '云'), el('span', '', 'yunhui.me'), badge('手机伴侣'));
   const hero = el('div', 'connect-hero');
   hero.append(el('span', 'eyebrow', 'YOUR AI, CONNECTED'), el('h1', '', 'AI 工作台，\n随手可达。'), el('p', 'muted', '连接电脑，随时查看模型、用量与会话。'));
   const form = el('form', 'card connect-form');
@@ -142,7 +142,7 @@ function renderConnect() {
       const nextState = await nextRpc('state.get');
       if (!nextState || !Array.isArray(nextState.providers) || !Array.isArray(nextState.agentCatalog)) throw new Error('网关版本不兼容，请先更新桌面端');
       epoch++; endpoint = base; rpc = nextRpc; state = nextState; summary = null; recent = []; sessions = null; page = 'home';
-      token.value = ''; storage.set('yunqiao.gateway', base); updatedAt = new Date().toISOString();
+      token.value = ''; storage.set('yunhui.gateway', base); updatedAt = new Date().toISOString();
       live = []; liveError = ''; liveUpdatedAt = ''; liveRetryAt = 0;
       render(); startLive(); await refresh(false).catch(e => toast(e.message || '已连接，暂时无法刷新用量'));
     } catch (e) {
@@ -211,7 +211,7 @@ function render() {
   app.replaceChildren();
   liveHost = null;
   const header = el('header', 'app-header');
-  const brand = el('div', 'brand'); brand.append(el('div', 'brand-mark small', '云'), el('strong', '', 'yunqiao.me'));
+  const brand = el('div', 'brand'); brand.append(el('div', 'brand-mark small', '云'), el('strong', '', 'yunhui.me'));
   const refreshButton = iconButton('refresh', '刷新数据', () => busy(refreshButton, () => refresh()));
   header.append(brand, badge(state.gateway?.running ? '网关在线' : '网关已停止', state.gateway?.running), refreshButton);
   const content = el('section', 'page');
@@ -233,7 +233,7 @@ function renderHome(content) {
   content.append(heading('一切，尽在掌握', '你的 AI 工作台已连接。'));
   const hero = el('div', 'workspace-card');
   const left = el('div');
-  left.append(el('span', 'eyebrow', 'CONNECTED WORKSPACE'), el('h2', '', '我的云桥工作台'), el('p', 'server-address', endpoint));
+  left.append(el('span', 'eyebrow', 'CONNECTED WORKSPACE'), el('h2', '', '我的云汇工作台'), el('p', 'server-address', endpoint));
   hero.append(left, icon('clients'));
   const meta = el('div', 'workspace-meta');
   meta.append(el('span', '', `${Object.values(state.agents || {}).filter(a => a.connected).length} 个客户端已连接`), el('span', '', `${state.providers.filter(p => p.enabled).length} 家供应商已启用`));
@@ -328,7 +328,7 @@ function openClient(agent) {
   let selectionVersion = 0;
   body.append(note(agent.supportNote || agent.description || '配置电脑上的客户端。'));
   if (agent.support === 'unsupported' || agent.support === 'manual') {
-    body.append(note(agent.support === 'unsupported' ? '此客户端暂不支持通过云桥自动更换模型服务。请在电脑端查看官方接入方式。' : '此客户端需要在应用内手动完成设置，请在电脑端复制参数并按接入说明操作。'));
+    body.append(note(agent.support === 'unsupported' ? '此客户端暂不支持通过云汇自动更换模型服务。请在电脑端查看官方接入方式。' : '此客户端需要在应用内手动完成设置，请在电脑端复制参数并按接入说明操作。'));
     return;
   }
   const providers = state.providers.filter(p => p.enabled && p.models?.length);
@@ -469,7 +469,7 @@ function renderSettings(content) {
   const themeCard = el('div', 'card settings-card');
   themeCard.append(el('h2', '', '外观')); const theme = el('select');
   [['system', '跟随系统'], ['light', '浅色'], ['dark', '深色']].forEach(([v, text]) => { const option = el('option', '', text); option.value = v; theme.append(option); });
-  theme.value = storage.get('yunqiao.mobile.theme') || 'system'; theme.addEventListener('change', () => setTheme(theme.value)); themeCard.append(label('主题', theme)); content.append(themeCard);
+  theme.value = storage.get('yunhui.mobile.theme') || 'system'; theme.addEventListener('change', () => setTheme(theme.value)); themeCard.append(label('主题', theme)); content.append(themeCard);
   const plugins = el('div', 'card settings-card');
   plugins.append(el('h2', '', '已安装的网关插件'));
   if (!state.plugins?.length) plugins.append(el('p', 'muted', '尚未安装插件，可在电脑端添加和管理。'));
@@ -478,10 +478,10 @@ function renderSettings(content) {
   }
   plugins.append(el('p', 'muted small-text', '插件安装和脚本编辑在电脑端完成。')); content.append(plugins);
   content.append(note('手机只连接你选择的工作台。网关需保持运行，访问令牌不会写入地址或本地存储。'));
-  const website = el('a', 'website-link', 'yunqiao.me'); website.href = 'https://yunqiao.me'; website.target = '_blank'; website.rel = 'noopener noreferrer';
+  const website = el('a', 'website-link', 'yunhui.me'); website.href = 'https://yunhui.me'; website.target = '_blank'; website.rel = 'noopener noreferrer';
   const disconnect = button('断开连接', () => { epoch++; stopLive(); rpc = null; state = null; summary = null; recent = []; live = []; sessions = null; renderConnect(); toast('已断开连接，访问令牌已清除'); }, 'button danger');
-  const source = el('a', 'website-link', '开源代码 · AGPL-3.0-only'); source.href = 'https://github.com/jxb412/yunqiao.me'; source.target = '_blank'; source.rel = 'noopener noreferrer';
-  content.append(disconnect, website, source, el('p', 'footer-version', `yunqiao.me · 手机伴侣 ${packageInfo.version}`));
+  const source = el('a', 'website-link', '开源代码 · AGPL-3.0-only'); source.href = 'https://github.com/yunhui201/yunhui.me'; source.target = '_blank'; source.rel = 'noopener noreferrer';
+  content.append(disconnect, website, source, el('p', 'footer-version', `yunhui.me · 手机伴侣 ${packageInfo.version}`));
 }
 
 renderConnect();

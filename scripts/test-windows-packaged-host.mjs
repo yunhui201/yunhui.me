@@ -15,7 +15,7 @@ if (process.platform !== 'win32') {
 }
 const repository = path.resolve(import.meta.dirname, '..');
 const originalTemp = fs.realpathSync.native(os.tmpdir());
-const scratch = fs.realpathSync.native(fs.mkdtempSync(path.join(originalTemp, 'yunqiao-packaged-host-test-')));
+const scratch = fs.realpathSync.native(fs.mkdtempSync(path.join(originalTemp, 'yunhui-packaged-host-test-')));
 const privateTemp = path.join(scratch, "临时 'quoted' & scripts");
 fs.mkdirSync(privateTemp);
 const controlledEnvironment = ['TEMP', 'TMP', 'ELECTRON_RUN_AS_NODE', 'ELECTRON_NO_ASAR', 'NODE_OPTIONS', 'NODE_PATH'];
@@ -139,7 +139,7 @@ try {
     assert.equal(path.dirname(metadata.scriptFile), path.dirname(metadata.resultFile));
     const helperDirectory = path.dirname(metadata.scriptFile);
     assert.equal(path.dirname(helperDirectory), privateTemp);
-    assert(path.basename(helperDirectory).startsWith('yunqiao-packaged-host-'));
+    assert(path.basename(helperDirectory).startsWith('yunhui-packaged-host-'));
     assert.equal(path.basename(metadata.resultFile), 'result.json');
     assert.equal(path.basename(metadata.scriptFile), 'launch.ps1');
     assert(!fs.existsSync(helperDirectory), 'Helper script, result and private directory must be removed on settlement');
@@ -198,7 +198,7 @@ try {
   assert.equal(process.env.CODEX_HOME, originalCodexHome);
   const resolved = fs.realpathSync.native(scratch);
   assert.equal(path.dirname(resolved), originalTemp);
-  assert(path.basename(resolved).startsWith('yunqiao-packaged-host-test-'));
+  assert(path.basename(resolved).startsWith('yunhui-packaged-host-test-'));
   assert(childDirectories.every(directory => !fs.existsSync(path.join(directory, 'ready')) || fs.existsSync(path.join(directory, 'finished'))),
     'Never remove a fixture directory while its private child is still active');
   fs.rmSync(resolved, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });

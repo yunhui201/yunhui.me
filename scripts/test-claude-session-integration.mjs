@@ -5,7 +5,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const temporary = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-claude-history-')));
+const temporary = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-claude-history-')));
 const saved = process.env.AURORA_CLIENT_HOME;
 let count = 0;
 try {
@@ -109,6 +109,6 @@ try {
   console.log(`Claude history integration: ${count} checks passed`);
 } finally {
   if (saved === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = saved;
-  assert(path.basename(temporary).startsWith('yunqiao-claude-history-'));
+  assert(path.basename(temporary).startsWith('yunhui-claude-history-'));
   fs.rmSync(temporary, { recursive: true, force: true });
 }

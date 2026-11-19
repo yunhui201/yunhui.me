@@ -1,4 +1,4 @@
-/* 云桥AI 工具箱 · 设计系统
+/* 云汇AI 工具箱 · 设计系统
    深空底色 + 极光渐变 + 毛玻璃卡片。中文优先字体栈。 */
 
 :root {
@@ -60,7 +60,7 @@ body {
   overflow: hidden;
 }
 
-/* 背景云桥AI */
+/* 背景云汇AI */
 body::before {
   content: '';
   position: fixed;

@@ -6,7 +6,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-desktop-select-')));
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-desktop-select-')));
 const root = path.resolve(import.meta.dirname, '..'), originalHome = process.env.AURORA_CLIENT_HOME;
 const original = { connection: { port: 9333, lastVersion: '1.0' }, entries: { fixture: { installed: true, enabled: false } }, settings: { fixturePreference: true } };
 let passed = 0;
@@ -20,7 +20,7 @@ try {
     const folder = path.join(scratch, String(++serial)); fs.mkdirSync(folder);
     process.env.AURORA_CLIENT_HOME = folder;
     const store = new api.AuroraStore(path.join(folder, 'store')); store.writeExtra('extensions.json', original);
-    const own = path.join(folder, 'yunqiao.exe'), executable = path.join(folder, 'ChatGPT.exe');
+    const own = path.join(folder, 'yunhui.exe'), executable = path.join(folder, 'ChatGPT.exe');
     fs.writeFileSync(own, 'self'); fs.writeFileSync(executable, 'fixture program; never execute');
     const selected = platform === 'darwin' ? path.join(folder, 'ChatGPT.app') : executable;
     if (platform === 'darwin') fs.mkdirSync(selected);
@@ -92,6 +92,6 @@ try {
   console.log(`Desktop selection: ${passed} checks passed.`);
 } finally {
   if (originalHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = originalHome;
-  assert.equal(fs.realpathSync(path.dirname(scratch)), fs.realpathSync(os.tmpdir())); assert(path.basename(scratch).startsWith('yunqiao-desktop-select-'));
+  assert.equal(fs.realpathSync(path.dirname(scratch)), fs.realpathSync(os.tmpdir())); assert(path.basename(scratch).startsWith('yunhui-desktop-select-'));
   fs.rmSync(scratch, { recursive: true, force: true });
 }

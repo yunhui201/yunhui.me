@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 import { parse as parseToml } from 'smol-toml';
 
-const root=fs.mkdtempSync(path.join(os.tmpdir(),'yunqiao-codex-write-')),previous=process.env.AURORA_CLIENT_HOME;
+const root=fs.mkdtempSync(path.join(os.tmpdir(),'yunhui-codex-write-')),previous=process.env.AURORA_CLIENT_HOME;
 process.env.AURORA_CLIENT_HOME=root;
 const home=path.join(root,'.codex'),config=path.join(home,'config.toml'),prompt=path.join(home,'AGENTS.md');fs.mkdirSync(path.join(home,'skills','fixture'),{recursive:true});fs.writeFileSync(path.join(home,'skills','fixture','SKILL.md'),'# Fixture');
 await build({entryPoints:['src/core/codex.ts'],outfile:path.join(root,'api.cjs'),bundle:true,platform:'node',format:'cjs',logLevel:'silent'});
@@ -66,5 +66,5 @@ try{
   console.log(`Codex resource writes: ${passed} checks passed`);
 }finally{
   if(previous===undefined)delete process.env.AURORA_CLIENT_HOME;else process.env.AURORA_CLIENT_HOME=previous;
-  if(path.resolve(root).startsWith(path.resolve(os.tmpdir())+path.sep)&&path.basename(root).startsWith('yunqiao-codex-write-'))fs.rmSync(root,{recursive:true,force:true});
+  if(path.resolve(root).startsWith(path.resolve(os.tmpdir())+path.sep)&&path.basename(root).startsWith('yunhui-codex-write-'))fs.rmSync(root,{recursive:true,force:true});
 }

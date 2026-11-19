@@ -1,6 +1,6 @@
 # 客户端更新检查（2026-11-15）
 
-更新默认先查询 `https://api.github.com/repos/jxb412/yunqiao.me/releases/latest`，只接受正式发布。GitHub 超时、404、限流、无效响应或缺少当前平台资源时，查询官网 `https://ai.haowucm.cn/pub.php?action=update`。
+更新默认先查询 `https://api.github.com/repos/yunhui201/yunhui.me/releases/latest`，只接受正式发布。GitHub 超时、404、限流、无效响应或缺少当前平台资源时，查询官网 `https://yunhui.me/pub.php?action=update`。
 
 客户端根据平台和架构选取实际发布资源，Windows 优先 setup、其次 portable；macOS 为 DMG/PKG，Linux 为 AppImage。文件名必须与正式版本、平台和架构匹配；GitHub URL 必须属于本仓库、对应 tag 和资源。官网下载限定官方 releases 路径或经验证的 GitHub 资源。HTTPS、凭据、版本、正式发布状态及资源状态均验证。
 

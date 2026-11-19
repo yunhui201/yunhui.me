@@ -1,8 +1,8 @@
-# 云桥 AI · yunqiao.me 0.6.5
+# 云汇 AI · yunhui.me 0.6.5
 
-[下载本版](https://github.com/jxb412/yunqiao.me/releases/tag/v0.6.5) · [安装说明](../INSTALLATION.md) · [使用指南](../USER-GUIDE.md)
+[下载本版](https://github.com/yunhui201/yunhui.me/releases/tag/v0.6.5) · [安装说明](../INSTALLATION.md) · [使用指南](../USER-GUIDE.md)
 
-为 ChatGPT / Codex 编程客户端应用、重新应用或恢复原配置时，云桥现在自动备份历史并衔接供应商归属，无需再到历史页执行一次批量迁移。
+为 ChatGPT / Codex 编程客户端应用、重新应用或恢复原配置时，云汇现在自动备份历史并衔接供应商归属，无需再到历史页执行一次批量迁移。
 
 ## 配置与历史一起完成
 
@@ -33,18 +33,18 @@
 
 | 平台 | 安装文件 |
 | --- | --- |
-| Windows x64 | [安装版](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.5/YunQiaoAI-0.6.5-win-x64-setup.exe) · [免安装版](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.5/YunQiaoAI-0.6.5-win-x64-portable.exe) · [完整解压版](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.5/YunQiaoAI-0.6.5-win-x64.zip) |
-| macOS Apple Silicon | [DMG](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.5/YunQiaoAI-0.6.5-mac-arm64.dmg) · [ZIP](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.5/YunQiaoAI-0.6.5-mac-arm64.zip) |
-| macOS Intel | [DMG](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.5/YunQiaoAI-0.6.5-mac-x64.dmg) · [ZIP](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.5/YunQiaoAI-0.6.5-mac-x64.zip) |
+| Windows x64 | [安装版](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.5/YunHuiAI-0.6.5-win-x64-setup.exe) · [免安装版](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.5/YunHuiAI-0.6.5-win-x64-portable.exe) · [完整解压版](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.5/YunHuiAI-0.6.5-win-x64.zip) |
+| macOS Apple Silicon | [DMG](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.5/YunHuiAI-0.6.5-mac-arm64.dmg) · [ZIP](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.5/YunHuiAI-0.6.5-mac-arm64.zip) |
+| macOS Intel | [DMG](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.5/YunHuiAI-0.6.5-mac-x64.dmg) · [ZIP](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.5/YunHuiAI-0.6.5-mac-x64.zip) |
 
-发布页提供 [SHA256 校验清单](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.5/SHA256SUMS.txt)。在 **系统设置 → 版本更新** 也可检查新版，GitHub 为首选下载来源，官网为备用来源。
+发布页提供 [SHA256 校验清单](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.5/SHA256SUMS.txt)。在 **系统设置 → 版本更新** 也可检查新版，GitHub 为首选下载来源，官网为备用来源。
 
-升级前退出云桥，保留本机数据和配置备份。Windows 运行新版安装包；ZIP 版完整解压到新目录后运行 `YunQiaoAI.exe`。macOS 按芯片选择安装包，将 `YunQiaoAI.app` 放入“应用程序”并替换旧应用。
+升级前退出云汇，保留本机数据和配置备份。Windows 运行新版安装包；ZIP 版完整解压到新目录后运行 `YunHuiAI.exe`。macOS 按芯片选择安装包，将 `YunHuiAI.app` 放入“应用程序”并替换旧应用。
 
 macOS 包尚未签名与公证。确认应用来自项目发布页后，若首次打开提示“已损坏”，在终端运行：
 
 ```bash
-xattr -cr "/Applications/YunQiaoAI.app"
+xattr -cr "/Applications/YunHuiAI.app"
 ```
 
 完整步骤见[安装说明](../INSTALLATION.md)；配置与历史的范围、恢复和冲突处理见[历史迁移指南](HISTORY-PROVIDER-MIGRATION.md)。上一版说明：[0.6.4](RELEASE-0.6.4.md)。

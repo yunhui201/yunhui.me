@@ -285,13 +285,13 @@ export default function Groups({ state, reload }: PageProps) {
         </Modal>
       )}
       {connecting && <Modal title="分组接入参数" sub={`group/${connecting.name}`} onClose={() => setConnecting(null)}>
-        <div className="notice">在支持自定义模型的客户端填写以下信息。使用分组时请保持云桥和本地网关运行。</div>
+        <div className="notice">在支持自定义模型的客户端填写以下信息。使用分组时请保持云汇和本地网关运行。</div>
         {!connecting.enabled && <div className="notice warning">此分组已停用，启用后才能接收请求。</div>}
         {!state.gateway.running && <div className="notice warning">本地网关当前未运行，请到系统设置启动后再使用。</div>}
         <Field label="模型名"><code style={{ overflowWrap: 'anywhere' }}>group/{connecting.name}</code><Btn size="sm" onClick={() => { void copy(`group/${connecting.name}`, '模型名'); }}>复制模型名</Btn></Field>
         <Field label="OpenAI 兼容 / Responses 接口地址"><code style={{ overflowWrap: 'anywhere' }}>{gatewayBase}/v1</code><Btn size="sm" onClick={() => { void copy(`${gatewayBase}/v1`, '接口地址'); }}>复制接口地址</Btn></Field>
         <Field label="Claude / Anthropic 接口地址"><code style={{ overflowWrap: 'anywhere' }}>{gatewayBase}</code><span className="hint">请求路径为 /v1/messages；Gemini 原生请求使用 /v1beta/models/模型名:generateContent。</span></Field>
-        <Field label="API Key" hint="填写云桥的网关令牌。供应商自己的密钥由云桥转发时使用。">
+        <Field label="API Key" hint="填写云汇的网关令牌。供应商自己的密钥由云汇转发时使用。">
           <Btn size="sm" disabled={!window.aurora || !state.settings.gatewayToken} onClick={() => { void copy(state.settings.gatewayToken, '网关令牌'); }}>复制网关令牌</Btn>
         </Field>
         <p className="hint">当前客户端接入向导仍按单个供应商配置。请在客户端手动选择或填写以上分组模型；只复制参数不会改写客户端配置。</p>

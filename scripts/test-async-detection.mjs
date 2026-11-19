@@ -12,7 +12,7 @@ import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
 const require = createRequire(import.meta.url), base = path.resolve(import.meta.dirname, '..');
-const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-async-detection-')));
+const root = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-async-detection-')));
 const previousEnvironment = { ...process.env }, write = (file, value) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, value); };
 const read = file => fs.readFileSync(file, 'utf8');
 let passed = 0;
@@ -27,7 +27,7 @@ try {
   const cliName = process.platform === 'win32' ? 'gemini.cmd' : 'gemini';
   write(path.join(root, 'bin', cliName), 'fixture program, never execute');
   if (process.platform !== 'win32') fs.chmodSync(path.join(root, 'bin', cliName), 0o700);
-  process.env.AURORA_CLIENT_HOME = home; process.env.AURORA_HOME = path.join(root, 'store'); process.env.YUNQIAO_HOME = path.join(root, 'store');
+  process.env.AURORA_CLIENT_HOME = home; process.env.AURORA_HOME = path.join(root, 'store'); process.env.YUNHUI_HOME = path.join(root, 'store');
   if (process.platform === 'win32') { delete process.env.PATH; process.env.Path = path.join(root, 'bin'); }
   else process.env.PATH = path.join(root, 'bin');
   process.env.APPDATA = path.join(root, 'appdata'); process.env.LOCALAPPDATA = path.join(root, 'localappdata');
@@ -122,6 +122,6 @@ try {
   console.log(`Async client detection: ${passed} checks passed.`);
 } finally {
   for (const key of Object.keys(process.env)) delete process.env[key]; Object.assign(process.env, previousEnvironment);
-  assert.equal(fs.realpathSync(path.dirname(root)), fs.realpathSync(os.tmpdir())); assert(path.basename(root).startsWith('yunqiao-async-detection-'));
+  assert.equal(fs.realpathSync(path.dirname(root)), fs.realpathSync(os.tmpdir())); assert(path.basename(root).startsWith('yunhui-async-detection-'));
   fs.rmSync(root, { recursive: true, force: true });
 }

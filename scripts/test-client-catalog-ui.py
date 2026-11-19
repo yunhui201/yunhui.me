@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix='yunqiao-client-catalog-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-client-catalog-') as temporary:
         bundle = Path(temporary) / 'ui.js'
         source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import Agents from './ui/src/pages/Agents.tsx';import Providers from './ui/src/pages/Providers.tsx';import Catalog from './ui/src/pages/Catalog.tsx';import {ToastHost} from './ui/src/components/ui.tsx';
@@ -232,8 +232,8 @@ window.renderPage=(page=window.page||'agents')=>{window.page=page;const Page=pag
             expect(names).to_have_count(len(catalog_entries))
             assert names.all_text_contents()[:3] == ['OpenAI', 'Anthropic Claude', 'Google Gemini']
             ordered = names.all_text_contents()
-            assert ordered.index('xAI Grok') < ordered.index('深度求索') < ordered.index('云桥AI 官方中转') < ordered.index('Ollama 本地')
-            assert ordered.index('云桥AI 官方中转') < ordered.index('OpenRouter')
+            assert ordered.index('xAI Grok') < ordered.index('深度求索') < ordered.index('云汇AI 官方中转') < ordered.index('Ollama 本地')
+            assert ordered.index('云汇AI 官方中转') < ordered.index('OpenRouter')
             page.get_by_label('搜索厂商或模型').fill('ChatGPT')
             expect(names.first).to_have_text('OpenAI')
             page.get_by_label('搜索厂商或模型').fill('Claude')

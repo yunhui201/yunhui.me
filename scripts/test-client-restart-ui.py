@@ -10,7 +10,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix='yunqiao-client-restart-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-client-restart-ui-') as temporary:
         bundle = Path(temporary) / 'ui.js'
         source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import Agents from './ui/src/pages/Agents.tsx';import {ToastHost} from './ui/src/components/ui.tsx';
@@ -32,7 +32,7 @@ window.renderAgents=()=>root.render(<ToastHost key={window.generation}><Agents s
               window.generation=0;
               window.reset=()=>{window.generation++;window.calls=[];window.reloads=0;window.infoOverride={};window.infoError='';window.operationError='';window.operation='restarted';window.holdInfo=false;window.holdRestart=false;window.pendingInfo=null;window.pendingRestart=null;
                 window.state={settings:{},gateway:{running:true},presets:[],providers:[{id:'fixture-provider',name:'已配置的模型服务',baseUrl:'https://fixture.invalid',format:'anthropic',enabled:true,models:[{id:'fixture-model'}],apiKeys:[]}],agents:{'claude-desktop':{id:'claude-desktop',connected:true,providerId:'fixture-provider',model:'fixture-model'}},detected:{'claude-desktop':{installed:true},'codex-cli':{installed:true}},
-                  agentCatalog:[{id:'claude-desktop',name:'Claude Desktop',vendor:'Anthropic',description:'通过云桥连接已配置的模型服务。',support:'automatic',category:'desktop',protocol:'anthropic'},
+                  agentCatalog:[{id:'claude-desktop',name:'Claude Desktop',vendor:'Anthropic',description:'通过云汇连接已配置的模型服务。',support:'automatic',category:'desktop',protocol:'anthropic'},
                     {id:'codex-cli',name:'Codex CLI',vendor:'OpenAI',description:'在命令行终端中使用编程助手。',support:'automatic',category:'cli',protocol:'openai-responses'},
                     {id:'deepseek',name:'DeepSeek API',vendor:'DeepSeek',description:'为支持自定义接口的应用提供连接参数。',support:'manual',category:'service',protocol:'openai-chat'}],codexCoexist:{identity:{available:false},models:[],warnings:[]}};
                 window.aurora=window.mockApi;window.renderAgents?.();};

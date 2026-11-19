@@ -27,7 +27,7 @@ threading.Thread(target=server.serve_forever,daemon=True).start()
 data=PROFILE/'data';data.mkdir();clients=PROFILE/'clients';clients.mkdir()
 gateway,debug=port(),port()
 (data/'settings.json').write_text(json.dumps({'theme':'light','gatewayHost':'127.0.0.1','gatewayPort':gateway,'autoCheckUpdate':False,'closeToTray':False,'catalogUrl':f'http://127.0.0.1:{server.server_port}/catalog'}),encoding='utf-8')
-environment=dict(os.environ,YUNQIAO_TEST_ISOLATED='1',AURORA_HOME=str(data),YUNQIAO_HOME=str(data),AURORA_CLIENT_HOME=str(clients),AURORA_UI_TEST='1',AURORA_PAGE='providers',APPDATA=str(PROFILE/'appdata'),LOCALAPPDATA=str(PROFILE/'localappdata'))
+environment=dict(os.environ,YUNHUI_TEST_ISOLATED='1',AURORA_HOME=str(data),YUNHUI_HOME=str(data),AURORA_CLIENT_HOME=str(clients),AURORA_UI_TEST='1',AURORA_PAGE='providers',APPDATA=str(PROFILE/'appdata'),LOCALAPPDATA=str(PROFILE/'localappdata'))
 for key in ['ELECTRON_RUN_AS_NODE','AURORA_DEV','AURORA_UI_URL','AURORA_SHOT']:environment.pop(key,None)
 log=(PROFILE/'electron.log').open('w',encoding='utf-8');process=None
 try:

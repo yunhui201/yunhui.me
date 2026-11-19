@@ -294,7 +294,7 @@ def invoke(page, action, payload=None, timeout=15000):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--exe', type=Path, required=True, help='Reference win-unpacked/YunQiaoAI.exe')
+    parser.add_argument('--exe', type=Path, required=True, help='Reference win-unpacked/YunHuiAI.exe')
     parser.add_argument('--launcher', type=Path, required=True, help='Actual NSIS portable EXE')
     parser.add_argument('--version', default=json.loads((ROOT / 'package.json').read_text(encoding='utf-8'))['version'])
     parser.add_argument('--report-dir', type=Path, default=ROOT / 'tmp/portable-startup-artifacts')
@@ -308,7 +308,7 @@ def main():
     assert package['version'] == args.version, f'Unexpected package version: {package["version"]}'
     main_bytes = HELPERS.read_asar(asar, 'dist/main/main.cjs')
     assert main_bytes == (ROOT / 'dist/main/main.cjs').read_bytes(), 'The package differs from the current main build'
-    assert b'YUNQIAO_TEST_ISOLATED' in main_bytes, 'Refusing a package without the login-item isolation guard'
+    assert b'YUNHUI_TEST_ISOLATED' in main_bytes, 'Refusing a package without the login-item isolation guard'
     assert HELPERS.read_asar(asar, 'dist/ui/index.html') == (ROOT / 'dist/ui/index.html').read_bytes(), 'The package differs from the current UI build'
     asar_hash = HELPERS.sha256(asar)
     args.report_dir.mkdir(parents=True, exist_ok=True)
@@ -336,8 +336,8 @@ def main():
             'programdata', 'commonprogramfiles', 'commonprogramfiles(x86)', 'processor_architecture',
             'number_of_processors', 'os'}
     environment = {key: value for key, value in os.environ.items() if key.lower() in keep}
-    environment.update(TEMP=str(temporary), TMP=str(temporary), AURORA_HOME=str(data), YUNQIAO_HOME=str(data),
-                       AURORA_CLIENT_HOME=str(clients), YUNQIAO_TEST_ISOLATED='1', USERPROFILE=str(clients), HOME=str(clients),
+    environment.update(TEMP=str(temporary), TMP=str(temporary), AURORA_HOME=str(data), YUNHUI_HOME=str(data),
+                       AURORA_CLIENT_HOME=str(clients), YUNHUI_TEST_ISOLATED='1', USERPROFILE=str(clients), HOME=str(clients),
                        CODEX_HOME=str(clients / '.codex'), APPDATA=str(profile / 'appdata'), LOCALAPPDATA=str(profile / 'localappdata'),
                        HTTP_PROXY=proxy, HTTPS_PROXY=proxy, ALL_PROXY=proxy, NO_PROXY='127.0.0.1,localhost')
     job, watcher, logs, cleanup_lock = None, ExtractionWatcher(temporary, executable.name), [], None

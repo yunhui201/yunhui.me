@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
 // Exercise Windows package layouts on private files; no installed application is launched.
-const temporary = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-claude-paths-')));
+const temporary = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-claude-paths-')));
 const priorHome = process.env.AURORA_CLIENT_HOME;
 const write = (file, value) => { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, typeof value === 'string' ? value : JSON.stringify(value)); };
 let checks = 0, sequence = 0;
@@ -110,5 +110,5 @@ try {
   console.log(`Claude Desktop configuration roots: ${checks} checks passed (private filesystem fixtures; no application launched)`);
 } finally {
   if (priorHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = priorHome;
-  if (path.dirname(temporary) === fs.realpathSync(os.tmpdir()) && path.basename(temporary).startsWith('yunqiao-claude-paths-')) fs.rmSync(temporary, { recursive: true, force: true });
+  if (path.dirname(temporary) === fs.realpathSync(os.tmpdir()) && path.basename(temporary).startsWith('yunhui-claude-paths-')) fs.rmSync(temporary, { recursive: true, force: true });
 }

@@ -93,32 +93,32 @@ try {
   const selectedArchive = await alternate.service.preview({ scope: 'archived' });
   check('Empty scopes are reported honestly without creating backups', () => assert.equal(selectedArchive.summary.selected, 0));
 
-  const renamed = fixture('yunqiao-provider');
-  const renamedConfig = 'model_provider = "yunqiao"\n[model_providers.yunqiao]\nname = "云桥 AI"\n[model_providers.aurora]\nname = "Legacy provider"\n';
+  const renamed = fixture('yunhui-provider');
+  const renamedConfig = 'model_provider = "yunhui"\n[model_providers.yunhui]\nname = "云汇 AI"\n[model_providers.aurora]\nname = "Legacy provider"\n';
   write(path.join(renamed.home, 'config.toml'), renamedConfig);
   const legacy = renamed.add(80, { provider: 'aurora', catalog: true });
   const legacyArchived = renamed.add(81, { provider: 'aurora', archived: true });
   const official = renamed.add(82, { provider: 'openai' });
   renamed.db.prepare('UPDATE local_thread_catalog SET model_provider=? WHERE host_id=? AND thread_id=?').run('aurora', 'local-machine', legacy.id);
   const renamedInventory = await renamed.service.providers();
-  const renamedPreview = await renamed.service.preview({ sourceProvider: 'aurora', targetProvider: 'yunqiao', scope: 'all' });
-  check('New yunqiao configuration discovers legacy aurora histories without changing them during preview', () => {
-    assert(renamedInventory.ok, renamedInventory.message); assert.equal(renamedInventory.currentProvider, 'yunqiao');
-    assert(renamedInventory.targets.some(t => t.id === 'yunqiao' && t.current));
+  const renamedPreview = await renamed.service.preview({ sourceProvider: 'aurora', targetProvider: 'yunhui', scope: 'all' });
+  check('New yunhui configuration discovers legacy aurora histories without changing them during preview', () => {
+    assert(renamedInventory.ok, renamedInventory.message); assert.equal(renamedInventory.currentProvider, 'yunhui');
+    assert(renamedInventory.targets.some(t => t.id === 'yunhui' && t.current));
     assert.equal(renamedInventory.sources.find(s => s.id === 'aurora').count, 2);
     assert(renamedPreview.ok, renamedPreview.message); assert.equal(renamedPreview.summary.repairable, 2);
     assert.equal(read(legacy.file), legacy.source); assert.equal(read(legacyArchived.file), legacyArchived.source);
     assert.equal(renamed.db.prepare('SELECT model_provider FROM threads WHERE id=?').get(legacy.id).model_provider, 'aurora');
   });
   const renamedApplied = await renamed.service.apply({ ...renamedPreview.options, revision: renamedPreview.revision });
-  check('Explicit aurora to yunqiao migration updates active/archive indexes and preserves official history and message bytes', () => {
+  check('Explicit aurora to yunhui migration updates active/archive indexes and preserves official history and message bytes', () => {
     assert(renamedApplied.ok, renamedApplied.message); assert.equal(renamedApplied.updated, 2);
     for (const session of [legacy, legacyArchived]) {
-      assert.equal(JSON.parse(read(session.file).split('\r\n')[0]).payload.model_provider, 'yunqiao');
+      assert.equal(JSON.parse(read(session.file).split('\r\n')[0]).payload.model_provider, 'yunhui');
       assert.equal(read(session.file).split('\r\n').slice(1).join('\r\n'), session.source.split('\r\n').slice(1).join('\r\n'));
-      assert.equal(renamed.db.prepare('SELECT model_provider FROM threads WHERE id=?').get(session.id).model_provider, 'yunqiao');
+      assert.equal(renamed.db.prepare('SELECT model_provider FROM threads WHERE id=?').get(session.id).model_provider, 'yunhui');
     }
-    assert.equal(renamed.db.prepare('SELECT model_provider FROM local_thread_catalog WHERE host_id=? AND thread_id=?').get('local-machine', legacy.id).model_provider, 'yunqiao');
+    assert.equal(renamed.db.prepare('SELECT model_provider FROM local_thread_catalog WHERE host_id=? AND thread_id=?').get('local-machine', legacy.id).model_provider, 'yunhui');
     assert.equal(read(official.file), official.source); assert.equal(renamed.db.prepare('SELECT model_provider FROM threads WHERE id=?').get(official.id).model_provider, 'openai');
     assert.equal(read(path.join(renamed.home, 'config.toml')), renamedConfig);
   });

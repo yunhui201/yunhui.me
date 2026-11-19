@@ -1,13 +1,13 @@
 {
-  "name": "yunqiao-ai-toolbox",
-  "productName": "云桥AI 工具箱",
+  "name": "yunhui-ai-toolbox",
+  "productName": "云汇AI 工具箱",
   "version": "0.6.11",
-  "description": "云桥 AI · yunqiao.me — 客户端、供应商与模型的统一工作空间。",
+  "description": "云汇 AI · yunhui.me — 客户端、供应商与模型的统一工作空间。",
   "private": true,
   "type": "module",
   "main": "dist/main/main.cjs",
   "author": {
-    "name": "云桥AI"
+    "name": "云汇AI"
   },
   "license": "AGPL-3.0-only",
   "scripts": {
@@ -39,10 +39,10 @@
     "vite": "^5.4.11"
   },
   "build": {
-    "appId": "io.yunqiao.ai",
-    "productName": "云桥AI 工具箱",
+    "appId": "io.yunhui.ai",
+    "productName": "云汇AI 工具箱",
     "asar": true,
-    "executableName": "YunQiaoAI",
+    "executableName": "YunHuiAI",
     "directories": {
       "output": "release",
       "buildResources": "build"
@@ -75,7 +75,7 @@
           ]
         }
       ],
-      "artifactName": "YunQiaoAI-${version}-win-${arch}.${ext}",
+      "artifactName": "YunHuiAI-${version}-win-${arch}.${ext}",
       "icon": "build/icon.png"
     },
     "nsis": {
@@ -83,11 +83,11 @@
       "allowToChangeInstallationDirectory": true,
       "perMachine": false,
       "createDesktopShortcut": true,
-      "shortcutName": "云桥AI 工具箱",
-      "artifactName": "YunQiaoAI-${version}-win-x64-setup.${ext}"
+      "shortcutName": "云汇AI 工具箱",
+      "artifactName": "YunHuiAI-${version}-win-x64-setup.${ext}"
     },
     "portable": {
-      "artifactName": "YunQiaoAI-${version}-win-x64-portable.${ext}",
+      "artifactName": "YunHuiAI-${version}-win-x64-portable.${ext}",
       "unpackDirName": true,
       "splashImage": "build/portable-splash.bmp"
     },
@@ -98,17 +98,17 @@
       "icon": "build/icon.png",
       "entitlements": "build/entitlements.mac.plist",
       "extendInfo": {
-        "NSAppleEventsUsageDescription": "在你点击“新终端打开”后，云桥 AI 需要控制系统 Terminal 来启动所选命令行客户端。"
+        "NSAppleEventsUsageDescription": "在你点击“新终端打开”后，云汇 AI 需要控制系统 Terminal 来启动所选命令行客户端。"
       },
       "category": "public.app-category.developer-tools",
-      "artifactName": "YunQiaoAI-${version}-mac-${arch}.${ext}"
+      "artifactName": "YunHuiAI-${version}-mac-${arch}.${ext}"
     },
     "linux": {
       "target": [
         "AppImage"
       ],
       "icon": "build/icon.png",
-      "artifactName": "YunQiaoAI-${version}-linux-${arch}.${ext}"
+      "artifactName": "YunHuiAI-${version}-linux-${arch}.${ext}"
     },
     "extraResources": [
       {

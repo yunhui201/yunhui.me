@@ -1,6 +1,6 @@
-# 云桥 AI · yunqiao.me 0.6.7
+# 云汇 AI · yunhui.me 0.6.7
 
-[下载本版](https://github.com/jxb412/yunqiao.me/releases/tag/v0.6.7) · [安装说明](../INSTALLATION.md) · [使用指南](../USER-GUIDE.md)
+[下载本版](https://github.com/yunhui201/yunhui.me/releases/tag/v0.6.7) · [安装说明](../INSTALLATION.md) · [使用指南](../USER-GUIDE.md)
 
 修复配置预览被缺少原会话文件的历史索引阻止的问题。可以确认安全保留的记录，会随索引数据库完整备份并保持原样；其他正常历史继续按本次配置迁移，不必删除旧索引才能配置客户端。
 
@@ -31,16 +31,16 @@
 
 | 平台 | 安装文件 |
 | --- | --- |
-| Windows x64 | [安装版](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.7/YunQiaoAI-0.6.7-win-x64-setup.exe) · [免安装版](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.7/YunQiaoAI-0.6.7-win-x64-portable.exe) · [完整解压版](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.7/YunQiaoAI-0.6.7-win-x64.zip) |
-| macOS Apple Silicon | [DMG](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.7/YunQiaoAI-0.6.7-mac-arm64.dmg) · [ZIP](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.7/YunQiaoAI-0.6.7-mac-arm64.zip) |
-| macOS Intel | [DMG](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.7/YunQiaoAI-0.6.7-mac-x64.dmg) · [ZIP](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.7/YunQiaoAI-0.6.7-mac-x64.zip) |
+| Windows x64 | [安装版](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.7/YunHuiAI-0.6.7-win-x64-setup.exe) · [免安装版](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.7/YunHuiAI-0.6.7-win-x64-portable.exe) · [完整解压版](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.7/YunHuiAI-0.6.7-win-x64.zip) |
+| macOS Apple Silicon | [DMG](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.7/YunHuiAI-0.6.7-mac-arm64.dmg) · [ZIP](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.7/YunHuiAI-0.6.7-mac-arm64.zip) |
+| macOS Intel | [DMG](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.7/YunHuiAI-0.6.7-mac-x64.dmg) · [ZIP](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.7/YunHuiAI-0.6.7-mac-x64.zip) |
 
-发布页提供 [SHA256 校验清单](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.7/SHA256SUMS.txt)。升级前退出云桥并保留原数据与备份。ZIP 版完整解压后运行 `YunQiaoAI.exe`；Mac 将 `YunQiaoAI.app` 放入“应用程序”并替换旧应用。
+发布页提供 [SHA256 校验清单](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.7/SHA256SUMS.txt)。升级前退出云汇并保留原数据与备份。ZIP 版完整解压后运行 `YunHuiAI.exe`；Mac 将 `YunHuiAI.app` 放入“应用程序”并替换旧应用。
 
 macOS 包尚未签名与公证。确认应用来自项目发布页后，若首次打开提示“已损坏”，在终端运行：
 
 ```bash
-xattr -cr "/Applications/YunQiaoAI.app"
+xattr -cr "/Applications/YunHuiAI.app"
 ```
 
 应用内更新优先使用 GitHub，官网为备用下载来源。完整操作见[安装说明](../INSTALLATION.md)、[使用指南](../USER-GUIDE.md)及[历史迁移指南](HISTORY-PROVIDER-MIGRATION.md)。上一版：[0.6.6](RELEASE-0.6.6.md)。

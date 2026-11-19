@@ -24,7 +24,7 @@ export function sortCatalogEntries<T extends CatalogEntry>(entries: readonly T[]
     const group = (featuredRank(a) ?? regions.get(a.region || 'global') ?? 50) - (featuredRank(b) ?? regions.get(b.region || 'global') ?? 50);
     if (group) return group;
     // Keep the toolbox's own preset first within relays, after all international/domestic vendors.
-    const relay = Number(b.region === 'relay' && identity(b) === 'yunqiao') - Number(a.region === 'relay' && identity(a) === 'yunqiao');
+    const relay = Number(b.region === 'relay' && identity(b) === 'yunhui') - Number(a.region === 'relay' && identity(a) === 'yunhui');
     return relay || collator.compare(a.nameZh || a.name, b.nameZh || b.name) || collator.compare(identity(a), identity(b));
   });
 }

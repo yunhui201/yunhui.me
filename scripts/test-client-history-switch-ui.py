@@ -40,7 +40,7 @@ def main():
     if args.screenshots:
         args.screenshots.mkdir(parents=True, exist_ok=True)
     checks, errors, network = [], [], []
-    with tempfile.TemporaryDirectory(prefix='yunqiao-history-switch-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-history-switch-ui-') as temporary:
         bundle = Path(temporary) / 'ui.js'
         source = """import React from 'react';import {createRoot} from 'react-dom/client';
 import Agents from './ui/src/pages/Agents.tsx';import {ToastHost} from './ui/src/components/ui.tsx';

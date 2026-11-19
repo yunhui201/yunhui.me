@@ -79,7 +79,7 @@ function createWindow() {
   const theme = store.getSettings().theme;
   const backgroundColor = theme === 'dark' || (theme === 'system' && nativeTheme.shouldUseDarkColors) ? '#131720' : '#f7f8fc';
   win = new BrowserWindow({ width: 1380, height: 930, minWidth: 900, minHeight: 640, backgroundColor, show: false, frame: process.platform === 'darwin',
-    title: '云桥 AI · yunqiao.me', titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'hidden', ...(process.platform === 'darwin' ? { trafficLightPosition: { x: 16, y: 20 } } : {}),
+    title: '云汇 AI · yunhui.me', titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'hidden', ...(process.platform === 'darwin' ? { trafficLightPosition: { x: 16, y: 20 } } : {}),
     webPreferences: { preload: path.join(__dirname, 'preload.cjs'), contextIsolation: true, nodeIntegration: false, sandbox: true, offscreen: process.env.AURORA_UI_TEST === '1' && !app.isPackaged, backgroundThrottling: false },
   });
   if (DEV) void win.loadURL(UI_URL);
@@ -101,20 +101,20 @@ function createTray() {
   const iconRoot = DEV ? path.join(app.getAppPath(), 'ui', 'public') : path.join(__dirname, '..', 'ui');
   const icon = nativeImage.createFromPath(path.join(iconRoot, mac ? 'trayTemplate.png' : 'tray.png')).resize({ width: mac ? 18 : 20, height: mac ? 18 : 20 });
   if (mac) icon.setTemplateImage(true);
-  tray = new Tray(icon); tray.setToolTip('云桥 AI · yunqiao.me'); tray.on('double-click', showWindow); refreshTray();
+  tray = new Tray(icon); tray.setToolTip('云汇 AI · yunhui.me'); tray.on('double-click', showWindow); refreshTray();
 }
 function createApplicationMenu() {
   if (process.platform !== 'darwin') { Menu.setApplicationMenu(null); return; }
   Menu.setApplicationMenu(Menu.buildFromTemplate([
-    { label: '云桥 AI', submenu: [{ role: 'about', label: '关于云桥 AI' }, { type: 'separator' }, { role: 'services', label: '服务' }, { type: 'separator' }, { role: 'hide', label: '隐藏云桥 AI' }, { role: 'hideOthers', label: '隐藏其他应用' }, { role: 'unhide', label: '显示全部' }, { type: 'separator' }, { role: 'quit', label: '退出云桥 AI' }] },
+    { label: '云汇 AI', submenu: [{ role: 'about', label: '关于云汇 AI' }, { type: 'separator' }, { role: 'services', label: '服务' }, { type: 'separator' }, { role: 'hide', label: '隐藏云汇 AI' }, { role: 'hideOthers', label: '隐藏其他应用' }, { role: 'unhide', label: '显示全部' }, { type: 'separator' }, { role: 'quit', label: '退出云汇 AI' }] },
     { label: '编辑', submenu: [{ role: 'undo', label: '撤销' }, { role: 'redo', label: '重做' }, { type: 'separator' }, { role: 'cut', label: '剪切' }, { role: 'copy', label: '复制' }, { role: 'paste', label: '粘贴' }, { role: 'selectAll', label: '全选' }] },
     { label: '显示', submenu: [{ role: 'resetZoom', label: '实际大小' }, { role: 'zoomIn', label: '放大' }, { role: 'zoomOut', label: '缩小' }, { type: 'separator' }, { role: 'togglefullscreen', label: '切换全屏' }] },
-    { role: 'windowMenu', label: '窗口', submenu: [{ role: 'minimize', label: '最小化' }, { role: 'zoom', label: '缩放' }, { role: 'close', label: '关闭窗口' }, { type: 'separator' }, { label: '打开云桥 AI', click: showWindow }, { role: 'front', label: '全部前置' }] },
+    { role: 'windowMenu', label: '窗口', submenu: [{ role: 'minimize', label: '最小化' }, { role: 'zoom', label: '缩放' }, { role: 'close', label: '关闭窗口' }, { type: 'separator' }, { label: '打开云汇 AI', click: showWindow }, { role: 'front', label: '全部前置' }] },
   ]));
 }
 function refreshTray() {
   tray?.setContextMenu(Menu.buildFromTemplate([
-    { label: '打开云桥 AI', click: showWindow },
+    { label: '打开云汇 AI', click: showWindow },
     { label: status().running ? '网关运行中' : '启动网关', enabled: !status().running, click: () => { void ensureGateway().catch(() => showWindow()); } },
     { type: 'separator' },
     ...store.listProviders().filter(p => p.enabled).slice(0, 12).map(p => ({ label: p.name, submenu: [
@@ -138,7 +138,7 @@ async function trayConnect(agentId: string, providerId: string, model: string) {
 }
 function applyLoginItem(enable: boolean) {
   // Isolated acceptance profiles must not change the real Windows/macOS login item.
-  if (process.env.YUNQIAO_TEST_ISOLATED === '1' && process.env.AURORA_CLIENT_HOME && (process.env.AURORA_HOME || process.env.YUNQIAO_HOME)) return;
+  if (process.env.YUNHUI_TEST_ISOLATED === '1' && process.env.AURORA_CLIENT_HOME && (process.env.AURORA_HOME || process.env.YUNHUI_HOME)) return;
   try { app.setLoginItemSettings({ openAtLogin: enable, openAsHidden: false }); } catch {}
 }
 async function handleAction(action: string, payload: any) {
@@ -171,12 +171,12 @@ async function handleAction(action: string, payload: any) {
     case 'app.isDev': return { dev: !app.isPackaged, root: app.getAppPath() };
     case 'app.gitUpdate': return gitUpdate();
     case 'app.export': {
-      const r = await dialog.showSaveDialog({ defaultPath: path.join(app.getPath('documents'), `yunqiao.me-backup-${Date.now()}.json`), filters: [{ name: '云桥 AI 配置备份（含密钥，请妥善保管）', extensions: ['json'] }] });
+      const r = await dialog.showSaveDialog({ defaultPath: path.join(app.getPath('documents'), `yunhui.me-backup-${Date.now()}.json`), filters: [{ name: '云汇 AI 配置备份（含密钥，请妥善保管）', extensions: ['json'] }] });
       if (r.canceled || !r.filePath) return { ok: false };
       fs.writeFileSync(r.filePath, JSON.stringify(store.exportAll(), null, 2), { encoding: 'utf8', mode: 0o600 }); return { ok: true, path: r.filePath };
     }
     case 'app.import': {
-      const r = await dialog.showOpenDialog({ properties: ['openFile'], filters: [{ name: '云桥 AI 配置备份', extensions: ['json'] }] });
+      const r = await dialog.showOpenDialog({ properties: ['openFile'], filters: [{ name: '云汇 AI 配置备份', extensions: ['json'] }] });
       if (r.canceled || !r.filePaths[0]) return { ok: false };
       if (fs.statSync(r.filePaths[0]).size > 16 * 1024 * 1024) throw new Error('配置备份过大');
       const data = JSON.parse(fs.readFileSync(r.filePaths[0], 'utf8'));
@@ -200,7 +200,7 @@ async function gitUpdate() {
     for (const [cmd, args] of [['git', ['pull', '--ff-only']], ['pnpm', ['install', '--frozen-lockfile']], ['pnpm', ['run', 'build']]] as [string, string[]][]) {
       await new Promise<void>((resolve, reject) => { const p = spawn(cmd, args, { cwd: root, shell: process.platform === 'win32', windowsHide: true }); let output = ''; p.stdout.on('data', d => { output = (output + d).slice(-3000); }); p.stderr.on('data', d => { output = (output + d).slice(-3000); }); p.on('error', reject); p.on('close', code => code === 0 ? resolve() : reject(new Error(output || `退出码 ${code}`))); });
     }
-    return { ok: true, message: '已更新并构建，请重启云桥 AI。' };
+    return { ok: true, message: '已更新并构建，请重启云汇 AI。' };
   } catch (e: any) { return { ok: false, message: e.message }; }
 }
 
@@ -222,7 +222,7 @@ else {
     clientScanTimer = setInterval(() => refreshLocalClients(), 30_000);
     clientScanTimer.unref();
     app.on('activate', showWindow);
-  }).catch(e => { dialog.showErrorBox('云桥 AI 启动失败', e.message); app.quit(); });
+  }).catch(e => { dialog.showErrorBox('云汇 AI 启动失败', e.message); app.quit(); });
 }
 app.on('before-quit', () => { quitting = true; });
 app.on('window-all-closed', () => { if (!store.getSettings().closeToTray && process.platform !== 'darwin') app.quit(); });

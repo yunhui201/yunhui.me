@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
 const root = path.resolve(import.meta.dirname, '..');
-const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-history-gateway-')));
+const scratch = fs.realpathSync(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-history-gateway-')));
 const originalHome = process.env.AURORA_CLIENT_HOME;
 process.env.AURORA_CLIENT_HOME = path.join(scratch, 'client');
 const home = path.join(process.env.AURORA_CLIENT_HOME, '.codex'); fs.mkdirSync(home, { recursive: true });
@@ -209,6 +209,6 @@ try {
   await gateway.stop();
   await Promise.all(servers.map(server => new Promise(resolve => { server.close(resolve); server.closeAllConnections(); })));
   if (originalHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = originalHome;
-  assert.equal(path.dirname(scratch), fs.realpathSync(os.tmpdir())); assert(path.basename(scratch).startsWith('yunqiao-history-gateway-'));
+  assert.equal(path.dirname(scratch), fs.realpathSync(os.tmpdir())); assert(path.basename(scratch).startsWith('yunhui-history-gateway-'));
   fs.rmSync(scratch, { recursive: true, force: true });
 }

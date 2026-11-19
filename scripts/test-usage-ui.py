@@ -119,7 +119,7 @@ def test_external_cleanup(browser, bundle):
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix='yunqiao-usage-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-usage-ui-') as temporary:
         bundle = str(Path(temporary) / 'usage.js')
         source = """import React from 'react';
 import {createRoot} from 'react-dom/client';

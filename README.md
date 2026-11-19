@@ -1,18 +1,18 @@
-# 云桥 AI · yunqiao.me
+# 云汇 AI · yunhui.me
 
 **解锁桌面插件市场，把客户端、供应商、模型和历史会话放进一个中文工作空间。**
 
 从你正在使用的客户端开始：选择 Claude Code、兼容的 ChatGPT 桌面版或 Codex CLI，连接自己的 API 供应商，选好模型，预览后应用。支持国内外模型服务与自定义中转地址。新安装默认使用 **深夜** 主题，可在设置中切换为云白或跟随系统；升级保留已保存的主题选择。
 
-[下载 0.6.11](https://github.com/jxb412/yunqiao.me/releases/tag/v0.6.11) · [安装说明](INSTALLATION.md) · [使用指南](USER-GUIDE.md) · [反馈问题](https://github.com/jxb412/yunqiao.me/issues) · [用户讨论](https://github.com/jxb412/yunqiao.me/discussions)
+[下载 0.6.11](https://github.com/yunhui201/yunhui.me/releases/tag/v0.6.11) · [安装说明](INSTALLATION.md) · [使用指南](USER-GUIDE.md) · [反馈问题](https://github.com/yunhui201/yunhui.me/issues) · [用户讨论](https://github.com/yunhui201/yunhui.me/discussions)
 
-> 文档更新于 **2026 年 11 月 18 日**。本文对应 **0.6.11**，Windows 与 macOS 安装包请从 [Releases 下载页](https://github.com/jxb412/yunqiao.me/releases/tag/v0.6.11)直接下载。旧版可能不包含下文全部功能。
+> 文档更新于 **2026 年 11 月 18 日**。本文对应 **0.6.11**，Windows 与 macOS 安装包请从 [Releases 下载页](https://github.com/yunhui201/yunhui.me/releases/tag/v0.6.11)直接下载。旧版可能不包含下文全部功能。
 
 **本次更新：旧会话迁移后也能继续使用当前选择的模型。** 补齐可识别的历史供应商入口，并为自动修复的会话建立兼容连接。在网关或官方账号共存模式下，桌面端重新打开旧会话时，即使记录中仍是旧模型，也会使用本次选择的供应商和模型。Codex CLI 可在历史页复制带有对应供应商的恢复命令。配置保存与历史处理仍分别进行。完整说明见 [0.6.11 版本说明](docs/RELEASE-0.6.11.md)。
 
-ChatGPT / Codex 先保存客户端配置，再单独尝试历史备份与修复。历史暂时无法处理时保留原样并显示原因，已保存的配置仍可使用；保存工作后重启客户端加载新设置。配置文件本身无法安全保存时仍会明确报错。网关或共存模式的旧会话入口连接已选择的供应商和模型，使用期间请保持云桥运行；直连模式保留旧会话模型名，需上游仍支持该模型。兼容入口不能恢复缺失正文，也不能保证跨账号加密内容可以继续使用。操作与恢复说明见[历史迁移指南](docs/HISTORY-PROVIDER-MIGRATION.md)。
+ChatGPT / Codex 先保存客户端配置，再单独尝试历史备份与修复。历史暂时无法处理时保留原样并显示原因，已保存的配置仍可使用；保存工作后重启客户端加载新设置。配置文件本身无法安全保存时仍会明确报错。网关或共存模式的旧会话入口连接已选择的供应商和模型，使用期间请保持云汇运行；直连模式保留旧会话模型名，需上游仍支持该模型。兼容入口不能恢复缺失正文，也不能保证跨账号加密内容可以继续使用。操作与恢复说明见[历史迁移指南](docs/HISTORY-PROVIDER-MIGRATION.md)。
 
-![云桥 AI 客户端工作台](docs/images/clients-v0.6.png)
+![云汇 AI 客户端工作台](docs/images/clients-v0.6.png)
 
 ## 能做什么
 
@@ -33,11 +33,11 @@ ChatGPT / Codex 先保存客户端配置，再单独尝试历史备份与修复�
 
 ## 第一次使用
 
-1. 安装并打开云桥 AI，进入 **客户端接入**，点击目标客户端的 **开始配置**。
+1. 安装并打开云汇 AI，进入 **客户端接入**，点击目标客户端的 **开始配置**。
 2. 选择已有供应商，或填写供应商给出的 API 地址、API Key 和模型。厂商目录可帮助填写预设。
 3. 选择模型和接入方式。通常使用 **本地网关**；不需要网关功能时，可选择界面允许的 **直连供应商**。
 4. 测试后点击 **预览配置**，核对实际路径和计划修改，点击 **保存配置**。ChatGPT / Codex 即使正在运行也可先保存配置，历史处理结果会单独说明；手动接入按专属指南完成。测试可能产生少量费用。
-5. 重新启动客户端，发起一条对话。使用本地网关时，保持云桥 AI 运行。
+5. 重新启动客户端，发起一条对话。使用本地网关时，保持云汇 AI 运行。
 
 ChatGPT / Codex 的配置结果与历史状态分开显示。配置先保存，历史能安全处理时才备份并修复；客户端运行中、历史异常或历史备份失败时，保留原历史并提示稍后处理。配置成功后无需等待历史完成即可重启使用；“待处理”不代表历史已迁移。自动历史修复完成后，可在桌面客户端重新打开旧对话；在 Codex CLI 续聊时，请到 **历史会话** 选择记录并点击 **复制恢复命令**，Windows 粘贴到 PowerShell，macOS 粘贴到终端。命令会携带会话实际使用的供应商，避免直接输入旧命令时出现供应商不一致。
 
@@ -62,14 +62,14 @@ ChatGPT / Codex 的配置结果与历史状态分开显示。配置先保存，�
 
 | 平台 | 0.6.11 下载 |
 | --- | --- |
-| Windows x64 | [安装版](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.11/YunQiaoAI-0.6.11-win-x64-setup.exe) · [免安装版](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.11/YunQiaoAI-0.6.11-win-x64-portable.exe) · [完整解压版](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.11/YunQiaoAI-0.6.11-win-x64.zip) |
-| macOS Apple Silicon | [DMG](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.11/YunQiaoAI-0.6.11-mac-arm64.dmg) · [ZIP](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.11/YunQiaoAI-0.6.11-mac-arm64.zip)，适用于 Apple M 系列芯片 |
-| macOS Intel | [DMG](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.11/YunQiaoAI-0.6.11-mac-x64.dmg) · [ZIP](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.11/YunQiaoAI-0.6.11-mac-x64.zip)，适用于 Intel 处理器 |
+| Windows x64 | [安装版](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.11/YunHuiAI-0.6.11-win-x64-setup.exe) · [免安装版](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.11/YunHuiAI-0.6.11-win-x64-portable.exe) · [完整解压版](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.11/YunHuiAI-0.6.11-win-x64.zip) |
+| macOS Apple Silicon | [DMG](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.11/YunHuiAI-0.6.11-mac-arm64.dmg) · [ZIP](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.11/YunHuiAI-0.6.11-mac-arm64.zip)，适用于 Apple M 系列芯片 |
+| macOS Intel | [DMG](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.11/YunHuiAI-0.6.11-mac-x64.dmg) · [ZIP](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.11/YunHuiAI-0.6.11-mac-x64.zip)，适用于 Intel 处理器 |
 | iPhone / iPad | 目前没有可直接安装的正式 App，可通过浏览器连接电脑端 |
 
-普通用户请下载上表安装包；[Releases 的 Assets](https://github.com/jxb412/yunqiao.me/releases/tag/v0.6.11)同时提供 [SHA256 校验清单](https://github.com/jxb412/yunqiao.me/releases/download/v0.6.11/SHA256SUMS.txt)。具体文件名和步骤见[安装说明](INSTALLATION.md)。[GitHub Actions](https://github.com/jxb412/yunqiao.me/actions/workflows/build.yml) 中的产物用于体验开发构建，可能包含尚未正式发布的改动。
+普通用户请下载上表安装包；[Releases 的 Assets](https://github.com/yunhui201/yunhui.me/releases/tag/v0.6.11)同时提供 [SHA256 校验清单](https://github.com/yunhui201/yunhui.me/releases/download/v0.6.11/SHA256SUMS.txt)。具体文件名和步骤见[安装说明](INSTALLATION.md)。[GitHub Actions](https://github.com/yunhui201/yunhui.me/actions/workflows/build.yml) 中的产物用于体验开发构建，可能包含尚未正式发布的改动。
 
-Windows ZIP 版需完整解压后双击同目录的 `YunQiaoAI.exe`；portable 启动会显示准备提示。macOS 将 `YunQiaoAI.app` 拖入“应用程序”，未签名包的首次打开方法见[安装说明](INSTALLATION.md#安装和首次打开)。更新或切换包形式会保留已有本机数据。
+Windows ZIP 版需完整解压后双击同目录的 `YunHuiAI.exe`；portable 启动会显示准备提示。macOS 将 `YunHuiAI.app` 拖入“应用程序”，未签名包的首次打开方法见[安装说明](INSTALLATION.md#安装和首次打开)。更新或切换包形式会保留已有本机数据。
 
 电脑端已运行时，可用手机浏览器访问远程控制台。局域网连接方法见[使用指南](USER-GUIDE.md)。
 
@@ -78,8 +78,8 @@ Windows ZIP 版需完整解压后双击同目录的 `YunQiaoAI.exe`；portable �
 安装 [Node.js 22.x](https://nodejs.org/)（22.13 或更新版本，含 npm）和 [Git](https://git-scm.com/downloads) 后，可通过源码运行桌面应用：
 
 ```bash
-git clone --branch v0.6.11 --depth 1 https://github.com/jxb412/yunqiao.me.git yunqiao.me
-cd yunqiao.me
+git clone --branch v0.6.11 --depth 1 https://github.com/yunhui201/yunhui.me.git yunhui.me
+cd yunhui.me
 npm install --include=dev
 npm start
 ```
@@ -92,6 +92,6 @@ Windows PowerShell 请将最后两条命令写为 `npm.cmd install --include=dev
 
 供应商密钥和配置保存在本机。云端目录提供公开的厂商信息；模型请求发送到你选择的服务。导出的配置包含密钥，请妥善保管。余额以供应商返回为准，用量费用按配置价格估算。
 
-遇到问题可提交[问题反馈](https://github.com/jxb412/yunqiao.me/issues)。请提供云桥版本、系统、客户端名称和版本、所选接入方式及错误提示，并遮住 API Key、访问令牌和个人会话内容。
+遇到问题可提交[问题反馈](https://github.com/yunhui201/yunhui.me/issues)。请提供云汇版本、系统、客户端名称和版本、所选接入方式及错误提示，并遮住 API Key、访问令牌和个人会话内容。
 
-本项目按 [AGPL-3.0-only](LICENSE) 开源。[查看源码](https://github.com/jxb412/yunqiao.me) · [第三方许可](THIRD_PARTY_NOTICES.md)
+本项目按 [AGPL-3.0-only](LICENSE) 开源。[查看源码](https://github.com/yunhui201/yunhui.me) · [第三方许可](THIRD_PARTY_NOTICES.md)

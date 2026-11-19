@@ -33,7 +33,7 @@ export async function selectClientDesktop(store: AuroraStore, payload: unknown, 
       inspected = (runtime.inspect || inspectCodingDesktop)(selected);
       const identity = (file: string) => { const real = fs.realpathSync(file); return runtime.platform === 'win32' ? real.toLowerCase() : real; };
       if (inspected.executable && identity(inspected.executable) === identity(runtime.ownExecutable))
-        return { ok: false, message: '选中的是云桥自身，请选择独立的 ChatGPT / Codex 桌面程序。' };
+        return { ok: false, message: '选中的是云汇自身，请选择独立的 ChatGPT / Codex 桌面程序。' };
     } catch { return { ok: false, message: '无法读取所选程序的安装资源，请选择安装完整的桌面主程序。' }; }
     if (!inspected.installed || !inspected.exePath) return { ok: false, message: '所选路径不是可识别的桌面安装，请选择完整客户端的主程序。' };
     const state = loadState(store);
@@ -42,7 +42,7 @@ export async function selectClientDesktop(store: AuroraStore, payload: unknown, 
       try {
         await runtime.disconnect();
         saveState(store, { ...state, connection: { ...state.connection, exePath: nextPath, lastVersion: undefined } });
-      } catch { return { ok: false, message: '程序路径未能保存，请检查云桥数据目录权限后重试。客户端配置未改动；桌面增强连接可能已断开，可重新连接。' }; }
+      } catch { return { ok: false, message: '程序路径未能保存，请检查云汇数据目录权限后重试。客户端配置未改动；桌面增强连接可能已断开，可重新连接。' }; }
     }
     configureDesktopPath(nextPath); detectReset();
     const detected: AgentDetection = { installed: inspected.installed, configured: false, command: inspected.executable,

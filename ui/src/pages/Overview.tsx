@@ -25,7 +25,7 @@ export default function Overview({ state, reload, go }: PageProps) {
       <div className="page-head">
         <div>
           <h1>运行概览</h1>
-          <p>查看通过云桥网关的请求、模型用量与连接状态。</p>
+          <p>查看通过云汇网关的请求、模型用量与连接状态。</p>
         </div>
         <div className="actions">
           <Btn disabled={!window.aurora} onClick={() => call('gateway.restart').then(reload)}>

@@ -5,7 +5,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import { build } from 'esbuild';
 
-const temporary = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-client-lifecycle-')));
+const temporary = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-client-lifecycle-')));
 const previousClientHome = process.env.AURORA_CLIENT_HOME;
 process.env.AURORA_CLIENT_HOME = temporary;
 let checks = 0;
@@ -84,7 +84,7 @@ try {
   });
   await check('Current, parent and ancestor processes are protected even with a matching client path', async () => {
     for (const process of [processEntry({ pid: globalThis.process.pid }), processEntry({ pid: globalThis.process.ppid }), processEntry({ protected: true })]) {
-      const f = fixture(); f.state.processes = [process]; const result = await f.restartClient({ agentId: 'claude-desktop' }); assert.equal(result.ok, false); assert.match(result.message, /云桥自身或启动云桥/); assert.equal(f.state.closes.length, 0); assert.equal(f.state.starts.length, 0);
+      const f = fixture(); f.state.processes = [process]; const result = await f.restartClient({ agentId: 'claude-desktop' }); assert.equal(result.ok, false); assert.match(result.message, /云汇自身或启动云汇/); assert.equal(f.state.closes.length, 0); assert.equal(f.state.starts.length, 0);
     }
   });
   await check('A reused process identity or rejected termination prevents relaunch', async () => {
@@ -158,5 +158,5 @@ try {
   console.log(`Client lifecycle: ${checks} checks passed`);
 } finally {
   if (previousClientHome === undefined) delete process.env.AURORA_CLIENT_HOME; else process.env.AURORA_CLIENT_HOME = previousClientHome;
-  if (path.dirname(temporary) === fs.realpathSync.native(os.tmpdir()) && path.basename(temporary).startsWith('yunqiao-client-lifecycle-')) fs.rmSync(temporary, { recursive: true, force: true });
+  if (path.dirname(temporary) === fs.realpathSync.native(os.tmpdir()) && path.basename(temporary).startsWith('yunhui-client-lifecycle-')) fs.rmSync(temporary, { recursive: true, force: true });
 }

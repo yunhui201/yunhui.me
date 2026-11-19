@@ -8,7 +8,7 @@ import { spawnSync } from 'node:child_process';
 import { build } from 'esbuild';
 
 // These tests mock macOS system APIs. Passing on another OS is not native macOS validation.
-const temporary = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'yunqiao-macos-lifecycle-')));
+const temporary = fs.realpathSync.native(fs.mkdtempSync(path.join(os.tmpdir(), 'yunhui-macos-lifecycle-')));
 let checks = 0;
 const check = async (name, run) => { await run(); checks++; console.log(`PASS ${name}`); };
 try {
@@ -21,7 +21,7 @@ try {
     const home = path.join(temporary, `home ${++sequence} ' quoted`); fs.mkdirSync(home);
     const bundle = path.join(home, 'Applications', 'Claude.app'), executable = path.join(bundle, 'Contents', 'MacOS', 'ClaudeLauncher'), infoPlist = path.join(bundle, 'Contents', 'Info.plist');
     fs.mkdirSync(path.dirname(executable), { recursive: true }); fs.writeFileSync(executable, '#!/bin/sh\nexit 0\n', { mode: 0o700 }); fs.writeFileSync(infoPlist, 'fixture-metadata');
-    const metadata = { CFBundleExecutable: 'ClaudeLauncher', CFBundleIdentifier: 'io.yunqiao.fixture.claude', CFBundleVersion: '1' };
+    const metadata = { CFBundleExecutable: 'ClaudeLauncher', CFBundleIdentifier: 'io.yunhui.fixture.claude', CFBundleVersion: '1' };
     const state = { calls: [], candidates: [], processes: [], uncertain: false, closeResult: 'requested', terminalResult: true, failure: null };
     const host = {
       home: () => home, isolatedHome: () => home, ownExecutable: () => process.execPath, uid: () => 501, pid: () => 987700,
@@ -57,7 +57,7 @@ try {
   await check('Missing bundle identifiers and invalid main executable metadata fail closed', async () => {
     const f = fixture(); delete f.metadata.CFBundleIdentifier;
     await assert.rejects(() => f.driver.resolveTarget('claude-desktop', definition, { installed: true, configured: false, command: f.bundle }), /CFBundleIdentifier/);
-    f.metadata.CFBundleIdentifier = 'io.yunqiao.fixture'; f.metadata.CFBundleExecutable = '../outside';
+    f.metadata.CFBundleIdentifier = 'io.yunhui.fixture'; f.metadata.CFBundleExecutable = '../outside';
     await assert.rejects(() => f.driver.resolveTarget('claude-desktop', definition, { installed: true, configured: false, command: f.bundle }), /Info.plist/);
   });
   await check('Both executable and Info.plist changes invalidate a previously resolved target', async () => {
@@ -74,7 +74,7 @@ try {
   await check('Native force termination uses the exact no-window app and normalized aliases', async () => {
     const f = fixture(); const target = await f.driver.resolveTarget('claude-desktop', definition, { installed: true, configured: false, command: f.bundle });
     await f.driver.listProcesses(target); const source = f.state.calls[0].args[3];
-    const original = { executable: '/private/var/fixture/Claude.app/Contents/MacOS/Claude', bundlePath: '/private/var/fixture/Claude.app', bundleId: 'io.yunqiao.fixture.claude' };
+    const original = { executable: '/private/var/fixture/Claude.app/Contents/MacOS/Claude', bundlePath: '/private/var/fixture/Claude.app', bundleId: 'io.yunhui.fixture.claude' };
     const aliases = new Map([[original.executable, '/var/fixture/Claude.app/Contents/MacOS/Claude'], [original.bundlePath, '/var/fixture/Claude.app']]);
     const url = value => ({ URLByResolvingSymlinksInPath: { path: aliases.get(value) ?? value } });
     let forcedQuits = 0, allowed = true, uid = 501, protectedPid = 0, present = true;
@@ -93,7 +93,7 @@ try {
     assert.equal(execute('close', { process: { ...listed.processes[0], started: 'different-start' } }).result, 'changed'); assert.equal(forcedQuits, 1);
     uid = 502; assert.equal(execute('close', { process: listed.processes[0] }).result, 'changed'); assert.equal(forcedQuits, 1); uid = 501;
     protectedPid = 1234; assert.equal(execute('close', { process: listed.processes[0] }).result, 'changed'); assert.equal(forcedQuits, 1); protectedPid = 0;
-    app.bundleIdentifier = 'io.yunqiao.fixture.other'; assert.equal(execute('close', { process: listed.processes[0] }).result, 'changed'); assert.equal(forcedQuits, 1); app.bundleIdentifier = original.bundleId;
+    app.bundleIdentifier = 'io.yunhui.fixture.other'; assert.equal(execute('close', { process: listed.processes[0] }).result, 'changed'); assert.equal(forcedQuits, 1); app.bundleIdentifier = original.bundleId;
     allowed = false; assert.equal(execute('close', { process: listed.processes[0] }).result, 'blocked'); assert.equal(forcedQuits, 2); allowed = true;
     app.isTerminated = true; assert.equal(execute('close', { process: listed.processes[0] }).result, 'gone'); assert.equal(forcedQuits, 2); app.isTerminated = false;
     present = false; assert.equal(execute('close', { process: listed.processes[0] }).result, 'gone'); assert.equal(forcedQuits, 2); present = true;
@@ -170,11 +170,11 @@ try {
   });
   await check('The helper refuses its own application executable and invalid UID discovery', async () => {
     const f = fixture(); f.host.ownExecutable = () => f.executable;
-    await assert.rejects(() => f.driver.resolveTarget('claude-desktop', definition, { installed: true, configured: false, command: f.bundle }), /云桥自身/);
+    await assert.rejects(() => f.driver.resolveTarget('claude-desktop', definition, { installed: true, configured: false, command: f.bundle }), /云汇自身/);
     f.host.ownExecutable = () => process.execPath; const target = await f.driver.resolveTarget('claude-desktop', definition, { installed: true, configured: false, command: f.bundle }); f.host.uid = () => -1;
     await assert.rejects(() => f.driver.listProcesses(target), /用户身份/); assert.equal(f.state.calls.length, 0);
   });
   console.log(`macOS lifecycle simulation: ${checks} checks passed (native macOS not exercised)`);
 } finally {
-  if (path.dirname(fs.realpathSync.native(temporary)) === fs.realpathSync.native(os.tmpdir()) && path.basename(temporary).startsWith('yunqiao-macos-lifecycle-')) fs.rmSync(temporary, { recursive: true, force: true });
+  if (path.dirname(fs.realpathSync.native(temporary)) === fs.realpathSync.native(os.tmpdir()) && path.basename(temporary).startsWith('yunhui-macos-lifecycle-')) fs.rmSync(temporary, { recursive: true, force: true });
 }

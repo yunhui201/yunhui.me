@@ -67,7 +67,7 @@ def main():
         checks.append(label)
         print('PASS', label, flush=True)
 
-    with tempfile.TemporaryDirectory(prefix='yunqiao-session-sources-ui-') as temporary:
+    with tempfile.TemporaryDirectory(prefix='yunhui-session-sources-ui-') as temporary:
         scratch = Path(temporary).resolve()
         bundle = scratch / 'sessions-ui.js'
         options = {

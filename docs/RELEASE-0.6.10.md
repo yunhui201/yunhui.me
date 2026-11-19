@@ -1,6 +1,6 @@
-# 云桥 AI · yunqiao.me 0.6.10
+# 云汇 AI · yunhui.me 0.6.10
 
-[下载本版](https://github.com/jxb412/yunqiao.me/releases/tag/v0.6.10) · [安装说明](../INSTALLATION.md) · [使用指南](../USER-GUIDE.md)
+[下载本版](https://github.com/yunhui201/yunhui.me/releases/tag/v0.6.10) · [安装说明](../INSTALLATION.md) · [使用指南](../USER-GUIDE.md)
 
 先保存客户端配置，再处理历史会话。客户端正在运行或历史处理遇到问题，都不会挡住供应商、模型和接口配置。
 
@@ -17,12 +17,12 @@
 
 ## 下载与升级
 
-Windows 提供安装版、免安装版与完整 ZIP；macOS 提供 Apple Silicon 和 Intel 的 DMG / ZIP。升级前退出云桥并保留原数据。ZIP 版完整解压后运行 `YunQiaoAI.exe`；Mac 将 `YunQiaoAI.app` 放入“应用程序”并替换旧应用。
+Windows 提供安装版、免安装版与完整 ZIP；macOS 提供 Apple Silicon 和 Intel 的 DMG / ZIP。升级前退出云汇并保留原数据。ZIP 版完整解压后运行 `YunHuiAI.exe`；Mac 将 `YunHuiAI.app` 放入“应用程序”并替换旧应用。
 
 macOS 包尚未签名与公证。确认来自项目发布页后，若首次打开提示“已损坏”，在终端运行：
 
 ```bash
-xattr -cr "/Applications/YunQiaoAI.app"
+xattr -cr "/Applications/YunHuiAI.app"
 ```
 
 应用内更新优先使用 GitHub，官网为备用下载来源。

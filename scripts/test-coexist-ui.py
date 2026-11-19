@@ -87,7 +87,7 @@ def main():
     args = parser.parse_args()
     executable = args.exe.resolve() if args.exe else ROOT / 'node_modules/electron/dist/electron.exe'
     assert executable.is_file() and (ROOT / 'dist/main/main.cjs').is_file(), 'Run npm run build first'
-    profile = Path(tempfile.mkdtemp(prefix='yunqiao-coexist-ui-')).resolve()
+    profile = Path(tempfile.mkdtemp(prefix='yunhui-coexist-ui-')).resolve()
     data, clients, chromium = profile / 'data', profile / 'clients', profile / 'chromium'
     for folder in [data, clients / '.codex', clients / '.claude', chromium, profile / 'appdata', profile / 'localappdata']:
         folder.mkdir(parents=True, exist_ok=True)
@@ -103,7 +103,7 @@ def main():
     (data / 'settings.json').write_text(json.dumps({'theme': 'light', 'gatewayHost': '127.0.0.1', 'gatewayPort': gateway_port, 'gatewayToken': 'fixture-local-gateway-token',
         'autoStartGateway': True, 'autoCheckUpdate': False, 'autoSyncModels': False, 'closeToTray': False, 'launchAtLogin': False,
         'catalogUrl': f'http://127.0.0.1:{catalog.server_port}/catalog'}), encoding='utf-8')
-    environment = dict(os.environ, YUNQIAO_TEST_ISOLATED='1', AURORA_HOME=str(data), YUNQIAO_HOME=str(data), AURORA_CLIENT_HOME=str(clients),
+    environment = dict(os.environ, YUNHUI_TEST_ISOLATED='1', AURORA_HOME=str(data), YUNHUI_HOME=str(data), AURORA_CLIENT_HOME=str(clients),
                        APPDATA=str(profile / 'appdata'), LOCALAPPDATA=str(profile / 'localappdata'), AURORA_UI_TEST='1')
     for key in ['ELECTRON_RUN_AS_NODE', 'AURORA_EXTENSION_ASSETS', 'AURORA_DEV', 'AURORA_UI_URL', 'AURORA_SHOT', 'AURORA_PAGE']:
         environment.pop(key, None)

@@ -8,7 +8,7 @@ from playwright.sync_api import sync_playwright, expect
 ROOT = Path(__file__).resolve().parents[1]
 SCREENSHOTS = ROOT / 'tmp/manual-guide-ui'
 SCREENSHOTS.mkdir(parents=True, exist_ok=True)
-with tempfile.TemporaryDirectory(prefix='yunqiao-manual-guides-ui-') as temporary:
+with tempfile.TemporaryDirectory(prefix='yunhui-manual-guides-ui-') as temporary:
     bundle = Path(temporary) / 'manual.js'
     source = """import React from 'react';import {createRoot} from 'react-dom/client';import {flushSync} from 'react-dom';
 import ManualClientGuide from './ui/src/components/ManualClientGuide.tsx';
@@ -49,7 +49,7 @@ window.render=()=>flushSync(()=>root.render(window.visible?<ManualClientGuide {.
         page.evaluate('window.render()')
         expect(page.get_by_text('WorkBuddy · 自定义模型', exact=True)).to_be_visible()
         expect(page.locator('.manual-guide-fields')).to_contain_text('/v1/chat/completions')
-        expect(page.locator('.manual-guide-fields')).to_contain_text('YOUR_YUNQIAO_GATEWAY_TOKEN')
+        expect(page.locator('.manual-guide-fields')).to_contain_text('YOUR_YUNHUI_GATEWAY_TOKEN')
         assert page.evaluate('window.calls.length') == 0
         assert 'DO-NOT-RENDER-PREVIEW-KEY' not in page.content()
         page.locator('.manual-client-guide').screenshot(path=str(SCREENSHOTS / 'workbuddy-light.png'))
@@ -62,7 +62,7 @@ window.render=()=>flushSync(()=>root.render(window.visible?<ManualClientGuide {.
         page.get_by_label('手动指南版本').select_option('codebuddy-cli')
         expect(page.locator('.manual-guide-path')).to_contain_text('%USERPROFILE%\\.codebuddy\\models.json')
         page.get_by_role('button', name='复制占位示例').click()
-        assert json.loads(page.evaluate('window.copies.at(-1)'))['models'][0]['apiKey'] == 'YOUR_YUNQIAO_GATEWAY_TOKEN'
+        assert json.loads(page.evaluate('window.copies.at(-1)'))['models'][0]['apiKey'] == 'YOUR_YUNHUI_GATEWAY_TOKEN'
         assert page.evaluate('window.calls.length') == 1
         page.get_by_role('button', name='复制可用配置（含令牌）').click()
         expect(page.get_by_role('status')).to_contain_text('含访问令牌')
@@ -116,9 +116,9 @@ window.render=()=>flushSync(()=>root.render(window.visible?<ManualClientGuide {.
         expect(page.get_by_role('status')).to_contain_text('含访问令牌')
         assert 'api_key = "FIXTURE-PRIVATE-TOKEN"' in page.evaluate('window.copies.at(-1)')
         page.evaluate("window.props={...window.props,platform:'darwin',modelContextWindow:64000};window.render()")
-        expect(page.locator('.manual-guide-path')).to_contain_text('~/.kimi/yunqiao.toml')
+        expect(page.locator('.manual-guide-path')).to_contain_text('~/.kimi/yunhui.toml')
         expect(page.get_by_label('模型上下文 Token 数')).to_have_value('64000')
-        expect(page.locator('.manual-guide-command')).to_contain_text('"$HOME/.kimi/yunqiao.toml"')
+        expect(page.locator('.manual-guide-command')).to_contain_text('"$HOME/.kimi/yunhui.toml"')
         checks.append('Kimi blocks fabricated context and generates distinct Windows/macOS explicit-file commands')
 
         page.evaluate("window.switchAgent('opencode')")

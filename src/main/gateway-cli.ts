@@ -42,7 +42,7 @@ const gw = new GatewayServer({
 gw.start(host, port)
   .then((st) => {
     console.log('==============================================');
-    console.log('  云桥AI 工具箱 网关已启动');
+    console.log('  云汇AI 工具箱 网关已启动');
     console.log(`  接口: http://${st.host}:${st.port}`);
     console.log(`  控制台: http://${st.host}:${st.port}/`);
     console.log(`  数据: ${store.dir}`);
